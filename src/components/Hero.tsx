@@ -33,27 +33,36 @@ const Hero = () => {
           </div>
           
           <h1 className="mb-6 leading-tight">
-            Xin chào! Tôi là <span className="gradient-text">Your Name</span>
+            Xin chào! Tôi là <span className="gradient-text">Viet Dev</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-foreground/70 mb-8 max-w-2xl mx-auto">
             Full-stack Developer chuyên về React, Node.js & Cloud Architecture. 
-            Biến ý tưởng của bạn thành hiện thực với code chất lượng cao.
+            Chia sẻ kiến thức và kinh nghiệm phát triển phần mềm.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Button size="lg" className="bg-gradient-primary text-lg px-8 py-6 group">
+            <Button 
+              size="lg" 
+              className="bg-gradient-primary text-lg px-8 py-6 group"
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Xem Projects
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-2 border-primary hover:bg-primary/10">
-              Download CV
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg px-8 py-6 border-2 border-primary hover:bg-primary/10"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Liên hệ ngay
             </Button>
           </div>
 
           <div className="flex items-center justify-center gap-6">
             <a 
-              href="https://github.com" 
+              href="https://github.com/tranviet0710" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-foreground/60 hover:text-primary transition-colors duration-300"
@@ -61,7 +70,7 @@ const Hero = () => {
               <Github size={28} />
             </a>
             <a 
-              href="https://linkedin.com" 
+              href="https://linkedin.com/in/tranviet0710" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-foreground/60 hover:text-primary transition-colors duration-300"
@@ -69,7 +78,7 @@ const Hero = () => {
               <Linkedin size={28} />
             </a>
             <a 
-              href="mailto:your.email@example.com"
+              href="mailto:tranviet0710@gmail.com"
               className="text-foreground/60 hover:text-primary transition-colors duration-300"
             >
               <Mail size={28} />
