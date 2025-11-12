@@ -7,9 +7,11 @@ import { Mail, MapPin, Phone, Send } from 'lucide-react';
 import { FaTelegram, FaFacebookMessenger, FaGithub } from 'react-icons/fa';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Contact = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',

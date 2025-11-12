@@ -16,7 +16,7 @@ export type Database = {
     Tables: {
       blogs: {
         Row: {
-          author_id: string
+          author_id: string | null
           content: string
           cover_image: string | null
           created_at: string | null
@@ -28,7 +28,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          author_id: string
+          author_id?: string | null
           content: string
           cover_image?: string | null
           created_at?: string | null
@@ -40,7 +40,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          author_id?: string
+          author_id?: string | null
           content?: string
           cover_image?: string | null
           created_at?: string | null

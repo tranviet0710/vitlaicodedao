@@ -1,42 +1,45 @@
-import { Code2, Database, Globe, Smartphone, Cloud, Zap } from 'lucide-react';
+import { Code2, Database, Globe, Smartphone, Cloud, Brain } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Skills = () => {
+  const { t } = useLanguage();
+  
   const skillCategories = [
     {
       icon: Code2,
-      title: 'Frontend Development',
+      title: t('skills.frontend'),
       skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js'],
       color: 'text-primary',
     },
     {
       icon: Database,
-      title: 'Backend Development',
+      title: t('skills.backend'),
       skills: ['Node.js', 'Express', 'Python', 'PostgreSQL', 'MongoDB'],
       color: 'text-accent',
     },
     {
       icon: Cloud,
-      title: 'Cloud & DevOps',
+      title: t('skills.cloud'),
       skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Terraform'],
       color: 'text-primary',
     },
     {
       icon: Smartphone,
-      title: 'Mobile Development',
+      title: t('skills.mobile'),
       skills: ['React Native', 'Flutter', 'iOS', 'Android', 'PWA'],
       color: 'text-accent',
     },
     {
       icon: Globe,
-      title: 'Web Technologies',
+      title: t('skills.web'),
       skills: ['HTML5', 'CSS3', 'JavaScript', 'REST API', 'GraphQL'],
       color: 'text-primary',
     },
     {
-      icon: Zap,
-      title: 'Tools & Others',
-      skills: ['Git', 'Figma', 'Jira', 'Agile', 'Testing'],
+      icon: Brain,
+      title: t('skills.ai'),
+      skills: ['OpenAI', 'TensorFlow', 'LangChain', 'Hugging Face', 'Lovable AI'],
       color: 'text-accent',
     },
   ];
@@ -46,10 +49,10 @@ const Skills = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-slide-up">
           <h2 className="mb-4">
-            Technical <span className="gradient-text">Skills</span>
+            {t('skills.title')} <span className="gradient-text">{t('skills.titleHighlight')}</span>
           </h2>
           <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Chuyên môn rộng với nhiều năm kinh nghiệm trong phát triển full-stack
+            {t('skills.description')}
           </p>
         </div>
 

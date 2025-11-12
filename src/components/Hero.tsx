@@ -1,8 +1,11 @@
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import heroBg from '@/assets/hero-bg.jpg';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero = () => {
+  const { t } = useLanguage();
+  
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -26,19 +29,16 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="max-w-4xl mx-auto text-center animate-slide-up">
-          <div className="mb-6">
-            <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
-              Senior Software Developer
-            </span>
-          </div>
-          
           <h1 className="mb-6 leading-tight">
-            Xin chào! Tôi là <span className="gradient-text">Viet Dev</span>
+            {t('hero.greeting')} <span className="gradient-text">Viet Dev</span>
           </h1>
           
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            {t('hero.title')}
+          </h2>
+          
           <p className="text-xl md:text-2xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-            Full-stack Developer chuyên về React, Node.js & Cloud Architecture. 
-            Chia sẻ kiến thức và kinh nghiệm phát triển phần mềm.
+            {t('hero.description')}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -47,7 +47,7 @@ const Hero = () => {
               className="bg-gradient-primary text-lg px-8 py-6 group"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Xem Projects
+              {t('hero.viewProjects')}
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button 
@@ -56,7 +56,7 @@ const Hero = () => {
               className="text-lg px-8 py-6 border-2 border-primary hover:bg-primary/10"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Liên hệ ngay
+              {t('hero.contactMe')}
             </Button>
           </div>
 

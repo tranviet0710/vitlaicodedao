@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,13 +17,12 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { href: '#home', label: 'Home' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#testimonials', label: 'Testimonials' },
-    { href: '#services', label: 'Services' },
-    { href: '#blog', label: 'Blog' },
-    { href: '#contact', label: 'Contact' },
+    { href: '#home', label: t('nav.home') },
+    { href: '#skills', label: t('nav.skills') },
+    { href: '#projects', label: t('nav.projects') },
+    { href: '#testimonials', label: t('nav.testimonials') },
+    { href: '#blog', label: t('nav.blog') },
+    { href: '#contact', label: t('nav.contact') },
   ];
 
   return (
@@ -33,7 +34,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <a href="#home" className="text-2xl font-bold gradient-text">
-            DevPortfolio
+            Viet Dev
           </a>
 
           {/* Desktop Navigation */}
@@ -47,8 +48,15 @@ const Navigation = () => {
                 {link.label}
               </a>
             ))}
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
+              className="text-foreground/80 hover:text-primary transition-colors duration-300"
+              title={language === 'en' ? 'Switch to Vietnamese' : 'Chuyển sang tiếng Anh'}
+            >
+              <Globe size={20} />
+            </button>
             <Button variant="default" className="bg-gradient-primary">
-              Hire Me
+              {t('nav.hireMe')}
             </Button>
           </div>
 
@@ -75,8 +83,15 @@ const Navigation = () => {
                   {link.label}
                 </a>
               ))}
+              <button
+                onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
+                className="flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors duration-300 py-2"
+              >
+                <Globe size={20} />
+                {language === 'en' ? 'Tiếng Việt' : 'English'}
+              </button>
               <Button variant="default" className="bg-gradient-primary w-full">
-                Hire Me
+                {t('nav.hireMe')}
               </Button>
             </div>
           </div>
