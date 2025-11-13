@@ -3,16 +3,20 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Mail, MapPin, Phone, Send, CheckCircle2 } from 'lucide-react';
 import { FaTelegram, FaFacebookMessenger, FaGithub } from 'react-icons/fa';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { contactSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 const Contact = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -64,42 +68,57 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.message) {
-      toast({
-        title: 'Lỗi',
-        description: 'Vui lòng điền đầy đủ thông tin bắt buộc',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
+    setErrors({});
+    setIsSuccess(false);
 
     try {
+      // Validate form data with zod
+      const validatedData = contactSchema.parse(formData);
+      
+      setIsSubmitting(true);
+
       const { error } = await supabase.from('support_requests').insert({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone || null,
-        message: formData.message,
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || null,
+        message: validatedData.message,
         status: 'pending',
       });
 
       if (error) throw error;
 
+      setIsSuccess(true);
       toast({
-        title: 'Gửi thành công!',
-        description: 'Cảm ơn bạn đã liên hệ. Tôi sẽ phản hồi sớm nhất có thể.',
+        title: t('contact.successTitle'),
+        description: t('contact.successMessage'),
       });
 
       setFormData({ name: '', email: '', phone: '', message: '' });
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => setIsSuccess(false), 5000);
     } catch (error) {
-      console.error('Error submitting form:', error);
-      toast({
-        title: 'Có lỗi xảy ra',
-        description: 'Không thể gửi yêu cầu. Vui lòng thử lại sau.',
-        variant: 'destructive',
-      });
+      if (error instanceof z.ZodError) {
+        const fieldErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0].toString()] = err.message;
+          }
+        });
+        setErrors(fieldErrors);
+        toast({
+          title: t('contact.errorTitle'),
+          description: t('contact.validationError'),
+          variant: 'destructive',
+        });
+      } else {
+        console.error('Error submitting form:', error);
+        toast({
+          title: t('contact.errorTitle'),
+          description: t('contact.errorMessage'),
+          variant: 'destructive',
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -167,69 +186,107 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <Card className="p-8 bg-card border-border/50">
+          <Card className="p-8 bg-card border-border/50 hover:shadow-2xl transition-all duration-300">
+            <h3 className="text-2xl font-bold mb-6">{t('contact.formTitle')}</h3>
+            
+            {isSuccess && (
+              <div className="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-lg flex items-center gap-3 animate-fade-in">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
+                <p className="text-sm text-foreground">{t('contact.successMessage')}</p>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  Tên của bạn <span className="text-destructive">*</span>
+                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                  {t('contact.name')} *
                 </label>
-                <Input 
-                  placeholder="Nguyễn Văn A" 
-                  className="bg-background"
+                <Input
+                  id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value });
+                    if (errors.name) setErrors({ ...errors, name: '' });
+                  }}
+                  className={`bg-background transition-all ${errors.name ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                  placeholder={t('contact.namePlaceholder')}
                 />
+                {errors.name && (
+                  <p className="text-sm text-destructive mt-1">{errors.name}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  Email <span className="text-destructive">*</span>
+                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  {t('contact.email')} *
                 </label>
-                <Input 
-                  type="email" 
-                  placeholder="email@example.com" 
-                  className="bg-background"
+                <Input
+                  id="email"
+                  type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
+                  onChange={(e) => {
+                    setFormData({ ...formData, email: e.target.value });
+                    if (errors.email) setErrors({ ...errors, email: '' });
+                  }}
+                  className={`bg-background transition-all ${errors.email ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                  placeholder={t('contact.emailPlaceholder')}
                 />
+                {errors.email && (
+                  <p className="text-sm text-destructive mt-1">{errors.email}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  Số điện thoại
+                <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                  {t('contact.phone')}
                 </label>
-                <Input 
+                <Input
+                  id="phone"
                   type="tel"
-                  placeholder="0912345678" 
-                  className="bg-background"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, phone: e.target.value });
+                    if (errors.phone) setErrors({ ...errors, phone: '' });
+                  }}
+                  className={`bg-background transition-all ${errors.phone ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                  placeholder={t('contact.phonePlaceholder')}
                 />
+                {errors.phone && (
+                  <p className="text-sm text-destructive mt-1">{errors.phone}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  Mô tả yêu cầu <span className="text-destructive">*</span>
+                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  {t('contact.message')} *
                 </label>
                 <Textarea
-                  placeholder="Mô tả chi tiết về dự án, yêu cầu kỹ thuật, timeline mong muốn..."
-                  className="bg-background min-h-[120px]"
+                  id="message"
+                  rows={6}
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
+                  onChange={(e) => {
+                    setFormData({ ...formData, message: e.target.value });
+                    if (errors.message) setErrors({ ...errors, message: '' });
+                  }}
+                  className={`bg-background resize-none transition-all ${errors.message ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+                  placeholder={t('contact.messagePlaceholder')}
                 />
+                {errors.message && (
+                  <p className="text-sm text-destructive mt-1">{errors.message}</p>
+                )}
+                <p className="text-xs text-muted-foreground mt-1">
+                  {formData.message.length}/5000 {t('contact.characters')}
+                </p>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full bg-gradient-primary" 
+              <Button
+                type="submit"
                 size="lg"
+                className="w-full bg-gradient-primary group"
                 disabled={isSubmitting}
               >
-                <Send className="mr-2 w-5 h-5" />
-                {isSubmitting ? 'Đang gửi...' : 'Gửi yêu cầu'}
+                {isSubmitting ? t('contact.sending') : t('contact.send')}
+                <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </form>
           </Card>
