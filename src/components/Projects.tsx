@@ -8,6 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 interface Project {
   id: string;
   title: string;
+  slug: string;
   description: string;
   thumbnail: string | null;
   category: string;
@@ -64,36 +65,36 @@ const Projects = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {projects.map((project, index) => (
-            <Card
-              key={project.id}
-              className="overflow-hidden hover:shadow-2xl transition-all duration-300 card-hover"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="relative group">
-                <img
-                  src={project.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'}
-                  alt={project.title}
-                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6 gap-4">
-                  {project.demo_url && (
-                    <Button size="sm" asChild>
-                      <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        {t('projects.viewDemo')}
-                      </a>
-                    </Button>
-                  )}
-                  {project.github_url && (
-                    <Button size="sm" variant="outline" asChild>
-                      <a href={project.github_url} target="_blank" rel="noopener noreferrer">
-                        <Github className="w-4 h-4 mr-2" />
-                        {t('projects.viewCode')}
-                      </a>
-                    </Button>
-                  )}
+            <a key={project.id} href={`/project/${project.slug}`}>
+              <Card
+                className="overflow-hidden hover:shadow-2xl transition-all duration-300 card-hover cursor-pointer"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="relative group">
+                  <img
+                    src={project.thumbnail || 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'}
+                    alt={project.title}
+                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6 gap-4">
+                    {project.demo_url && (
+                      <Button size="sm" asChild onClick={(e) => e.stopPropagation()}>
+                        <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          {t('projects.viewDemo')}
+                        </a>
+                      </Button>
+                    )}
+                    {project.github_url && (
+                      <Button size="sm" variant="outline" asChild onClick={(e) => e.stopPropagation()}>
+                        <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                          <Github className="w-4 h-4 mr-2" />
+                          {t('projects.viewCode')}
+                        </a>
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
               <div className="p-6">
                 <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-3">
                   {project.category}
@@ -113,7 +114,8 @@ const Projects = () => {
                   </div>
                 )}
               </div>
-            </Card>
+              </Card>
+            </a>
           ))}
         </div>
 
