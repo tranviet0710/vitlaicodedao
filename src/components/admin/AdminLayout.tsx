@@ -9,7 +9,8 @@ import {
   Mail, 
   LogOut,
   Menu,
-  X
+  X,
+  Search
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -34,6 +35,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/projects', icon: FolderOpen, label: 'Projects' },
     { path: '/admin/testimonials', icon: MessageSquare, label: 'Testimonials' },
     { path: '/admin/support-requests', icon: Mail, label: 'Yêu cầu hỗ trợ' },
+    { path: '/admin/seo', icon: Search, label: 'SEO Settings' },
   ];
 
   return (

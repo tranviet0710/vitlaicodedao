@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import BlogDetail from "./pages/BlogDetail";
@@ -13,6 +14,7 @@ import BlogsManager from "./pages/admin/BlogsManager";
 import ProjectsManager from "./pages/admin/ProjectsManager";
 import TestimonialsManager from "./pages/admin/TestimonialsManager";
 import SupportRequestsManager from "./pages/admin/SupportRequestsManager";
+import SEOManager from "./pages/admin/SEOManager";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLayout from "./components/admin/AdminLayout";
@@ -21,11 +23,12 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+    <HelmetProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog/:slug" element={<BlogDetail />} />
@@ -81,12 +84,23 @@ const App = () => (
               </ProtectedRoute>
             } 
           />
+          <Route 
+            path="/admin/seo" 
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <SEOManager />
+                </AdminLayout>
+              </ProtectedRoute>
+            } 
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-    </ThemeProvider>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   </QueryClientProvider>
 );
 
