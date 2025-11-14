@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -76,6 +77,15 @@ const ProjectDetail = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title={`${project.title} - Viet Dev Projects`}
+        description={project.description}
+        ogTitle={project.title}
+        ogDescription={project.description}
+        ogImage={project.thumbnail || '/placeholder.svg'}
+        ogType="article"
+        canonicalUrl={`${window.location.origin}/project/${slug}`}
+      />
       <Navigation />
       
       <article className="py-20 md:py-32">

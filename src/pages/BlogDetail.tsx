@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { Calendar, Clock, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -77,6 +78,15 @@ const BlogDetail = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title={`${blog.title} - Viet Dev Blog`}
+        description={blog.excerpt}
+        ogTitle={blog.title}
+        ogDescription={blog.excerpt}
+        ogImage={blog.cover_image || '/placeholder.svg'}
+        ogType="article"
+        canonicalUrl={`${window.location.origin}/blog/${blog.slug}`}
+      />
       <Navigation />
       
       <article className="pt-32 pb-20">
