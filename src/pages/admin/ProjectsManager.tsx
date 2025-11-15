@@ -6,6 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { projectSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 interface Project {
   id: string;
@@ -35,6 +37,7 @@ const ProjectsManager = () => {
     demo_url: '',
     github_url: '',
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchProjects();
@@ -64,24 +67,29 @@ const ProjectsManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const techStack = formData.tech_stack
-      .split(',')
-      .map((tech) => tech.trim())
-      .filter((tech) => tech);
-
+    // Validate form data
     try {
+      const validated = projectSchema.parse(formData);
+      setValidationErrors({});
+
+      const techStack = validated.tech_stack
+        .split(',')
+        .map((tech) => tech.trim())
+        .filter((tech) => tech);
+
+      // Proceed with database operation
       if (editingProject) {
         const { error } = await supabase
           .from('projects')
           .update({
-            title: formData.title,
-            slug: formData.slug,
-            description: formData.description,
-            category: formData.category,
+            title: validated.title,
+            slug: validated.slug,
+            description: validated.description,
+            category: validated.category,
             tech_stack: techStack.length > 0 ? techStack : null,
-            thumbnail: formData.thumbnail || null,
-            demo_url: formData.demo_url || null,
-            github_url: formData.github_url || null,
+            thumbnail: validated.thumbnail || null,
+            demo_url: validated.demo_url || null,
+            github_url: validated.github_url || null,
           })
           .eq('id', editingProject.id);
 
@@ -89,14 +97,14 @@ const ProjectsManager = () => {
         toast({ title: 'Cập nhật project thành công!' });
       } else {
         const { error } = await supabase.from('projects').insert({
-          title: formData.title,
-          slug: formData.slug,
-          description: formData.description,
-          category: formData.category,
+          title: validated.title,
+          slug: validated.slug,
+          description: validated.description,
+          category: validated.category,
           tech_stack: techStack.length > 0 ? techStack : null,
-          thumbnail: formData.thumbnail || null,
-          demo_url: formData.demo_url || null,
-          github_url: formData.github_url || null,
+          thumbnail: validated.thumbnail || null,
+          demo_url: validated.demo_url || null,
+          github_url: validated.github_url || null,
         });
 
         if (error) throw error;
@@ -106,12 +114,27 @@ const ProjectsManager = () => {
       resetForm();
       fetchProjects();
     } catch (error) {
-      console.error('Error saving project:', error);
-      toast({
-        title: 'Lỗi',
-        description: 'Không thể lưu project',
-        variant: 'destructive',
-      });
+      if (error instanceof z.ZodError) {
+        const errors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0].toString()] = err.message;
+          }
+        });
+        setValidationErrors(errors);
+        toast({
+          title: 'Validation Error',
+          description: 'Please check the form for errors',
+          variant: 'destructive',
+        });
+      } else {
+        console.error('Error saving project:', error);
+        toast({
+          title: 'Lỗi',
+          description: 'Không thể lưu project',
+          variant: 'destructive',
+        });
+      }
     }
   };
 
@@ -187,6 +210,9 @@ const ProjectsManager = () => {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
               />
+              {validationErrors.title && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.title}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Slug *</label>
@@ -195,6 +221,9 @@ const ProjectsManager = () => {
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                 required
               />
+              {validationErrors.slug && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.slug}</p>
+              )}
             </div>
           </div>
 
@@ -207,6 +236,9 @@ const ProjectsManager = () => {
                 placeholder="Web, Mobile, etc."
                 required
               />
+              {validationErrors.category && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.category}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Tech Stack</label>
@@ -215,6 +247,9 @@ const ProjectsManager = () => {
                 onChange={(e) => setFormData({ ...formData, tech_stack: e.target.value })}
                 placeholder="React, Node.js, MongoDB (phân cách bằng dấu phẩy)"
               />
+              {validationErrors.tech_stack && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.tech_stack}</p>
+              )}
             </div>
           </div>
 
@@ -226,6 +261,9 @@ const ProjectsManager = () => {
               rows={4}
               required
             />
+            {validationErrors.description && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.description}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -236,6 +274,9 @@ const ProjectsManager = () => {
                 value={formData.thumbnail}
                 onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
               />
+              {validationErrors.thumbnail && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.thumbnail}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Demo URL</label>
@@ -244,6 +285,9 @@ const ProjectsManager = () => {
                 value={formData.demo_url}
                 onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
               />
+              {validationErrors.demo_url && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.demo_url}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">GitHub URL</label>
@@ -252,6 +296,9 @@ const ProjectsManager = () => {
                 value={formData.github_url}
                 onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
               />
+              {validationErrors.github_url && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.github_url}</p>
+              )}
             </div>
           </div>
 
