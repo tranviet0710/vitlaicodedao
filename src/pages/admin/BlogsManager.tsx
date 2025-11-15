@@ -7,6 +7,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { blogSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 interface Blog {
   id: string;
@@ -33,6 +35,7 @@ const BlogsManager = () => {
     cover_image: '',
     published: true,
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchBlogs();
@@ -64,17 +67,22 @@ const BlogsManager = () => {
 
     if (!user) return;
 
+    // Validate form data
     try {
+      const validated = blogSchema.parse(formData);
+      setValidationErrors({});
+
+      // Proceed with database operation
       if (editingBlog) {
         const { error } = await supabase
           .from('blogs')
           .update({
-            title: formData.title,
-            slug: formData.slug,
-            excerpt: formData.excerpt || null,
-            content: formData.content,
-            cover_image: formData.cover_image || null,
-            published: formData.published,
+            title: validated.title,
+            slug: validated.slug,
+            excerpt: validated.excerpt || null,
+            content: validated.content,
+            cover_image: validated.cover_image || null,
+            published: validated.published,
           })
           .eq('id', editingBlog.id);
 
@@ -82,12 +90,12 @@ const BlogsManager = () => {
         toast({ title: 'Cập nhật blog thành công!' });
       } else {
         const { error } = await supabase.from('blogs').insert({
-          title: formData.title,
-          slug: formData.slug,
-          excerpt: formData.excerpt || null,
-          content: formData.content,
-          cover_image: formData.cover_image || null,
-          published: formData.published,
+          title: validated.title,
+          slug: validated.slug,
+          excerpt: validated.excerpt || null,
+          content: validated.content,
+          cover_image: validated.cover_image || null,
+          published: validated.published,
           author_id: user.id,
         });
 
@@ -98,12 +106,27 @@ const BlogsManager = () => {
       resetForm();
       fetchBlogs();
     } catch (error) {
-      console.error('Error saving blog:', error);
-      toast({
-        title: 'Lỗi',
-        description: 'Không thể lưu blog',
-        variant: 'destructive',
-      });
+      if (error instanceof z.ZodError) {
+        const errors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0].toString()] = err.message;
+          }
+        });
+        setValidationErrors(errors);
+        toast({
+          title: 'Validation Error',
+          description: 'Please check the form for errors',
+          variant: 'destructive',
+        });
+      } else {
+        console.error('Error saving blog:', error);
+        toast({
+          title: 'Lỗi',
+          description: 'Không thể lưu blog',
+          variant: 'destructive',
+        });
+      }
     }
   };
 
@@ -175,6 +198,9 @@ const BlogsManager = () => {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
               />
+              {validationErrors.title && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.title}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Slug *</label>
@@ -183,6 +209,9 @@ const BlogsManager = () => {
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                 required
               />
+              {validationErrors.slug && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.slug}</p>
+              )}
             </div>
           </div>
 
@@ -193,6 +222,9 @@ const BlogsManager = () => {
               onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
               rows={2}
             />
+            {validationErrors.excerpt && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.excerpt}</p>
+            )}
           </div>
 
           <div>
@@ -203,6 +235,20 @@ const BlogsManager = () => {
               rows={10}
               required
             />
+            {validationErrors.content && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.content}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">URL ảnh bìa</label>
+            <Input
+              value={formData.cover_image}
+              onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
+            />
+            {validationErrors.cover_image && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.cover_image}</p>
+            )}
           </div>
 
           <div>

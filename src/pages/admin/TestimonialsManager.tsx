@@ -6,6 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2, Star } from 'lucide-react';
+import { testimonialSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 interface Testimonial {
   id: string;
@@ -29,6 +31,7 @@ const TestimonialsManager = () => {
     content: '',
     rating: 5,
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchTestimonials();
@@ -58,16 +61,21 @@ const TestimonialsManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate form data
     try {
+      const validated = testimonialSchema.parse(formData);
+      setValidationErrors({});
+
+      // Proceed with database operation
       if (editingTestimonial) {
         const { error } = await supabase
           .from('testimonials')
           .update({
-            client_name: formData.client_name,
-            client_role: formData.client_role,
-            client_avatar: formData.client_avatar || null,
-            content: formData.content,
-            rating: formData.rating,
+            client_name: validated.client_name,
+            client_role: validated.client_role,
+            client_avatar: validated.client_avatar || null,
+            content: validated.content,
+            rating: validated.rating,
           })
           .eq('id', editingTestimonial.id);
 
@@ -75,11 +83,11 @@ const TestimonialsManager = () => {
         toast({ title: 'Cập nhật testimonial thành công!' });
       } else {
         const { error } = await supabase.from('testimonials').insert({
-          client_name: formData.client_name,
-          client_role: formData.client_role,
-          client_avatar: formData.client_avatar || null,
-          content: formData.content,
-          rating: formData.rating,
+          client_name: validated.client_name,
+          client_role: validated.client_role,
+          client_avatar: validated.client_avatar || null,
+          content: validated.content,
+          rating: validated.rating,
         });
 
         if (error) throw error;
@@ -89,12 +97,27 @@ const TestimonialsManager = () => {
       resetForm();
       fetchTestimonials();
     } catch (error) {
-      console.error('Error saving testimonial:', error);
-      toast({
-        title: 'Lỗi',
-        description: 'Không thể lưu testimonial',
-        variant: 'destructive',
-      });
+      if (error instanceof z.ZodError) {
+        const errors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0].toString()] = err.message;
+          }
+        });
+        setValidationErrors(errors);
+        toast({
+          title: 'Validation Error',
+          description: 'Please check the form for errors',
+          variant: 'destructive',
+        });
+      } else {
+        console.error('Error saving testimonial:', error);
+        toast({
+          title: 'Lỗi',
+          description: 'Không thể lưu testimonial',
+          variant: 'destructive',
+        });
+      }
     }
   };
 
@@ -164,6 +187,9 @@ const TestimonialsManager = () => {
                 onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                 required
               />
+              {validationErrors.client_name && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.client_name}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Chức vụ *</label>
@@ -173,6 +199,9 @@ const TestimonialsManager = () => {
                 placeholder="CEO tại ABC Company"
                 required
               />
+              {validationErrors.client_role && (
+                <p className="text-sm text-destructive mt-1">{validationErrors.client_role}</p>
+              )}
             </div>
           </div>
 
@@ -183,6 +212,9 @@ const TestimonialsManager = () => {
               value={formData.client_avatar}
               onChange={(e) => setFormData({ ...formData, client_avatar: e.target.value })}
             />
+            {validationErrors.client_avatar && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.client_avatar}</p>
+            )}
           </div>
 
           <div>
@@ -193,6 +225,9 @@ const TestimonialsManager = () => {
               rows={4}
               required
             />
+            {validationErrors.content && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.content}</p>
+            )}
           </div>
 
           <div>
@@ -217,6 +252,9 @@ const TestimonialsManager = () => {
                 ))}
               </div>
             </div>
+            {validationErrors.rating && (
+              <p className="text-sm text-destructive mt-1">{validationErrors.rating}</p>
+            )}
           </div>
 
           <div className="flex gap-4">

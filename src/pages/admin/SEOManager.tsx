@@ -8,6 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Search, Globe, Image, FileText, Save, Download } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { seoSchema } from '@/lib/validations';
+import { z } from 'zod';
 
 interface SEOSetting {
   id: string;
@@ -29,6 +31,7 @@ const SEOManager = () => {
   const [selectedPage, setSelectedPage] = useState<string>('home');
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Partial<SEOSetting>>({});
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchSettings();
@@ -58,20 +61,27 @@ const SEOManager = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
+      // Validate form data
+      const validated = seoSchema.parse({
+        ...formData,
+        page_key: selectedPage,
+      });
+      setValidationErrors({});
+
       const { error } = await supabase
         .from('seo_settings')
         .upsert({
-          page_key: selectedPage,
-          title: formData.title || '',
-          description: formData.description,
-          keywords: formData.keywords,
-          og_title: formData.og_title,
-          og_description: formData.og_description,
-          og_image: formData.og_image,
-          og_type: formData.og_type || 'website',
-          twitter_card: formData.twitter_card || 'summary_large_image',
-          twitter_site: formData.twitter_site,
-          canonical_url: formData.canonical_url,
+          page_key: validated.page_key,
+          title: validated.title,
+          description: validated.description || null,
+          keywords: validated.keywords || null,
+          og_title: validated.og_title || null,
+          og_description: validated.og_description || null,
+          og_image: validated.og_image || null,
+          og_type: validated.og_type || 'website',
+          twitter_card: validated.twitter_card || 'summary_large_image',
+          twitter_site: validated.twitter_site || null,
+          canonical_url: validated.canonical_url || null,
         });
 
       if (error) throw error;
@@ -79,7 +89,18 @@ const SEOManager = () => {
       toast.success('SEO settings saved successfully');
       fetchSettings();
     } catch (error) {
-      toast.error('Failed to save SEO settings');
+      if (error instanceof z.ZodError) {
+        const errors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            errors[err.path[0].toString()] = err.message;
+          }
+        });
+        setValidationErrors(errors);
+        toast.error('Please check the form for errors');
+      } else {
+        toast.error('Failed to save SEO settings');
+      }
     } finally {
       setLoading(false);
     }
@@ -200,6 +221,9 @@ const SEOManager = () => {
                     <p className="text-xs text-muted-foreground">
                       {formData.title?.length || 0}/60 characters
                     </p>
+                    {validationErrors.title && (
+                      <p className="text-sm text-destructive">{validationErrors.title}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -215,6 +239,9 @@ const SEOManager = () => {
                     <p className="text-xs text-muted-foreground">
                       {formData.description?.length || 0}/160 characters
                     </p>
+                    {validationErrors.description && (
+                      <p className="text-sm text-destructive">{validationErrors.description}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -225,6 +252,9 @@ const SEOManager = () => {
                       onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
                       placeholder="keyword1, keyword2, keyword3"
                     />
+                    {validationErrors.keywords && (
+                      <p className="text-sm text-destructive">{validationErrors.keywords}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -235,6 +265,9 @@ const SEOManager = () => {
                       onChange={(e) => setFormData({ ...formData, canonical_url: e.target.value })}
                       placeholder="https://vietdev.com"
                     />
+                    {validationErrors.canonical_url && (
+                      <p className="text-sm text-destructive">{validationErrors.canonical_url}</p>
+                    )}
                   </div>
                 </div>
 
@@ -253,6 +286,9 @@ const SEOManager = () => {
                       onChange={(e) => setFormData({ ...formData, og_title: e.target.value })}
                       placeholder="Title for social sharing"
                     />
+                    {validationErrors.og_title && (
+                      <p className="text-sm text-destructive">{validationErrors.og_title}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -264,6 +300,9 @@ const SEOManager = () => {
                       placeholder="Description for social sharing"
                       rows={3}
                     />
+                    {validationErrors.og_description && (
+                      <p className="text-sm text-destructive">{validationErrors.og_description}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -277,6 +316,9 @@ const SEOManager = () => {
                     <p className="text-xs text-muted-foreground">
                       Recommended: 1200x630px
                     </p>
+                    {validationErrors.og_image && (
+                      <p className="text-sm text-destructive">{validationErrors.og_image}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -287,6 +329,9 @@ const SEOManager = () => {
                       onChange={(e) => setFormData({ ...formData, og_type: e.target.value })}
                       placeholder="website"
                     />
+                    {validationErrors.og_type && (
+                      <p className="text-sm text-destructive">{validationErrors.og_type}</p>
+                    )}
                   </div>
                 </div>
 
@@ -305,6 +350,9 @@ const SEOManager = () => {
                       onChange={(e) => setFormData({ ...formData, twitter_card: e.target.value })}
                       placeholder="summary_large_image"
                     />
+                    {validationErrors.twitter_card && (
+                      <p className="text-sm text-destructive">{validationErrors.twitter_card}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -315,6 +363,9 @@ const SEOManager = () => {
                       onChange={(e) => setFormData({ ...formData, twitter_site: e.target.value })}
                       placeholder="@vietdev"
                     />
+                    {validationErrors.twitter_site && (
+                      <p className="text-sm text-destructive">{validationErrors.twitter_site}</p>
+                    )}
                   </div>
                 </div>
 
