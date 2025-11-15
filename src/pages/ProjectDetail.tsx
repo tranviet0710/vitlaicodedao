@@ -7,6 +7,7 @@ import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import DOMPurify from 'dompurify';
 
 interface Project {
   id: string;
@@ -152,11 +153,15 @@ const ProjectDetail = () => {
           </div>
 
           {project.content && (
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              {project.content.split('\n').map((paragraph, index) => (
-                <p key={index} className="mb-4">{paragraph}</p>
-              ))}
-            </div>
+            <div 
+              className="prose prose-lg dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ 
+                __html: DOMPurify.sanitize(project.content, {
+                  ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'pre'],
+                  ALLOWED_ATTR: ['href', 'target', 'rel']
+                })
+              }}
+            />
           )}
         </div>
       </article>
