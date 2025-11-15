@@ -14,6 +14,8 @@ import BlogsManager from "./pages/admin/BlogsManager";
 import ProjectsManager from "./pages/admin/ProjectsManager";
 import TestimonialsManager from "./pages/admin/TestimonialsManager";
 import SupportRequestsManager from "./pages/admin/SupportRequestsManager";
+import AuditLogsViewer from "./pages/admin/AuditLogsViewer";
+import NotificationSettings from "./pages/admin/NotificationSettings";
 import SEOManager from "./pages/admin/SEOManager";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
@@ -80,6 +82,26 @@ const App = () => (
               <ProtectedRoute>
                 <AdminLayout>
                   <SupportRequestsManager />
+                </AdminLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/audit-logs" 
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AuditLogsViewer />
+                </AdminLayout>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin/notifications" 
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <NotificationSettings />
                 </AdminLayout>
               </ProtectedRoute>
             } 
