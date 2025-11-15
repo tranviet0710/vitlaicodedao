@@ -7,6 +7,7 @@ import SEO from '@/components/SEO';
 import { Calendar, Clock, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import DOMPurify from 'dompurify';
 
 interface Blog {
   id: string;
@@ -123,14 +124,13 @@ const BlogDetail = () => {
 
           <div 
             className="prose prose-lg dark:prose-invert max-w-none"
-            style={{
-              whiteSpace: 'pre-wrap',
+            dangerouslySetInnerHTML={{ 
+              __html: DOMPurify.sanitize(blog.content, {
+                ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'pre'],
+                ALLOWED_ATTR: ['href', 'target', 'rel']
+              })
             }}
-          >
-            {blog.content.split('\n').map((paragraph, index) => (
-              <p key={index} className="mb-4">{paragraph}</p>
-            ))}
-          </div>
+          />
         </div>
       </article>
 

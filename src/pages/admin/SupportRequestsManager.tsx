@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Mail, Phone, Calendar, Check, X } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import {
   Select,
   SelectContent,
@@ -24,6 +25,7 @@ interface SupportRequest {
 
 const SupportRequestsManager = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [requests, setRequests] = useState<SupportRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<string>('all');
@@ -31,6 +33,25 @@ const SupportRequestsManager = () => {
   useEffect(() => {
     fetchRequests();
   }, []);
+
+  const logAuditAccess = async (action: string, recordId?: string) => {
+    if (!user) return;
+    
+    try {
+      await supabase.from('admin_audit_logs').insert({
+        user_id: user.id,
+        action,
+        table_name: 'support_requests',
+        record_id: recordId,
+        details: { 
+          timestamp: new Date().toISOString(),
+          filter_status: filterStatus
+        }
+      });
+    } catch (error) {
+      console.error('Error logging audit:', error);
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -47,6 +68,9 @@ const SupportRequestsManager = () => {
 
       if (error) throw error;
       setRequests(data || []);
+      
+      // Log audit trail for viewing sensitive PII data
+      await logAuditAccess('view_support_requests');
     } catch (error) {
       console.error('Error fetching support requests:', error);
       toast({
@@ -68,6 +92,9 @@ const SupportRequestsManager = () => {
 
       if (error) throw error;
 
+      // Log audit trail
+      await logAuditAccess('update_status', id);
+      
       toast({ title: 'Cập nhật trạng thái thành công!' });
       fetchRequests();
     } catch (error) {
@@ -87,6 +114,10 @@ const SupportRequestsManager = () => {
       const { error } = await supabase.from('support_requests').delete().eq('id', id);
 
       if (error) throw error;
+      
+      // Log audit trail
+      await logAuditAccess('delete_request', id);
+      
       toast({ title: 'Xóa yêu cầu thành công!' });
       fetchRequests();
     } catch (error) {
