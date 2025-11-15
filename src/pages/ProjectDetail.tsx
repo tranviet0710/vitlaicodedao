@@ -153,7 +153,9 @@ const ProjectDetail = () => {
 
           {project.content && (
             <div className="prose prose-lg dark:prose-invert max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: project.content }} />
+              {project.content.split('\n').map((paragraph, index) => (
+                <p key={index} className="mb-4">{paragraph}</p>
+              ))}
             </div>
           )}
         </div>
