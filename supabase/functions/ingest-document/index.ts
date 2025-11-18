@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.80.0";
 import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.15.0";
-import { extractText } from "https://esm.sh/@pdf/pdftext@1.0.0"; // Assuming this is the correct import path
+// import { extractText } from "https://esm.sh/@pdf/pdftext@1.0.0"; // Assuming this is the correct import path
 
 // Basic CORS headers
 const corsHeaders = {
@@ -38,15 +38,15 @@ serve(async (req) => {
     let contentToIngest = "";
     let sourceMetadata = metadata || {};
 
-    if (pdfBase64) {
-      // Decode base64 PDF
-      const pdfBytes = Uint8Array.from(atob(pdfBase64), c => c.charCodeAt(0));
-      contentToIngest = await extractText(pdfBytes);
-      sourceMetadata = { ...sourceMetadata, source: "pdf_upload", filename: filename || "uploaded_pdf.pdf" };
-    } else {
-      contentToIngest = text;
-      sourceMetadata = { ...sourceMetadata, source: "manual_ingestion" };
-    }
+    // if (pdfBase64) {
+    //   // Decode base64 PDF
+    //   const pdfBytes = Uint8Array.from(atob(pdfBase64), c => c.charCodeAt(0));
+    //   contentToIngest = await extractText(pdfBytes);
+    //   sourceMetadata = { ...sourceMetadata, source: "pdf_upload", filename: filename || "uploaded_pdf.pdf" };
+    // } else {
+    contentToIngest = text;
+    sourceMetadata = { ...sourceMetadata, source: "manual_ingestion" };
+    // }
 
     // Initialize Supabase client
     const supabase = createClient(
