@@ -20,8 +20,8 @@ serve(async (req) => {
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseUrl = Deno.env.get('VITE_SUPABASE_URL')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_KEY')!;
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
 
     if (!resendApiKey) {
@@ -120,7 +120,7 @@ serve(async (req) => {
       if (!response.ok) {
         const error = await response.text();
         console.error(`Failed to send email to ${admin.email}:`, error);
-        throw new Error(`Resend API error: ${error}`);
+        throw new Error(`Resend API error: $No changes to apply. The old_string and new_string are identical in file: /Users/mac-VTRANC01/Desktop/vitlaicodedao/vitlaicodedao/supabase/functions/notify-admins-new-support-request/index.ts`);
       }
 
       return response.json();
