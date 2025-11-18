@@ -7,11 +7,11 @@ import dotenv from 'dotenv';
 // Explicitly load .env file from the project root
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_KEY;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Missing Supabase environment variables. Ensure VITE_SUPABASE_URL and SUPABASE_SERVICE_KEY are in your .env file.');
+  console.error('Missing Supabase environment variables. Ensure SUPABASE_URL and SUPABASE_SERVICE_KEY are in your .env file.');
   throw new Error('Supabase URL and service key are required.');
 }
 
