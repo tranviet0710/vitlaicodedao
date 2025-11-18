@@ -9,6 +9,7 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { blogSchema } from '@/lib/validations';
 import { z } from 'zod';
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from '@/integrations/supabase/client';
 
 interface Blog {
   id: string;
