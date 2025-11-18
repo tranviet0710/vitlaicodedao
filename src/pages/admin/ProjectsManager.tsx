@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { projectSchema } from '@/lib/validations';
 import { z } from 'zod';
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from '@/integrations/supabase/client';
 
 interface Project {
   id: string;
@@ -64,6 +65,42 @@ const ProjectsManager = () => {
     }
   };
 
+  const ingestProjectToRAG = async (projectData: Project) => {
+    try {
+      const fullContent = `Project Title: ${projectData.title}. Category: ${projectData.category}. Tech Stack: ${projectData.tech_stack?.join(', ') || ''}. Description: ${projectData.description}`;
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/ingest-document`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({
+          text: fullContent,
+          metadata: {
+            source: 'project',
+            id: projectData.id,
+            slug: projectData.slug,
+            title: projectData.title,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to ingest project to RAG');
+      }
+
+      toast({ title: 'Project ingested to RAG successfully!' });
+    } catch (error) {
+      console.error('Error ingesting project to RAG:', error);
+      toast({
+        title: 'Lỗi RAG',
+        description: `Không thể ingest project vào RAG: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -77,9 +114,11 @@ const ProjectsManager = () => {
         .map((tech) => tech.trim())
         .filter((tech) => tech);
 
+      let projectId = editingProject?.id;
+
       // Proceed with database operation
       if (editingProject) {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('projects')
           .update({
             title: validated.title,
@@ -91,12 +130,15 @@ const ProjectsManager = () => {
             demo_url: validated.demo_url || null,
             github_url: validated.github_url || null,
           })
-          .eq('id', editingProject.id);
+          .eq('id', editingProject.id)
+          .select()
+          .single();
 
         if (error) throw error;
         toast({ title: 'Cập nhật project thành công!' });
+        projectId = data.id;
       } else {
-        const { error } = await supabase.from('projects').insert({
+        const { data, error } = await supabase.from('projects').insert({
           title: validated.title,
           slug: validated.slug,
           description: validated.description,
@@ -105,10 +147,31 @@ const ProjectsManager = () => {
           thumbnail: validated.thumbnail || null,
           demo_url: validated.demo_url || null,
           github_url: validated.github_url || null,
-        });
+        }).select().single();
 
         if (error) throw error;
         toast({ title: 'Tạo project thành công!' });
+        projectId = data.id;
+      }
+
+      // After successful save, ingest to RAG
+      if (projectId) {
+        const { data: newProjectData, error: fetchError } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('id', projectId)
+          .single();
+
+        if (fetchError) {
+          console.error('Error fetching new project for RAG ingestion:', fetchError);
+          toast({
+            title: 'Lỗi',
+            description: 'Không thể lấy thông tin project để ingest vào RAG',
+            variant: 'destructive',
+          });
+        } else if (newProjectData) {
+          await ingestProjectToRAG(newProjectData);
+        }
       }
 
       resetForm();
