@@ -71,9 +71,9 @@ const Navigation = () => {
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
             )}
-            <Button variant="default" className="bg-gradient-primary">
+            {/* <Button variant="default" className="bg-gradient-primary">
               {t('nav.hireMe')}
-            </Button>
+            </Button> */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -115,9 +115,9 @@ const Navigation = () => {
                   {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
                 </button>
               )}
-              <Button variant="default" className="bg-gradient-primary w-full">
+              {/* <Button variant="default" className="bg-gradient-primary w-full">
                 {t('nav.hireMe')}
-              </Button>
+              </Button> */}
             </div>
           </div>
         )}

@@ -114,7 +114,7 @@ const translations = {
     'nav.testimonials': 'Đánh giá',
     'nav.blog': 'Blog',
     'nav.contact': 'Liên hệ',
-    'nav.hireMe': 'Thuê tôi',
+    // 'nav.hireMe': 'Thuê tôi',
     
     // Hero
     'hero.greeting': 'Xin chào, tôi là',
