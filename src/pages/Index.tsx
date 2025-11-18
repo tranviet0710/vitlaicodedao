@@ -9,9 +9,6 @@ import Footer from '@/components/Footer';
 import SEO from '@/components/SEO';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
 
 const Index = () => {
   const [seoData, setSeoData] = useState<any>(null);
@@ -54,8 +51,6 @@ const Index = () => {
       <Blog />
       <Contact />
       <Footer />
-      <Analytics/>
-      <SpeedInsights/>
     </div>
   );
 };
