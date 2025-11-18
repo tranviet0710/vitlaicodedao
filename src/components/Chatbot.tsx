@@ -1,9 +1,11 @@
 
-import { useState, FormEvent } from "react";
-import { Button } from "./ui/button";
+import { FormEvent, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { supabase } from "@/integrations/supabase/client";
+import { MessageCircle, Send, X } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { Input } from "./ui/input";
-import { MessageCircle, X, Send } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -27,11 +29,15 @@ const Chatbot = () => {
     setInput("");
     setIsLoading(true);
 
+    const { data: sessionData } = await supabase.auth.getSession();
+    const accessToken = sessionData?.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
     try {
       const response = await fetch("https://zdsmholjkxttwtuirakc.supabase.co/functions/v1/chat-agent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ message: input }),
       });

@@ -73,7 +73,7 @@ User Question: ${message}
 Answer:`;
 
     // 4. Get response from Gemini
-    const generativeModel = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const generativeModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
     const result = await generativeModel.generateContent(prompt);
     const responseText = result.response.text();
 
