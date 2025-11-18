@@ -25,7 +25,7 @@ const translations = {
     'nav.testimonials': 'Testimonials',
     'nav.blog': 'Blog',
     'nav.contact': 'Contact',
-    'nav.hireMe': 'Hire Me',
+    // 'nav.hireMe': 'Hire Me',
     
     // Hero
     'hero.greeting': 'Hi, I\'m',

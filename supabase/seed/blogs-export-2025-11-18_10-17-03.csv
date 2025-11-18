@@ -1,0 +1,89 @@
+id;title;slug;excerpt;content;cover_image;author_id;published;created_at;updated_at
+bf0c52d1-cff2-42c5-a592-04103df6422d;Getting Started with React and TypeScript;getting-started-react-typescript;Learn how to set up a modern React project with TypeScript for type-safe development.;"React and TypeScript are a powerful combination for building robust web applications. In this comprehensive guide, we will walk through setting up a new project, configuring TypeScript, and best practices for type-safe React development.
+
+## Why TypeScript?
+
+TypeScript adds static typing to JavaScript, which helps catch errors early and improves code maintainability. When combined with React, it provides excellent IDE support and better documentation.
+
+## Setting Up
+
+First, create a new project using Vite:
+
+```bash
+npm create vite@latest my-app -- --template react-ts
+```
+
+## Best Practices
+
+1. Use interfaces for props
+2. Leverage type inference
+3. Use generics for reusable components
+4. Properly type your hooks and context
+5. Use strict mode for better type checking
+
+## Conclusion
+
+TypeScript with React provides a solid foundation for building scalable applications.";https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800;;true;2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+f9617648-c1b9-4291-924e-66500dd9eb74;Building Scalable APIs with Node.js;building-scalable-apis-nodejs;Discover best practices for creating production-ready RESTful APIs using Node.js and Express.;"Building scalable APIs requires careful planning and implementation of best practices. In this article, we will explore how to create robust APIs using Node.js and Express.
+
+## Architecture Patterns
+
+A well-structured API follows these principles:
+
+1. **Separation of Concerns**: Keep your routes, controllers, and services separate
+2. **Error Handling**: Implement centralized error handling
+3. **Validation**: Validate all inputs using libraries like Joi or Zod
+
+## Security
+
+Always implement:
+- Authentication and Authorization
+- Rate limiting
+- Input sanitization
+- CORS configuration
+- Helmet for security headers
+
+## Performance
+
+Optimize your API with:
+- Caching strategies (Redis)
+- Database indexing
+- Connection pooling
+- Load balancing
+- Compression middleware
+
+## Conclusion
+
+Following these patterns will help you build APIs that scale.";https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800;;true;2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+66a5b168-8899-4da9-838a-89e8de57adef;AI and Machine Learning in Web Development;ai-ml-web-development;Explore how AI and ML are transforming modern web applications and user experiences.;"Artificial Intelligence and Machine Learning are revolutionizing web development. From personalized recommendations to intelligent chatbots, AI is enhancing user experiences across the web.
+
+## Key Applications
+
+### 1. Natural Language Processing
+Implementing chatbots and virtual assistants that understand user intent and provide intelligent responses using models like GPT-4.
+
+### 2. Computer Vision
+Image recognition and processing for features like automatic tagging, content moderation, and augmented reality experiences.
+
+### 3. Recommendation Systems
+Personalized content and product recommendations based on user behavior and preferences using collaborative filtering.
+
+## Tools and Frameworks
+
+- **TensorFlow.js** for browser-based ML
+- **OpenAI API** for language models
+- **Hugging Face** for pre-trained models
+- **Lovable AI** for integrated AI features
+- **Cloud AI services** (AWS, Google Cloud, Azure)
+
+## Best Practices
+
+1. Start with pre-trained models
+2. Optimize model size for web delivery
+3. Implement proper error handling
+4. Consider privacy and ethical implications
+5. Cache predictions when possible
+
+## Conclusion
+
+AI is making web applications smarter and more user-friendly.";https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800;;true;2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00

@@ -1,0 +1,45 @@
+id;title;slug;description;thumbnail;category;tech_stack;demo_url;github_url;content;created_at;updated_at
+7e1ab9ea-2643-45ed-8f88-e4a0db6416c8;E-commerce Platform;ecommerce-platform;A full-stack e-commerce solution with payment integration and admin dashboard;https://images.unsplash.com/photo-1557821552-17105176677c?w=800;Web Development;"[""React"",""Node.js"",""PostgreSQL"",""Stripe"",""Tailwind CSS""]";https://demo.example.com;https://github.com/tranviet0710;"Complete e-commerce platform built with modern technologies. Features include user authentication, product management, shopping cart, payment processing with Stripe, and comprehensive admin dashboard.
+
+Key features:
+- User authentication and authorization
+- Product catalog with search and filters
+- Shopping cart and checkout
+- Payment integration with Stripe
+- Order management system
+- Admin dashboard for inventory management
+- Email notifications
+- Mobile responsive design";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+84b139bf-0eef-4121-87a8-ad8fe056b0c7;AI Chatbot Application;ai-chatbot-app;Intelligent chatbot powered by GPT-4 with context-aware conversations;https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800;AI & ML;"[""React"",""TypeScript"",""OpenAI API"",""Supabase"",""Tailwind CSS""]";https://chatbot.example.com;https://github.com/tranviet0710;"Advanced chatbot application leveraging OpenAI GPT-4 model for natural conversations. Includes conversation history, context awareness, and custom personality configuration.
+
+Features:
+- Real-time chat interface
+- Context-aware responses
+- Conversation history with local storage
+- Multiple AI models support
+- Custom system prompts
+- Rate limiting and error handling
+- Streaming responses
+- Code syntax highlighting";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+58a05240-ea38-44e3-963f-2004df5da740;Mobile Fitness Tracker;mobile-fitness-tracker;Cross-platform fitness tracking app with workout plans and progress analytics;https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800;Mobile Development;"[""React Native"",""TypeScript"",""Firebase"",""Redux"",""Expo""]";https://apps.apple.com/app;https://github.com/tranviet0710;"Comprehensive fitness tracking application for iOS and Android. Track workouts, monitor progress, and follow personalized training plans.
+
+Capabilities:
+- Workout logging and tracking
+- Exercise library with animations
+- Progress charts and analytics
+- Custom workout plans
+- Social features and challenges
+- Integration with health apps
+- Nutrition tracking
+- Goal setting and achievements";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+61352230-88a7-4bbd-8cc0-ef768990551e;Real-time Analytics Dashboard;realtime-analytics-dashboard;Business intelligence dashboard with real-time data visualization;https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800;Data Visualization;"[""React"",""D3.js"",""WebSocket"",""Node.js"",""MongoDB""]";https://analytics.example.com;https://github.com/tranviet0710;"Enterprise-grade analytics dashboard for monitoring key business metrics. Features real-time data updates, customizable widgets, and advanced filtering.
+
+Highlights:
+- Real-time data updates via WebSocket
+- Interactive charts and graphs
+- Custom dashboard layouts
+- Data export capabilities
+- Role-based access control
+- Mobile responsive design
+- Dark mode support
+- Advanced filtering and search";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
