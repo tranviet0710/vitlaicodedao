@@ -20,6 +20,7 @@ import SEOManager from "./pages/admin/SEOManager";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLayout from "./components/admin/AdminLayout";
+import Chatbot from "./components/Chatbot";
 
 const queryClient = new QueryClient();
 
@@ -31,96 +32,97 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/blog/:slug" element={<BlogDetail />} />
-          <Route path="/project/:slug" element={<ProjectDetail />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <Dashboard />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/blogs" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <BlogsManager />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/projects" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <ProjectsManager />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/testimonials" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <TestimonialsManager />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/support-requests" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <SupportRequestsManager />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/audit-logs" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <AuditLogsViewer />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/notifications" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <NotificationSettings />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin/seo" 
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <SEOManager />
-                </AdminLayout>
-              </ProtectedRoute>
-            } 
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/blog/:slug" element={<BlogDetail />} />
+              <Route path="/project/:slug" element={<ProjectDetail />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <Dashboard />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/blogs" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <BlogsManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/projects" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <ProjectsManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/testimonials" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <TestimonialsManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/support-requests" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <SupportRequestsManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/audit-logs" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <AuditLogsViewer />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/notifications" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <NotificationSettings />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/seo" 
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout>
+                      <SEOManager />
+                    </AdminLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Chatbot />
+          </BrowserRouter>
+        </TooltipProvider>
       </ThemeProvider>
     </HelmetProvider>
   </QueryClientProvider>
