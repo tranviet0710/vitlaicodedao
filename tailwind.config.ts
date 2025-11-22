@@ -58,7 +58,8 @@ export default {
         'card': 'var(--shadow-card)',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['"Exo 2"', 'Inter', 'sans-serif'],
+        heading: ['Orbitron', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

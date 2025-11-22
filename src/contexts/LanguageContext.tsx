@@ -31,6 +31,7 @@ const translations = {
 
     // Hero
     "hero.greeting": "Hi, I'm",
+    "hero.name": "Viet Dev",
     "hero.title": "Full-Stack Developer & AI Enthusiast",
     "hero.description":
       "Building innovative web solutions with modern technologies and AI integration",
@@ -100,6 +101,8 @@ const translations = {
     "contact.phonePlaceholder": "Enter your phone number (optional)",
     "contact.messagePlaceholder": "Describe your project or request...",
     "contact.characters": "characters",
+    "contact.infoTitle": "Information",
+    "contact.socialTitle": "Contact",
 
     // Footer
     "footer.description": "Full-Stack Developer & AI Enthusiast",
@@ -125,6 +128,7 @@ const translations = {
 
     // Hero
     "hero.greeting": "Xin chào, tôi là",
+    "hero.name": "Viet Dev",
     "hero.title": "Full-Stack Developer & AI Enthusiast",
     "hero.description":
       "Xây dựng các giải pháp web sáng tạo với công nghệ hiện đại và tích hợp AI",
@@ -193,6 +197,8 @@ const translations = {
     "contact.phonePlaceholder": "Nhập số điện thoại (không bắt buộc)",
     "contact.messagePlaceholder": "Mô tả dự án hoặc yêu cầu của bạn...",
     "contact.characters": "ký tự",
+    "contact.infoTitle": "Thông tin liên hệ",
+    "contact.socialTitle": "Kết nối với tôi",
 
     // Footer
     "footer.description": "Full-Stack Developer & Chuyên gia AI",
