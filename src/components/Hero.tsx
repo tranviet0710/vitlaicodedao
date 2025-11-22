@@ -8,22 +8,28 @@ const Hero = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
     },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
-      transition: { type: 'spring', stiffness: 100 }
+      transition: { type: "spring", stiffness: 100 },
     },
   };
 
-  const GlowingIcon = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  const GlowingIcon = ({
+    href,
+    children,
+  }: {
+    href: string;
+    children: React.ReactNode;
+  }) => (
     <a
       href={href}
       target="_blank"
@@ -31,9 +37,7 @@ const Hero = () => {
       className="p-3 rounded-full bg-background/50 backdrop-blur-sm border border-primary/20 text-foreground/60 hover:text-primary hover:border-primary/50 hover:scale-110 transition-all duration-300 relative group"
     >
       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-0 group-hover:opacity-75 transition duration-300"></div>
-      <div className="relative">
-        {children}
-      </div>
+      <div className="relative">{children}</div>
     </a>
   );
 
@@ -44,12 +48,13 @@ const Hero = () => {
     >
       {/* Animated Grid Background */}
       <div className="absolute inset-0 z-0 opacity-20">
-        <div 
+        <div
           className="w-full h-full"
           style={{
-            backgroundImage: 'radial-gradient(circle, hsl(var(--primary) / 0.3) 1px, transparent 1px)',
-            backgroundSize: '2rem 2rem',
-            animation: 'zoom 20s infinite linear'
+            backgroundImage:
+              "radial-gradient(circle, hsl(var(--primary) / 0.3) 1px, transparent 1px)",
+            backgroundSize: "2rem 2rem",
+            animation: "zoom 20s infinite linear",
           }}
         />
       </div>
@@ -64,14 +69,14 @@ const Hero = () => {
       </style>
 
       {/* Content */}
-      <motion.div 
+      <motion.div
         className="container mx-auto px-4 py-32 relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full mb-8">
+          {/* <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full mb-8">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
@@ -79,12 +84,15 @@ const Hero = () => {
             <span className="text-sm font-medium text-primary">
               {t('hero.available')}
             </span>
-          </motion.div>
+          </motion.div> */}
 
-          <motion.h1 
-            variants={itemVariants} 
+          <motion.h1
+            variants={itemVariants}
             className="mb-6 leading-tight font-heading"
-            style={{ textShadow: '0 0 15px hsla(var(--primary), 0.5), 0 0 30px hsla(var(--primary), 0.3)' }}
+            style={{
+              textShadow:
+                "0 0 15px hsla(var(--primary), 0.5), 0 0 30px hsla(var(--primary), 0.3)",
+            }}
           >
             {t("hero.greeting")}{" "}
             <span className="text-primary">{t("hero.name")}</span>
@@ -93,7 +101,7 @@ const Hero = () => {
           <motion.h2
             variants={itemVariants}
             className="text-2xl md:text-3xl font-bold mb-6"
-            style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)' }}
+            style={{ textShadow: "0 0 10px hsla(var(--primary), 0.3)" }}
           >
             {t("hero.title")}
           </motion.h2>
@@ -155,8 +163,8 @@ const Hero = () => {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-primary rounded-full flex items-start justify-center p-2">
-          <motion.div 
-            className="w-1 h-3 bg-primary rounded-full" 
+          <motion.div
+            className="w-1 h-3 bg-primary rounded-full"
             animate={{
               y: [0, 10, 0],
               opacity: [1, 0.5, 1],
@@ -164,7 +172,7 @@ const Hero = () => {
             transition={{
               duration: 1.5,
               repeat: Infinity,
-              repeatType: 'loop'
+              repeatType: "loop",
             }}
           />
         </div>

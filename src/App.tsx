@@ -20,10 +20,16 @@ const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const BlogsManager = lazy(() => import("./pages/admin/BlogsManager"));
 const ProjectsManager = lazy(() => import("./pages/admin/ProjectsManager"));
-const TestimonialsManager = lazy(() => import("./pages/admin/TestimonialsManager"));
-const SupportRequestsManager = lazy(() => import("./pages/admin/SupportRequestsManager"));
+const TestimonialsManager = lazy(
+  () => import("./pages/admin/TestimonialsManager")
+);
+const SupportRequestsManager = lazy(
+  () => import("./pages/admin/SupportRequestsManager")
+);
 const AuditLogsViewer = lazy(() => import("./pages/admin/AuditLogsViewer"));
-const NotificationSettings = lazy(() => import("./pages/admin/NotificationSettings"));
+const NotificationSettings = lazy(
+  () => import("./pages/admin/NotificationSettings")
+);
 const SEOManager = lazy(() => import("./pages/admin/SEOManager"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -47,85 +53,85 @@ const App = () => (
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 <Route path="/project/:slug" element={<ProjectDetail />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route 
-                  path="/admin" 
+                <Route
+                  path="/admin"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <Dashboard />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/blogs" 
+                <Route
+                  path="/admin/blogs"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <BlogsManager />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/projects" 
+                <Route
+                  path="/admin/projects"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <ProjectsManager />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/testimonials" 
+                <Route
+                  path="/admin/testimonials"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <TestimonialsManager />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/support-requests" 
+                <Route
+                  path="/admin/support-requests"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <SupportRequestsManager />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/audit-logs" 
+                <Route
+                  path="/admin/audit-logs"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <AuditLogsViewer />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/notifications" 
+                <Route
+                  path="/admin/notifications"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <NotificationSettings />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
-                <Route 
-                  path="/admin/seo" 
+                <Route
+                  path="/admin/seo"
                   element={
                     <ProtectedRoute>
                       <AdminLayout>
                         <SEOManager />
                       </AdminLayout>
                     </ProtectedRoute>
-                  } 
+                  }
                 />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
