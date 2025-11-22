@@ -10,7 +10,7 @@ const Footer = () => {
     { href: "https://linkedin.com/in/tranviet0710", icon: Linkedin },
     { href: "https://facebook.com/tranviet0710", icon: Facebook },
     { href: "https://t.me/pikapika2101", icon: FaTelegram },
-    { href: "mailto:tranviet0710@gmail.com", icon: Mail },
+    { href: "mailto:vitlaicodedao@gmail.com", icon: Mail },
   ];
 
   return (

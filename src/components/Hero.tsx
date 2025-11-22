@@ -153,7 +153,7 @@ const Hero = () => {
             <GlowingIcon href="https://linkedin.com/in/tranviet0710">
               <Linkedin size={24} />
             </GlowingIcon>
-            <GlowingIcon href="mailto:tranviet0710@gmail.com">
+            <GlowingIcon href="mailto:vitlaicodedao@gmail.com">
               <Mail size={24} />
             </GlowingIcon>
           </motion.div>
