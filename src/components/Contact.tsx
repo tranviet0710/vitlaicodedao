@@ -72,15 +72,31 @@ const Contact = () => {
       const validatedData = contactSchema.parse(formData);
       setIsSubmitting(true);
 
-      const { error } = await supabase.from("support_requests").insert({
-        name: validatedData.name,
-        email: validatedData.email,
-        phone: validatedData.phone || null,
-        message: validatedData.message,
-        status: "pending",
-      });
+      const { data, error } = await supabase
+        .from("support_requests")
+        .insert({
+          name: validatedData.name,
+          email: validatedData.email,
+          phone: validatedData.phone || null,
+          message: validatedData.message,
+          status: "pending",
+        })
+        .select(); // Add .select() to return the inserted data
 
       if (error) throw error;
+
+      // After successful insertion, invoke the notification function
+      const { error: functionError } = await supabase.functions.invoke(
+        "support-request-notify",
+        {
+          body: {
+            supportRequest: {
+              ...validatedData,
+              id: data[0].id, // Pass the actual ID from the inserted data
+            },
+          },
+        }
+      );
 
       setIsSuccess(true);
       toast({
