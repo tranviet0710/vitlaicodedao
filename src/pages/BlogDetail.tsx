@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
-import SEO from '@/components/SEO';
-import { Calendar, Clock, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/contexts/LanguageContext';
-import DOMPurify from 'dompurify';
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
+import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 interface Blog {
   id: string;
@@ -29,17 +32,17 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       if (!slug) return;
-      
+
       setLoading(true);
       const { data, error } = await supabase
-        .from('blogs')
-        .select('*')
-        .eq('slug', slug)
-        .eq('published', true)
+        .from("blogs")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
         .single();
 
       if (error) {
-        console.error('Error fetching blog:', error);
+        console.error("Error fetching blog:", error);
       } else {
         setBlog(data);
       }
@@ -66,7 +69,7 @@ const BlogDetail = () => {
           <Link to="/">
             <Button>
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {t('blog.backToBlog')}
+              {t("blog.backToBlog")}
             </Button>
           </Link>
         </div>
@@ -75,7 +78,7 @@ const BlogDetail = () => {
     );
   }
 
-  const readTime = Math.ceil(blog.content.split(' ').length / 200);
+  const readTime = Math.ceil(blog.content.split(" ").length / 200);
 
   return (
     <div className="min-h-screen">
@@ -84,18 +87,18 @@ const BlogDetail = () => {
         description={blog.excerpt}
         ogTitle={blog.title}
         ogDescription={blog.excerpt}
-        ogImage={blog.cover_image || '/placeholder.svg'}
+        ogImage={blog.cover_image || "/placeholder.svg"}
         ogType="article"
         canonicalUrl={`${window.location.origin}/blog/${blog.slug}`}
       />
       <Navigation />
-      
+
       <article className="pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-4xl">
           <Link to="/#blog">
             <Button variant="ghost" className="mb-8">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {t('blog.backToBlog')}
+              {t("blog.backToBlog")}
             </Button>
           </Link>
 
@@ -114,23 +117,30 @@ const BlogDetail = () => {
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
-              {readTime} {t('blog.readTime')}
+              {readTime} {t("blog.readTime")}
             </div>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-6">{blog.title}</h1>
-          
+
           <p className="text-xl text-foreground/70 mb-12">{blog.excerpt}</p>
 
-          <div 
-            className="prose prose-lg dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ 
-              __html: DOMPurify.sanitize(blog.content, {
-                ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'blockquote', 'code', 'pre'],
-                ALLOWED_ATTR: ['href', 'target', 'rel']
-              })
-            }}
-          />
+          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-4 prose-blockquote:italic">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                a: ({ node, ...props }) => (
+                  <a {...props} target="_blank" rel="noopener noreferrer" />
+                ),
+                img: ({ node, ...props }) => (
+                  <img {...props} className="w-full h-auto" loading="lazy" />
+                ),
+              }}
+            >
+              {blog.content}
+            </ReactMarkdown>
+          </div>
         </div>
       </article>
 
