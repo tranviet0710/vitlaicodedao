@@ -27,9 +27,42 @@ const Index = () => {
     fetchSEO();
   }, []);
 
+  // Enhanced structured data for homepage
+  const homepageStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: 'VietDev - Full-Stack Development Services',
+    description: 'Professional full-stack development services specializing in React, Node.js, TypeScript, and AI integration',
+    url: 'https://vitlaicodedao.tech',
+    image: 'https://vitlaicodedao.tech/og-image.jpg',
+    logo: 'https://vitlaicodedao.tech/logo.png',
+    telephone: '+84-xxx-xxx-xxx',
+    priceRange: '$$',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'VN',
+      addressLocality: 'Vietnam',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '21.0285',
+      longitude: '105.8542',
+    },
+    serviceType: ['Web Development', 'Mobile App Development', 'AI Integration', 'Cloud Solutions', 'API Development'],
+    areaServed: {
+      '@type': 'Country',
+      name: 'Worldwide',
+    },
+    founder: {
+      '@type': 'Person',
+      name: 'Viet Dev',
+      jobTitle: 'Full-Stack Developer',
+    },
+  };
+
   return (
     <div className="min-h-screen">
-      {seoData && (
+      {seoData ? (
         <SEO
           title={seoData.title}
           description={seoData.description}
@@ -41,7 +74,10 @@ const Index = () => {
           twitterCard={seoData.twitter_card}
           twitterSite={seoData.twitter_site}
           canonicalUrl={seoData.canonical_url}
+          structuredData={homepageStructuredData}
         />
+      ) : (
+        <SEO structuredData={homepageStructuredData} />
       )}
       <Navigation />
       <Hero />

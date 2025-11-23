@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run generate:sitemap && vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "db:push": "supabase db push",
     "db:seed": "node supabase/seed.mjs",
     "db:reset": "supabase db reset",
-    "db:migrate": "npm run db:push && npm run db:seed"
+    "db:migrate": "npm run db:push && npm run db:seed",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
