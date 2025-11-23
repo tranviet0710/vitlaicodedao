@@ -78,38 +78,38 @@ const BlogDetail = () => {
     );
   }
 
-  const readTime = Math.ceil(blog.content.split(' ').length / 200);
+  const readTime = Math.ceil(blog.content.split(" ").length / 200);
 
   // Structured data for blog article
   const articleStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     headline: blog.title,
     description: blog.excerpt,
-    image: blog.cover_image || 'https://vitlaicodedao.tech/og-image.jpg',
+    image: blog.cover_image || "https://vitlaicodedao.tech/og-image.jpg",
     datePublished: blog.created_at,
     dateModified: blog.created_at,
     author: {
-      '@type': 'Person',
-      name: 'Viet Dev',
-      url: 'https://vitlaicodedao.tech',
+      "@type": "Person",
+      name: "Viet Dev",
+      url: "https://vitlaicodedao.tech",
     },
     publisher: {
-      '@type': 'Organization',
-      name: 'VietDev',
+      "@type": "Organization",
+      name: "VietDev",
       logo: {
-        '@type': 'ImageObject',
-        url: 'https://vitlaicodedao.tech/logo.png',
+        "@type": "ImageObject",
+        url: "https://vitlaicodedao.tech/logo.png",
       },
     },
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://vitlaicodedao.tech/blog/${blog.slug}`,
+      "@type": "WebPage",
+      "@id": `https://vitlaicodedao.tech/blog/${blog.slug}`,
     },
     articleBody: blog.content,
-    wordCount: blog.content.split(' ').length,
+    wordCount: blog.content.split(" ").length,
     timeRequired: `PT${readTime}M`,
-    inLanguage: 'en-US',
+    inLanguage: "en-US",
   };
 
   return (
@@ -120,7 +120,7 @@ const BlogDetail = () => {
         keywords={`${blog.title}, web development, programming, coding, React, Node.js, tutorial, guide`}
         ogTitle={blog.title}
         ogDescription={blog.excerpt}
-        ogImage={blog.cover_image || 'https://vitlaicodedao.tech/og-image.jpg'}
+        ogImage={blog.cover_image || "https://vitlaicodedao.tech/og-image.jpg"}
         ogType="article"
         canonicalUrl={`https://vitlaicodedao.tech/blog/${blog.slug}`}
         articlePublishedTime={blog.created_at}
