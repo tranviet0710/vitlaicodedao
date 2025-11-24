@@ -150,12 +150,11 @@ export default async function BlogDetailPage({
 
           <div
             className="prose prose-lg dark:prose-invert max-w-none
-            prose-headings:scroll-mt-20
-            prose-h1:text-4xl prose-h1:md:text-5xl prose-h1:font-bold prose-h1:mb-6 prose-h1:mt-10 prose-h1:text-foreground
-            prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:font-bold prose-h2:mb-5 prose-h2:mt-12 prose-h2:text-primary prose-h2:border-b prose-h2:border-border prose-h2:pb-3
-            prose-h3:text-2xl prose-h3:md:text-3xl prose-h3:font-semibold prose-h3:mb-4 prose-h3:mt-8 prose-h3:text-foreground
-            prose-h4:text-xl prose-h4:md:text-2xl prose-h4:font-semibold prose-h4:mb-3 prose-h4:mt-6 prose-h4:text-foreground
-            prose-p:text-base prose-p:md:text-lg prose-p:leading-relaxed prose-p:mb-5 prose-p:text-foreground/85
+            [&_h1]:text-2xl [&_h1]:md:text-3xl [&_h1]:font-bold [&_h1]:mb-6 [&_h1]:mt-10 [&_h1]:leading-tight
+            [&_h2]:text-xl [&_h2]:md:text-2xl [&_h2]:font-bold [&_h2]:mb-6 [&_h2]:mt-10 [&_h2]:text-primary [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-3 [&_h2]:leading-tight
+            [&_h3]:text-lg [&_h3]:md:text-xl [&_h3]:font-semibold [&_h3]:mb-5 [&_h3]:mt-8 [&_h3]:leading-tight
+            [&_h4]:text-base [&_h4]:md:text-lg [&_h4]:font-semibold [&_h4]:mb-4 [&_h4]:mt-6 [&_h4]:leading-normal
+            [&_p]:text-base [&_p]:md:text-lg [&_p]:leading-relaxed [&_p]:mb-5 [&_p]:mt-4 [&_p]:text-foreground/85
             prose-a:text-primary prose-a:underline prose-a:underline-offset-4 prose-a:decoration-primary/30 hover:prose-a:decoration-primary prose-a:transition-colors
             prose-strong:text-foreground prose-strong:font-semibold
             prose-em:text-foreground/80
