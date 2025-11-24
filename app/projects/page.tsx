@@ -26,7 +26,7 @@ interface Project {
   slug: string;
   description: string;
   thumbnail: string | null;
-  image: string | null;
+  image?: string | null;
   category: string;
   demo_url: string | null;
   github_url: string | null;
@@ -56,7 +56,7 @@ const FancyProjectCard = ({
       scale: 1,
       transition: {
         delay: index * 0.1,
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 12,
       },
@@ -312,7 +312,7 @@ const ProjectsPage = () => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 10,
         staggerChildren: 0.1,
