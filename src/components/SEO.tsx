@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import Head from "next/head";
 
 interface SEOProps {
   title?: string;
@@ -36,7 +38,11 @@ const SEO = ({
 }: SEOProps) => {
   const finalOgTitle = ogTitle || title;
   const finalOgDescription = ogDescription || description;
-  const finalCanonicalUrl = canonicalUrl || window.location.href;
+  const finalCanonicalUrl =
+    canonicalUrl ||
+    (typeof window !== "undefined"
+      ? window.location.href
+      : "https://vitlaicodedao.tech");
   const siteUrl = "https://vitlaicodedao.tech";
 
   // Default structured data for the website
@@ -79,7 +85,7 @@ const SEO = ({
   }, [title]);
 
   return (
-    <Helmet>
+    <Head>
       {/* Basic Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
@@ -151,7 +157,7 @@ const SEO = ({
       <link rel="alternate" hrefLang="en" href={finalCanonicalUrl} />
       <link rel="alternate" hrefLang="vi" href={finalCanonicalUrl} />
       <link rel="alternate" hrefLang="x-default" href={finalCanonicalUrl} />
-    </Helmet>
+    </Head>
   );
 };
 
