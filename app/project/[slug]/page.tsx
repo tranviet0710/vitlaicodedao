@@ -1,46 +1,50 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, ExternalLink, Github } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
-import DOMPurify from 'dompurify'
-import { createClient } from '@/integrations/supabase/server'
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import DOMPurify from "dompurify";
+import { createClient } from "@/integrations/supabase/server";
 
 interface Project {
-  id: string
-  title: string
-  description: string
-  content: string | null
-  thumbnail: string | null
-  category: string
-  demo_url: string | null
-  github_url: string | null
-  tech_stack: string[] | null
-  slug: string
+  id: string;
+  title: string;
+  description: string;
+  content: string | null;
+  thumbnail: string | null;
+  category: string;
+  demo_url: string | null;
+  github_url: string | null;
+  tech_stack: string[] | null;
+  slug: string;
 }
 
 async function getProject(slug: string): Promise<Project | null> {
-  const supabase = await createClient()
+  const supabase = await createClient();
   const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle()
+    .from("projects")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
 
-  if (error || !data) return null
-  return data
+  if (error || !data) return null;
+  return data;
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
-  const project = await getProject(slug)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProject(slug);
 
   if (!project) {
     return {
-      title: 'Project Not Found',
-    }
+      title: "Project Not Found",
+    };
   }
 
   return {
@@ -50,23 +54,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: project.title,
       description: project.description,
       images: project.thumbnail ? [{ url: project.thumbnail }] : [],
-      type: 'website',
+      type: "website",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: project.title,
       description: project.description,
       images: project.thumbnail ? [project.thumbnail] : [],
     },
-  }
+  };
 }
 
-export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const project = await getProject(slug)
+export default async function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const project = await getProject(slug);
 
   if (!project) {
-    notFound()
+    notFound();
   }
 
   const projectStructuredData = {
@@ -79,13 +87,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       "@type": "Person",
       name: "Viet Dev",
     },
-  }
+  };
 
   return (
     <div className="min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectStructuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(projectStructuredData),
+        }}
       />
       <Navigation />
       <main className="container mx-auto px-4 py-32">
@@ -102,7 +112,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               <img
                 src={project.thumbnail}
                 alt={project.title}
-                className="w-full h-[400px] object-cover"
+                className="w-full h-[400px] object-inherit"
               />
             </div>
           )}
@@ -111,8 +121,12 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm mb-4">
               {project.category}
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{project.title}</h1>
-            <p className="text-xl text-muted-foreground">{project.description}</p>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {project.title}
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              {project.description}
+            </p>
           </div>
 
           {project.tech_stack && project.tech_stack.length > 0 && (
@@ -133,7 +147,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
           <div className="flex gap-4 mb-8">
             {project.demo_url && (
-              <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
+              <a
+                href={project.demo_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button>
                   <ExternalLink className="mr-2 h-4 w-4" />
                   View Demo
@@ -141,7 +159,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </a>
             )}
             {project.github_url && (
-              <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+              <a
+                href={project.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="outline">
                   <Github className="mr-2 h-4 w-4" />
                   View Code
@@ -163,5 +185,5 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       </main>
       <Footer />
     </div>
-  )
+  );
 }
