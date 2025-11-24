@@ -90,27 +90,22 @@ const Hero = () => {
 
           <motion.h1
             variants={itemVariants}
-            className="mb-6 leading-tight font-heading"
-            style={{
-              textShadow:
-                "0 0 15px hsla(var(--primary), 0.5), 0 0 30px hsla(var(--primary), 0.3)",
-            }}
+            className="mb-6 leading-tight font-heading gradient-text animate-gradient"
           >
             {t("hero.greeting")}{" "}
-            <span className="text-primary">{t("hero.name")}</span>
+            <span className="neon-text">{t("hero.name")}</span>
           </motion.h1>
 
           <motion.h2
             variants={itemVariants}
-            className="text-2xl md:text-3xl font-bold mb-6"
-            style={{ textShadow: "0 0 10px hsla(var(--primary), 0.3)" }}
+            className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 font-mono text-glow"
           >
             {t("hero.title")}
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
-            className="text-xl md:text-2xl text-foreground/70 mb-12 max-w-2xl mx-auto"
+            className="text-xl md:text-2xl text-foreground/80 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
             {t("hero.description")}
           </motion.p>
