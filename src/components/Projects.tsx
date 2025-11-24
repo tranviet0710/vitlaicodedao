@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Github } from 'lucide-react';
@@ -24,7 +26,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { delay: index * 0.15, type: 'spring', stiffness: 100 }
+      transition: { delay: index * 0.15, type: 'spring' as const, stiffness: 100 }
     },
   };
 

@@ -1,5 +1,7 @@
+'use client'
+
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,7 +24,7 @@ const BlogCard = ({ post, index }: { post: Blog, index: number }) => {
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { delay: index * 0.15, type: 'spring', stiffness: 100 }
+      transition: { delay: index * 0.15, type: 'spring' as const, stiffness: 100 }
     },
   };
 
@@ -39,7 +41,7 @@ const BlogCard = ({ post, index }: { post: Blog, index: number }) => {
       <div className="absolute -inset-px bg-gradient-to-r from-primary to-accent rounded-xl blur-sm opacity-0 group-hover:opacity-75 transition duration-300"></div>
       
       <div className="relative">
-        <Link to={`/blog/${post.slug}`} className="block">
+        <Link href={`/blog/${post.slug}`} className="block">
           <img
             src={post.cover_image || 'https://placehold.co/800x600/0D0D0D/00BFFF?text=Blog+Post'}
             alt={post.title}
@@ -58,10 +60,10 @@ const BlogCard = ({ post, index }: { post: Blog, index: number }) => {
             </div>
           </div>
           <h3 className="text-xl font-bold mb-3 font-heading group-hover:text-primary transition-colors">
-            <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+            <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </h3>
           <p className="text-foreground/70 mb-4 line-clamp-3 h-20">{post.excerpt}</p>
-          <Link to={`/blog/${post.slug}`}>
+          <Link href={`/blog/${post.slug}`}>
             <Button variant="link" className="p-0 h-auto text-primary group-hover:text-primary/80">
               {t('blog.readMore')}
               <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />

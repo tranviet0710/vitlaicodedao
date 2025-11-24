@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react';
 import { Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,7 +21,7 @@ const TestimonialCard = ({ testimonial, index }: { testimonial: Testimonial, ind
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { delay: index * 0.15, type: 'spring', stiffness: 100 }
+      transition: { delay: index * 0.15, type: 'spring' as const, stiffness: 100 }
     },
   };
 

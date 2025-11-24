@@ -1,4 +1,7 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+'use client'
+
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { 
@@ -21,14 +24,14 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
   const { signOut, user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await signOut();
-    navigate('/auth');
+    router.push('/auth');
   };
 
   const menuItems = [
@@ -55,7 +58,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
-              <Link to="/" className="text-2xl font-bold gradient-text">
+              <Link href="/" className="text-2xl font-bold gradient-text">
                 Viet Dev Admin
               </Link>
             </div>
@@ -86,12 +89,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <nav className="p-4 space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.path;
+              const isActive = pathname === item.path;
               
               return (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  href={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
                     flex items-center gap-3 px-4 py-3 rounded-lg

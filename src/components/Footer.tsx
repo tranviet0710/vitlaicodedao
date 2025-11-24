@@ -1,3 +1,5 @@
+'use client'
+
 import { Github, Linkedin, Mail, Heart, Facebook } from "lucide-react";
 import { FaTelegram } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
