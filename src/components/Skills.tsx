@@ -1,3 +1,5 @@
+'use client'
+
 import { Code2, Database, Globe, Smartphone, Cloud, Brain } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
@@ -8,7 +10,7 @@ const SkillCard = ({ icon: Icon, title, skills, color, index }: { icon: React.El
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { delay: index * 0.1, type: 'spring', stiffness: 100 }
+      transition: { delay: index * 0.1, type: 'spring' as const, stiffness: 100 }
     },
   };
   

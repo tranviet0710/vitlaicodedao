@@ -1,9 +1,12 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Menu, X, Globe, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const NavLink = ({
   href,
@@ -72,9 +75,13 @@ const Navigation = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
+      transition: { duration: 0.3, ease: "easeOut" as const },
     },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.2, ease: "easeIn" as const },
+    },
   };
 
   return (
@@ -87,13 +94,13 @@ const Navigation = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <a
-            href="#home"
+          <Link
+            href="/"
             className="text-3xl font-bold font-heading tracking-wider"
             style={{ textShadow: "0 0 10px hsla(198, 93%, 60%, 0.7)" }}
           >
             Viet Dev
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
