@@ -1,63 +1,122 @@
-import type { Metadata } from 'next'
-import { Space_Grotesk, JetBrains_Mono, Playfair_Display } from 'next/font/google'
-import './globals.css'
-import { Providers } from './providers'
+import type { Metadata } from "next";
+import {
+  Space_Grotesk,
+  JetBrains_Mono,
+  Playfair_Display,
+} from "next/font/google";
+import "./globals.css";
+import { Providers } from "./providers";
 
 // Modern sans-serif for body text
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-})
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 
 // Monospace for code and technical elements
-const jetBrainsMono = JetBrains_Mono({ 
-  subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
-  display: 'swap',
-})
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 // Elegant serif for headings
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
-  variable: '--font-playfair',
-  display: 'swap',
-})
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: 'Viet Dev - Full-Stack Developer & AI Enthusiast',
-  description: 'Building innovative web solutions with modern technologies and AI integration',
-  keywords: ['Full-Stack Developer', 'AI', 'Web Development', 'React', 'Next.js', 'TypeScript'],
-  authors: [{ name: 'Viet Dev' }],
+  metadataBase: new URL("https://vitlaicodedao.tech"),
+  title: {
+    default: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
+    template: "%s | Vịt Lại Code Dạo",
+  },
+  description:
+    "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application. Dạy lập trình web, chia sẻ kiến thức IT.",
+  keywords: [
+    "vitlaicodedao",
+    "vit lai code dao",
+    "VietDev",
+    "Fullstack Developer",
+    "lập trình web",
+    "Web Development",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "dạy lập trình",
+  ],
+  authors: [{ name: "VietDev", url: "https://vitlaicodedao.tech" }],
+  creator: "VietDev",
+  publisher: "Vịt Lại Code Dạo",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://vitlaicodedao.vercel.app',
-    title: 'Viet Dev - Full-Stack Developer & AI Enthusiast',
-    description: 'Building innovative web solutions with modern technologies and AI integration',
-    siteName: 'Viet Dev Portfolio',
+    type: "website",
+    locale: "vi_VN",
+    url: "https://vitlaicodedao.tech",
+    title: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
+    description:
+      "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application. Dạy lập trình web.",
+    siteName: "Vịt Lại Code Dạo",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Vịt Lại Code Dạo - VietDev Fullstack Developer",
+      },
+    ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Viet Dev - Full-Stack Developer & AI Enthusiast',
-    description: 'Building innovative web solutions with modern technologies and AI integration',
+    card: "summary_large_image",
+    title: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
+    description:
+      "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
-}
+  verification: {
+    google: "YOUR_GOOGLE_VERIFICATION_CODE", // Add your Google Search Console verification code
+  },
+  alternates: {
+    canonical: "https://vitlaicodedao.tech",
+  },
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} ${playfair.variable} font-sans antialiased`}>
+      <body
+        className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} ${playfair.variable} font-sans antialiased`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>
-  )
+  );
 }
