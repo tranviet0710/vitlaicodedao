@@ -1,90 +1,93 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/useAuth'
-import AdminLayout from '@/components/admin/AdminLayout'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { supabase } from '@/integrations/supabase/client'
-import { useToast } from '@/hooks/use-toast'
-import { Plus, Edit, Trash2, Star } from 'lucide-react'
-import { testimonialSchema } from '@/lib/validations'
-import { z } from 'zod'
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Plus, Edit, Trash2, Star } from "lucide-react";
+import { testimonialSchema } from "@/lib/validations";
+import { z } from "zod";
 
 interface Testimonial {
-  id: string
-  client_name: string
-  client_role: string
-  client_avatar: string | null
-  content: string
-  rating: number | null
-  created_at: string | null
+  id: string;
+  client_name: string;
+  client_role: string;
+  client_avatar: string | null;
+  content: string;
+  rating: number | null;
+  created_at: string | null;
 }
 
 export default function TestimonialsManagerPage() {
-  const router = useRouter()
-  const { user, loading } = useAuth()
-  const { toast } = useToast()
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null)
+  const router = useRouter();
+  const { user, loading } = useAuth();
+  const { toast } = useToast();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [editingTestimonial, setEditingTestimonial] =
+    useState<Testimonial | null>(null);
   const [formData, setFormData] = useState({
-    client_name: '',
-    client_role: '',
-    client_avatar: '',
-    content: '',
+    client_name: "",
+    client_role: "",
+    client_avatar: "",
+    content: "",
     rating: 5,
-  })
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
+  });
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/auth')
+      router.push("/auth");
     }
-  }, [user, loading, router])
+  }, [user, loading, router]);
 
   useEffect(() => {
     if (user) {
-      fetchTestimonials()
+      fetchTestimonials();
     }
-  }, [user])
+  }, [user]);
 
   const fetchTestimonials = async () => {
     try {
       const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('created_at', { ascending: false })
+        .from("testimonials")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-      if (error) throw error
-      setTestimonials(data || [])
+      if (error) throw error;
+      setTestimonials(data || []);
     } catch (error) {
-      console.error('Error fetching testimonials:', error)
+      console.error("Error fetching testimonials:", error);
       toast({
-        title: 'Lỗi',
-        description: 'Không thể tải danh sách testimonials',
-        variant: 'destructive',
-      })
+        title: "Lỗi",
+        description: "Không thể tải danh sách testimonials",
+        variant: "destructive",
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Validate form data
     try {
-      const validated = testimonialSchema.parse(formData)
-      setValidationErrors({})
+      const validated = testimonialSchema.parse(formData);
+      setValidationErrors({});
 
       // Proceed with database operation
       if (editingTestimonial) {
         const { error } = await supabase
-          .from('testimonials')
+          .from("testimonials")
           .update({
             client_name: validated.client_name,
             client_role: validated.client_role,
@@ -92,175 +95,215 @@ export default function TestimonialsManagerPage() {
             content: validated.content,
             rating: validated.rating,
           })
-          .eq('id', editingTestimonial.id)
+          .eq("id", editingTestimonial.id);
 
-        if (error) throw error
-        toast({ title: 'Cập nhật testimonial thành công!' })
+        if (error) throw error;
+        toast({ title: "Cập nhật testimonial thành công!" });
       } else {
-        const { error } = await supabase.from('testimonials').insert({
+        const { error } = await supabase.from("testimonials").insert({
           client_name: validated.client_name,
           client_role: validated.client_role,
           client_avatar: validated.client_avatar || null,
           content: validated.content,
           rating: validated.rating,
-        })
+        });
 
-        if (error) throw error
-        toast({ title: 'Tạo testimonial thành công!' })
+        if (error) throw error;
+        toast({ title: "Tạo testimonial thành công!" });
       }
 
-      resetForm()
-      fetchTestimonials()
+      resetForm();
+      fetchTestimonials();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const errors: Record<string, string> = {}
+        const errors: Record<string, string> = {};
         error.errors.forEach((err) => {
           if (err.path[0]) {
-            errors[err.path[0].toString()] = err.message
+            errors[err.path[0].toString()] = err.message;
           }
-        })
-        setValidationErrors(errors)
+        });
+        setValidationErrors(errors);
         toast({
-          title: 'Validation Error',
-          description: 'Please check the form for errors',
-          variant: 'destructive',
-        })
+          title: "Validation Error",
+          description: "Please check the form for errors",
+          variant: "destructive",
+        });
       } else {
-        console.error('Error saving testimonial:', error)
+        console.error("Error saving testimonial:", error);
         toast({
-          title: 'Lỗi',
-          description: 'Không thể lưu testimonial',
-          variant: 'destructive',
-        })
+          title: "Lỗi",
+          description: "Không thể lưu testimonial",
+          variant: "destructive",
+        });
       }
     }
-  }
+  };
 
   const handleEdit = (testimonial: Testimonial) => {
-    setEditingTestimonial(testimonial)
+    setEditingTestimonial(testimonial);
     setFormData({
       client_name: testimonial.client_name,
       client_role: testimonial.client_role,
-      client_avatar: testimonial.client_avatar || '',
+      client_avatar: testimonial.client_avatar || "",
       content: testimonial.content,
       rating: testimonial.rating || 5,
-    })
-  }
+    });
+  };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bạn có chắc muốn xóa testimonial này?')) return
+    if (!confirm("Bạn có chắc muốn xóa testimonial này?")) return;
 
     try {
-      const { error } = await supabase.from('testimonials').delete().eq('id', id)
+      const { error } = await supabase
+        .from("testimonials")
+        .delete()
+        .eq("id", id);
 
-      if (error) throw error
-      toast({ title: 'Xóa testimonial thành công!' })
-      fetchTestimonials()
+      if (error) throw error;
+      toast({ title: "Xóa testimonial thành công!" });
+      fetchTestimonials();
     } catch (error) {
-      console.error('Error deleting testimonial:', error)
+      console.error("Error deleting testimonial:", error);
       toast({
-        title: 'Lỗi',
-        description: 'Không thể xóa testimonial',
-        variant: 'destructive',
-      })
+        title: "Lỗi",
+        description: "Không thể xóa testimonial",
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   const resetForm = () => {
-    setEditingTestimonial(null)
+    setEditingTestimonial(null);
     setFormData({
-      client_name: '',
-      client_role: '',
-      client_avatar: '',
-      content: '',
+      client_name: "",
+      client_role: "",
+      client_avatar: "",
+      content: "",
       rating: 5,
-    })
-  }
+    });
+  };
 
-  if (loading || !user) return null
+  if (loading || !user) return null;
 
   if (isLoading) {
     return (
       <AdminLayout>
         <div>Đang tải...</div>
       </AdminLayout>
-    )
+    );
   }
 
   return (
     <AdminLayout>
       <div>
         <div className="mb-8">
-          <h1 className="text-3xl font-bold gradient-text mb-2">Quản lý Testimonials</h1>
-          <p className="text-foreground/60">Thêm và chỉnh sửa đánh giá khách hàng</p>
+          <h1 className="text-3xl font-bold gradient-text mb-2">
+            Quản lý Testimonials
+          </h1>
+          <p className="text-foreground/60">
+            Thêm và chỉnh sửa đánh giá khách hàng
+          </p>
         </div>
 
         {/* Form */}
         <Card className="p-6 mb-8 bg-card border-border/50">
           <h2 className="text-xl font-bold mb-4">
-            {editingTestimonial ? 'Chỉnh sửa Testimonial' : 'Tạo Testimonial Mới'}
+            {editingTestimonial
+              ? "Chỉnh sửa Testimonial"
+              : "Tạo Testimonial Mới"}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Tên khách hàng *</label>
+                <label className="block text-sm font-medium mb-2">
+                  Tên khách hàng *
+                </label>
                 <Input
                   value={formData.client_name}
-                  onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, client_name: e.target.value })
+                  }
                   required
                 />
                 {validationErrors.client_name && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.client_name}</p>
+                  <p className="text-sm text-destructive mt-1">
+                    {validationErrors.client_name}
+                  </p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Chức vụ *</label>
+                <label className="block text-sm font-medium mb-2">
+                  Chức vụ *
+                </label>
                 <Input
                   value={formData.client_role}
-                  onChange={(e) => setFormData({ ...formData, client_role: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, client_role: e.target.value })
+                  }
                   placeholder="CEO tại ABC Company"
                   required
                 />
                 {validationErrors.client_role && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.client_role}</p>
+                  <p className="text-sm text-destructive mt-1">
+                    {validationErrors.client_role}
+                  </p>
                 )}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">URL Avatar</label>
+              <label className="block text-sm font-medium mb-2">
+                URL Avatar
+              </label>
               <Input
                 type="url"
                 value={formData.client_avatar}
-                onChange={(e) => setFormData({ ...formData, client_avatar: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, client_avatar: e.target.value })
+                }
               />
               {validationErrors.client_avatar && (
-                <p className="text-sm text-destructive mt-1">{validationErrors.client_avatar}</p>
+                <p className="text-sm text-destructive mt-1">
+                  {validationErrors.client_avatar}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Nội dung đánh giá *</label>
+              <label className="block text-sm font-medium mb-2">
+                Nội dung đánh giá *
+              </label>
               <Textarea
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
                 rows={4}
                 required
               />
               {validationErrors.content && (
-                <p className="text-sm text-destructive mt-1">{validationErrors.content}</p>
+                <p className="text-sm text-destructive mt-1">
+                  {validationErrors.content}
+                </p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Đánh giá (sao)</label>
+              <label className="block text-sm font-medium mb-2">
+                Đánh giá (sao)
+              </label>
               <div className="flex items-center gap-4">
                 <Input
                   type="number"
                   min="1"
                   max="5"
                   value={formData.rating}
-                  onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      rating: parseInt(e.target.value),
+                    })
+                  }
                   className="w-20"
                 />
                 <div className="flex gap-1">
@@ -268,21 +311,25 @@ export default function TestimonialsManagerPage() {
                     <Star
                       key={star}
                       className={`w-5 h-5 ${
-                        star <= formData.rating ? 'text-accent fill-accent' : 'text-foreground/20'
+                        star <= formData.rating
+                          ? "text-accent fill-accent"
+                          : "text-foreground/20"
                       }`}
                     />
                   ))}
                 </div>
               </div>
               {validationErrors.rating && (
-                <p className="text-sm text-destructive mt-1">{validationErrors.rating}</p>
+                <p className="text-sm text-destructive mt-1">
+                  {validationErrors.rating}
+                </p>
               )}
             </div>
 
             <div className="flex gap-4">
               <Button type="submit" className="bg-gradient-primary">
                 <Plus className="mr-2 h-4 w-4" />
-                {editingTestimonial ? 'Cập nhật' : 'Tạo mới'}
+                {editingTestimonial ? "Cập nhật" : "Tạo mới"}
               </Button>
               {editingTestimonial && (
                 <Button type="button" variant="outline" onClick={resetForm}>
@@ -308,15 +355,17 @@ export default function TestimonialsManagerPage() {
                   )}
                   <div>
                     <h3 className="font-bold">{testimonial.client_name}</h3>
-                    <p className="text-sm text-foreground/60">{testimonial.client_role}</p>
+                    <p className="text-sm text-foreground/60">
+                      {testimonial.client_role}
+                    </p>
                     <div className="flex gap-1 mt-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                           key={star}
                           className={`w-4 h-4 ${
                             star <= (testimonial.rating || 0)
-                              ? 'text-accent fill-accent'
-                              : 'text-foreground/20'
+                              ? "text-accent fill-accent"
+                              : "text-foreground/20"
                           }`}
                         />
                       ))}
@@ -324,7 +373,11 @@ export default function TestimonialsManagerPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => handleEdit(testimonial)}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleEdit(testimonial)}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
                   <Button
@@ -337,11 +390,13 @@ export default function TestimonialsManagerPage() {
                   </Button>
                 </div>
               </div>
-              <p className="text-foreground/70 italic">&quot;{testimonial.content}&quot;</p>
+              <p className="text-foreground/70 italic">
+                &quot;{testimonial.content}&quot;
+              </p>
             </Card>
           ))}
         </div>
       </div>
     </AdminLayout>
-  )
+  );
 }
