@@ -39,6 +39,7 @@ export const metadata: Metadata = {
   keywords: [
     "vitlaicodedao",
     "vit lai code dao",
+    "vịt lại code dạo",
     "VietDev",
     "Fullstack Developer",
     "lập trình web",
@@ -47,6 +48,10 @@ export const metadata: Metadata = {
     "Next.js",
     "TypeScript",
     "dạy lập trình",
+    "học lập trình online",
+    "freelance developer Vietnam",
+    "thuê lập trình viên",
+    "làm website",
   ],
   authors: [{ name: "VietDev", url: "https://vitlaicodedao.tech" }],
   creator: "VietDev",
@@ -72,7 +77,7 @@ export const metadata: Metadata = {
     siteName: "Vịt Lại Code Dạo",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://vitlaicodedao.tech/og-image.png",
         width: 1200,
         height: 630,
         alt: "Vịt Lại Code Dạo - VietDev Fullstack Developer",
@@ -84,7 +89,8 @@ export const metadata: Metadata = {
     title: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
     description:
       "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application.",
-    images: ["/og-image.png"],
+    images: ["https://vitlaicodedao.tech/og-image.png"],
+    creator: "@vitlaicodedao",
   },
   robots: {
     index: true,
@@ -98,10 +104,14 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "YOUR_GOOGLE_VERIFICATION_CODE", // Add your Google Search Console verification code
+    // Add your Google Search Console verification code here
+    // google: "your-verification-code",
   },
   alternates: {
     canonical: "https://vitlaicodedao.tech",
+    languages: {
+      'vi-VN': 'https://vitlaicodedao.tech',
+    },
   },
 };
 
@@ -111,7 +121,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="vi" suppressHydrationWarning>
       <body
         className={`${spaceGrotesk.variable} ${jetBrainsMono.variable} ${playfair.variable} font-sans antialiased`}
       >

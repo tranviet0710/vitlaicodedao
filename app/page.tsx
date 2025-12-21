@@ -53,51 +53,88 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function HomePage() {
-  // Enhanced structured data for homepage
-  const homepageStructuredData = {
+  // Enhanced structured data for homepage with brand name
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Vịt Lại Code Dạo",
+    alternateName: ["vitlaicodedao", "VietDev", "Vit Lai Code Dao"],
+    url: "https://vitlaicodedao.tech",
+    description: "VietDev - Fullstack Developer với hơn 5 năm kinh nghiệm. Dạy lập trình web, chia sẻ kiến thức IT.",
+    inLanguage: "vi-VN",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://vitlaicodedao.tech/blogs?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+  const personStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "VietDev",
+    alternateName: ["Vịt Lại Code Dạo", "vitlaicodedao"],
+    url: "https://vitlaicodedao.tech",
+    image: "https://vitlaicodedao.tech/avt.png",
+    jobTitle: "Fullstack Developer",
+    description: "Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application. Dạy lập trình web.",
+    sameAs: [
+      "https://github.com/tranviet0710",
+      "https://www.facebook.com/vitlaicodedao",
+      "https://www.youtube.com/@vitlaicodedao"
+    ],
+    knowsAbout: [
+      "React", "Next.js", "TypeScript", "Node.js", "Python",
+      "Web Development", "Mobile Development", "AI Integration"
+    ],
+    worksFor: {
+      "@type": "Organization",
+      name: "Vịt Lại Code Dạo",
+      url: "https://vitlaicodedao.tech"
+    }
+  };
+
+  const professionalServiceStructuredData = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "VietDev - Full-Stack Development Services",
+    name: "Vịt Lại Code Dạo - VietDev",
+    alternateName: "vitlaicodedao",
     description:
-      "Professional full-stack development services specializing in React, Node.js, TypeScript, and AI integration",
+      "Dịch vụ phát triển web và mobile app chuyên nghiệp. React, Node.js, TypeScript, AI integration.",
     url: "https://vitlaicodedao.tech",
-    image: "https://vitlaicodedao.tech/og-image.jpg",
-    logo: "https://vitlaicodedao.tech/logo.png",
-    telephone: "+84-xxx-xxx-xxx",
+    image: "https://vitlaicodedao.tech/og-image.png",
+    logo: "https://vitlaicodedao.tech/favicon.svg",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
       addressCountry: "VN",
       addressLocality: "Vietnam",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: "21.0285",
-      longitude: "105.8542",
+    areaServed: {
+      "@type": "Country",
+      name: "Worldwide",
     },
     serviceType: [
       "Web Development",
       "Mobile App Development",
       "AI Integration",
-      "Cloud Solutions",
-      "API Development",
+      "Programming Tutoring",
     ],
-    areaServed: {
-      "@type": "Country",
-      name: "Worldwide",
-    },
-    founder: {
-      "@type": "Person",
-      name: "Viet Dev",
-      jobTitle: "Full-Stack Developer",
-    },
-  }
+  };
 
   return (
     <div className="min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageStructuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceStructuredData) }}
       />
       <Navigation />
       <Hero />
