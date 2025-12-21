@@ -6,7 +6,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient()
 
   // Get all published blogs
-  // @ts-expect-error - Supabase generated types cause deep instantiation error
   const { data: blogs } = await supabase
     .from('blogs')
     .select('slug, updated_at')
