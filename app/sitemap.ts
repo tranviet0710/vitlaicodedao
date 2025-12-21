@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: blogs } = await supabase
     .from('blogs')
     .select('slug, updated_at')
-    .eq('status', 'published')
+    .eq('published', true)
     .order('updated_at', { ascending: false })
 
   // Get all published projects
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .eq('status', 'published')
     .order('updated_at', { ascending: false })
 
-  // Static pages
+  // Static pages - only include real crawlable pages, not hash anchors
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -30,10 +30,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/auth`,
+      url: `${baseUrl}/blogs`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/projects`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
     },
   ]
 
