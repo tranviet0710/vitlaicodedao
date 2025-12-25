@@ -59,8 +59,12 @@ export default {
         'gradient-shine': 'linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)))',
       },
       boxShadow: {
-        'glow': '0 0 20px hsl(var(--primary) / 0.3)',
-        'glow-lg': '0 0 40px hsl(var(--primary) / 0.6)',
+        'neo': '4px 4px 0px 0px rgba(0,0,0,1)',
+        'neo-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
+        'neo-xl': '12px 12px 0px 0px rgba(0,0,0,1)',
+        /* Deprecated "glow" shadows mapped to neo for compatibility */
+        'glow': '4px 4px 0px 0px rgba(0,0,0,1)',
+        'glow-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
       },
       borderRadius: {
         lg: "var(--radius)",

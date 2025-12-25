@@ -10,6 +10,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { createClient } from "@/integrations/supabase/server";
+import Image from "next/image";
 
 interface Blog {
   id: string;
@@ -65,6 +66,9 @@ export async function generateMetadata({
       description: blog.excerpt,
       images: blog.cover_image ? [blog.cover_image] : [],
     },
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
   };
 }
 
@@ -105,12 +109,43 @@ export default async function BlogDetailPage({
     },
   };
 
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://vitlaicodedao.tech",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://vitlaicodedao.tech/blogs",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: blog.title,
+        item: `https://vitlaicodedao.tech/blog/${slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleStructuredData),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbStructuredData),
         }}
       />
       <Navigation />
@@ -123,11 +158,13 @@ export default async function BlogDetailPage({
         </Link>
 
         {blog.cover_image && (
-          <div className="mb-8 rounded-lg overflow-hidden">
-            <img
+          <div className="mb-8 rounded-lg overflow-hidden relative h-[400px]">
+            <Image
               src={blog.cover_image}
               alt={blog.title}
-              className="w-full h-[400px] object-inherit"
+              fill
+              className="object-cover"
+              priority
             />
           </div>
         )}
@@ -211,16 +248,34 @@ export default async function BlogDetailPage({
                 a: ({ node, ...props }) => (
                   <a target="_blank" rel="noopener noreferrer" {...props} />
                 ),
-                img: ({ node, ...props }) => (
-                  <figure className="my-8">
-                    <img {...props} className="w-full rounded-lg shadow-lg" />
-                    {props.alt && props.alt !== "" && (
-                      <figcaption className="text-center text-sm text-muted-foreground italic mt-3">
-                        {props.alt}
-                      </figcaption>
-                    )}
-                  </figure>
-                ),
+                img: ({ node, ...props }) => {
+                  // Ensure we have a valid src string for Next.js Image
+                  const src = props.src || "";
+                  const alt = props.alt || "";
+                  
+                  // Use standard img tag if src is not valid or empty
+                  if (!src) return <img {...props} className="w-full rounded-lg shadow-lg" />;
+
+                  return (
+                    <figure className="my-8">
+                      <div className="relative w-full h-auto min-h-[300px]">
+                        <Image
+                          src={src}
+                          alt={alt}
+                          width={800}
+                          height={500}
+                          className="w-full h-auto rounded-lg shadow-lg"
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                      {alt && (
+                        <figcaption className="text-center text-sm text-muted-foreground italic mt-3">
+                          {alt}
+                        </figcaption>
+                      )}
+                    </figure>
+                  );
+                },
                 blockquote: ({ node, ...props }) => (
                   <blockquote
                     className="border-l-4 border-primary bg-muted/50 pl-6 pr-4 py-4 italic my-6 rounded-r"

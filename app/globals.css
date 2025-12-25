@@ -4,92 +4,80 @@
 
 /* 
   ✨ VIET DEV DESIGN SYSTEM ✨
-  A unique, modern design system for developers & designers
-  All colors MUST be HSL for theme compatibility
+  Neo-Brutalism Theme
 */
 
 @layer base {
   :root {
-    /* Sophisticated Light Theme */
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    /* Neo-Brutalism Light */
+    --background: 47 88% 88%; /* Light Yellow/Beige Paper */
+    --foreground: 0 0% 0%;    /* Pure Black */
     
-    /* Electric Blue Primary */
-    --primary: 217 91% 60%;
+    --card: 0 0% 100%;        /* White */
+    --card-foreground: 0 0% 0%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+    
+    --primary: 250 100% 65%;  /* Vibrant Violet */
     --primary-foreground: 0 0% 100%;
     
-    /* Soft Gray Secondary */
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 180 100% 50%; /* Cyan */
+    --secondary-foreground: 0 0% 0%;
     
-    /* Muted Backgrounds */
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
     
-    /* Vibrant Accent */
-    --accent: 280 80% 65%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 320 100% 70%;   /* Hot Pink */
+    --accent-foreground: 0 0% 0%;
     
-    /* Destructive */
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 100% 50%; /* Red */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 0%;        /* Black Borders */
+    --input: 0 0% 0%;
+    --ring: 0 0% 0%;
     
-    /* Borders & Inputs */
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 217 91% 60%;
+    --radius: 0rem;           /* NO ROUNDED CORNERS */
     
-    /* Design system variables */
-    --radius: 0.75rem;
-    
-    /* Custom gradient colors */
-    --gradient-start: 217 91% 60%;
-    --gradient-mid: 280 80% 65%;
-    --gradient-end: 340 82% 52%;
+    /* Custom gradient colors for backward compatibility/optional use */
+    --gradient-start: 250 100% 65%;
+    --gradient-mid: 320 100% 70%;
+    --gradient-end: 180 100% 50%;
   }
 
   .dark {
-    /* Sophisticated Dark Theme with Deep Blues */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 8%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 8%;
-    --popover-foreground: 0 0% 98%;
+    /* For now, mapping dark mode to the same high contrast look or slightly inverted
+       Neo-brutalism usually sticks to one bold theme, but let's provide a dark variant 
+       that is high contrast black/white/neon.
+    */
+    --background: 0 0% 5%;
+    --foreground: 0 0% 100%;
     
-    /* Bright Electric Blue */
-    --primary: 217 91% 60%;
-    --primary-foreground: 240 10% 3.9%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
     
-    /* Dark Gray Secondary */
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
     
-    /* Subtle Muted */
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --primary: 250 100% 65%;
+    --primary-foreground: 0 0% 100%;
     
-    /* Vivid Purple Accent */
-    --accent: 280 80% 65%;
-    --accent-foreground: 0 0% 98%;
+    --secondary: 180 100% 50%;
+    --secondary-foreground: 0 0% 0%;
     
-    /* Destructive */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 80%;
     
-    /* Borders & Inputs */
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 217 91% 60%;
+    --accent: 320 100% 70%;
+    --accent-foreground: 0 0% 0%;
     
-    /* Custom gradient colors for dark mode */
-    --gradient-start: 217 91% 60%;
-    --gradient-mid: 280 80% 65%;
-    --gradient-end: 340 82% 62%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 100%;
+    --input: 0 0% 100%;
+    --ring: 250 100% 65%;
   }
 }
 
@@ -140,7 +128,7 @@
   html {
     scroll-behavior: smooth;
   }
-
+  
   /* Selection styles */
   ::selection {
     @apply bg-primary text-primary-foreground;
@@ -148,171 +136,62 @@
 }
 
 @layer utilities {
-  /* ✨ Gradient Text Effects */
+  /* Neo-Brutalism Utilities */
+  
+  .neo-shadow {
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+  }
+  
+  .neo-shadow-lg {
+    box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+  }
+
+  .neo-border {
+    @apply border-2 border-black;
+  }
+
+  /* Redefined Legacy Classes to be "Hard" */
+  
   .gradient-text {
-    @apply bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent;
-    background-size: 200% auto;
-    animation: gradient-shift 8s ease infinite;
+    @apply text-primary font-black;
+    /* Removed actual gradient, made it flat color for neo-brutalism consistency */
   }
 
   .gradient-border {
-    position: relative;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--gradient-start)),
-      hsl(var(--gradient-mid)),
-      hsl(var(--gradient-end))
-    );
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
+    @apply border-4 border-black;
+    /* Removed gradient border */
   }
 
-  /* 🎨 Card Styles */
+  /* 🎨 Card Styles - Hardened */
   .card-hover {
-    @apply transition-all duration-500 ease-out;
-    @apply hover:scale-[1.02] hover:-translate-y-1;
-    @apply hover:shadow-2xl hover:shadow-primary/20;
+    @apply transition-transform duration-200 ease-linear;
+    @apply hover:translate-x-[-2px] hover:translate-y-[-2px];
+    @apply hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)];
+    @apply active:translate-x-[0px] active:translate-y-[0px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
   }
 
   .card-glow {
-    @apply relative overflow-hidden;
-    @apply before:absolute before:inset-0 before:opacity-0;
-    @apply before:bg-gradient-to-r before:from-primary/20 before:via-accent/20 before:to-primary/20;
-    @apply before:transition-opacity before:duration-500;
-    @apply hover:before:opacity-100;
+    /* Removed glow, just use standard card style */
+    @apply bg-card text-card-foreground border-2 border-black;
   }
 
   .glass-effect {
-    @apply bg-background/80 backdrop-blur-xl;
-    @apply border border-border/50;
-    @apply shadow-lg shadow-black/5;
+    /* Removed blur, made solid */
+    @apply bg-background border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)];
   }
 
-  /* 🌟 Animation Classes */
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite;
-  }
-
-  .animate-slide-up {
-    animation: slide-up 0.5s ease-out;
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.6s ease-out;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.4s ease-out;
-  }
-
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
-  }
-
-  /* 💫 Text Effects */
+  /* 💫 Text Effects - Hardened */
   .text-shadow {
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
   }
 
   .text-glow {
-    text-shadow: 0 0 20px hsl(var(--primary) / 0.5);
+    /* Removed soft glow */
+    text-shadow: 2px 2px 0px var(--primary);
   }
 
   .neon-text {
-    text-shadow: 
-      0 0 10px hsl(var(--primary) / 0.8),
-      0 0 20px hsl(var(--primary) / 0.6),
-      0 0 30px hsl(var(--primary) / 0.4);
-  }
-
-  /* 🎯 Special Effects */
-  .hover-lift {
-    @apply transition-transform duration-300 ease-out;
-    @apply hover:-translate-y-2;
-  }
-
-  .hover-glow {
-    @apply transition-shadow duration-300;
-    @apply hover:shadow-lg hover:shadow-primary/30;
-  }
-
-  .border-gradient {
-    border: 2px solid transparent;
-    background: 
-      linear-gradient(var(--background), var(--background)) padding-box,
-      linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent))) border-box;
-  }
-
-  /* 📱 Responsive Text */
-  .text-responsive {
-    @apply text-base md:text-lg lg:text-xl;
-  }
-
-  .heading-responsive {
-    @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
-  }
-}
-
-/* 🎬 Keyframe Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px hsl(var(--primary) / 0.6);
-  }
-}
-
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
+    /* Hard shadow instead of neon blur */
+    text-shadow: 3px 3px 0px var(--primary);
   }
 }

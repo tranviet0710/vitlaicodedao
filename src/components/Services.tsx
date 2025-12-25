@@ -57,13 +57,13 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-20 md:py-32 bg-secondary/30">
+    <section id="services" className="py-20 md:py-32 bg-background border-t-2 border-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-slide-up">
-          <h2 className="mb-4">
-            Services & <span className="gradient-text">Pricing</span>
+          <h2 className="mb-4 text-5xl md:text-6xl font-black uppercase tracking-tighter">
+            Services & <span className="text-primary underline decoration-black decoration-4 underline-offset-4">Pricing</span>
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+          <p className="text-xl font-medium max-w-2xl mx-auto border-2 border-black p-4 bg-white neo-shadow inline-block">
             Các gói dịch vụ phát triển web linh hoạt phù hợp với mọi nhu cầu
           </p>
         </div>
@@ -72,57 +72,59 @@ const Services = () => {
           {services.map((service, index) => (
             <Card
               key={index}
-              className={`p-8 bg-card border-border/50 relative overflow-hidden transition-all duration-300 ${
+              className={`p-8 border-2 border-black relative overflow-hidden transition-all duration-300 ${
                 service.highlight
-                  ? 'border-2 border-primary shadow-glow scale-105'
-                  : 'hover:scale-105'
+                  ? 'bg-primary text-white scale-105 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]'
+                  : 'bg-white hover:scale-105 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]'
               }`}
             >
               {service.highlight && (
-                <div className="absolute top-0 right-0 bg-gradient-primary text-background px-4 py-1 text-sm font-bold">
+                <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 text-sm font-bold border-b-2 border-l-2 border-white">
                   POPULAR
                 </div>
               )}
 
               <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{service.name}</h3>
-                <p className="text-foreground/60 text-sm">{service.description}</p>
+                <h3 className={`text-3xl font-black mb-2 uppercase ${service.highlight ? 'text-white' : 'text-black'}`}>{service.name}</h3>
+                <p className={`text-sm font-medium ${service.highlight ? 'text-white/90' : 'text-gray-600'}`}>{service.description}</p>
               </div>
 
-              <div className="mb-6">
+              <div className="mb-6 border-b-2 border-black pb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold gradient-text">{service.price}</span>
-                  <span className="text-foreground/60">{service.period}</span>
+                  <span className={`text-4xl font-black ${service.highlight ? 'text-white' : 'text-primary'}`}>{service.price}</span>
+                  <span className={`font-bold ${service.highlight ? 'text-white/80' : 'text-gray-600'}`}>{service.period}</span>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8">
                 {service.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-foreground/80 text-sm">{feature}</span>
+                    <div className={`mt-1 p-0.5 border-2 ${service.highlight ? 'border-white bg-black' : 'border-black bg-primary'}`}>
+                        <Check className={`w-3 h-3 ${service.highlight ? 'text-white' : 'text-white'}`} strokeWidth={4} />
+                    </div>
+                    <span className={`text-sm font-bold ${service.highlight ? 'text-white' : 'text-black'}`}>{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Button
-                className={`w-full ${
-                  service.highlight ? 'bg-gradient-primary' : 'bg-secondary hover:bg-secondary/80'
+                className={`w-full border-2 border-black text-lg font-black uppercase tracking-wide neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all ${
+                  service.highlight ? 'bg-white text-black hover:bg-gray-100' : 'bg-primary text-white hover:bg-primary/90'
                 }`}
                 size="lg"
               >
                 Get Started
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-5 h-5 stroke-[3px]" />
               </Button>
             </Card>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-foreground/70 mb-4">
+        <div className="text-center mt-16">
+          <p className="text-xl font-bold mb-6">
             Cần giải pháp tùy chỉnh hoặc có câu hỏi về pricing?
           </p>
-          <Button variant="outline" size="lg" className="border-2 border-primary hover:bg-primary/10">
+          <Button variant="outline" size="lg" className="border-2 border-black text-xl font-black px-8 py-6 bg-white hover:bg-accent neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase">
             Contact for Custom Quote
           </Button>
         </div>

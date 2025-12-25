@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
@@ -17,6 +17,7 @@ interface Project {
   demo_url: string | null;
   github_url: string | null;
   tech_stack: string[] | null;
+  content: string | null;
 }
 
 const ProjectCard = ({
@@ -27,6 +28,23 @@ const ProjectCard = ({
   index: number;
 }) => {
   const { t } = useLanguage();
+  
+  // Extract impact/metrics from content if available
+  const getImpactPreview = (content: string) => {
+    const impactMatch = content.match(/### The Impact\n([\s\S]*?)(?:$|###)/);
+    if (impactMatch) {
+      const impacts = impactMatch[1]
+        .split('\n')
+        .filter(line => line.trim().startsWith('-'))
+        .slice(0, 2)
+        .map(line => line.replace(/^-\s*(\*\*.*?\*\*:)?\s*/, ''));
+      return impacts;
+    }
+    return [];
+  };
+
+  const impacts = project.content ? getImpactPreview(project.content) : [];
+
   const cardVariants = {
     hidden: { y: 50, opacity: 0 },
     visible: {
@@ -44,81 +62,67 @@ const ProjectCard = ({
     <motion.a
       href={`/project/${project.slug}`}
       variants={cardVariants}
-      className="relative block bg-background/50 border border-primary/20 rounded-xl overflow-hidden group"
-      style={{ backdropFilter: "blur(10px)" }}
+      className="relative block bg-white border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200 group h-full flex flex-col"
     >
-      <div className="absolute -inset-px bg-gradient-to-r from-primary to-accent rounded-xl blur-sm opacity-0 group-hover:opacity-75 transition duration-300"></div>
-
       <div className="relative">
-        <div className="relative">
+        <div className="aspect-video relative overflow-hidden border-b-2 border-black">
           <img
             src={
               project.thumbnail ||
-              "https://placehold.co/800x600/0D0D0D/00BFFF?text=Project"
+              "https://placehold.co/800x600/0D0D0D/00BFFF?text=Case+Study"
             }
             alt={project.title}
-            className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
+          <div className="absolute top-4 left-4">
+             <span className="inline-block px-3 py-1 bg-white border-2 border-black text-black text-xs font-bold uppercase tracking-wider neo-shadow-sm">
+                {project.category}
+             </span>
+          </div>
         </div>
-        <div className="p-6">
-          <span className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-3 border border-primary/20">
-            {project.category}
-          </span>
-          <h3 className="text-2xl font-bold mb-3 font-heading">
+        
+        <div className="p-6 flex flex-col flex-grow">
+          <h3 className="text-2xl font-black mb-3 font-heading leading-tight uppercase">
             {project.title}
           </h3>
-          <p className="text-foreground/70 mb-4 h-24 overflow-hidden">
+          
+          <p className="text-black/80 mb-6 line-clamp-2 font-medium">
             {project.description}
           </p>
-          {project.tech_stack && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.tech_stack.slice(0, 4).map((tech, techIndex) => (
-                <span
-                  key={techIndex}
-                  className="px-2 py-1 bg-secondary text-foreground/80 rounded-md text-xs font-medium"
-                >
-                  {tech}
-                </span>
-              ))}
+
+          {impacts.length > 0 && (
+            <div className="mb-6 bg-accent/20 p-4 border-2 border-black border-dashed">
+              <p className="text-xs font-bold uppercase mb-2 text-black/60">Key Impact</p>
+              <ul className="space-y-1">
+                {impacts.map((impact, i) => (
+                  <li key={i} className="text-sm font-bold flex items-start gap-2">
+                    <span className="text-primary">→</span>
+                    {impact}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
-          <div className="flex items-center gap-4 mt-auto">
-            {project.demo_url && (
-              <Button
-                size="sm"
-                asChild
-                onClick={(e) => e.stopPropagation()}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                <a
-                  href={project.demo_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  {t("projects.viewDemo")}
-                </a>
-              </Button>
+
+          <div className="mt-auto">
+            {project.tech_stack && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {project.tech_stack.slice(0, 4).map((tech, techIndex) => (
+                  <span
+                    key={techIndex}
+                    className="px-2 py-1 bg-gray-100 border border-black text-black text-xs font-bold font-mono"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             )}
-            {project.github_url && (
-              <Button
-                size="sm"
-                variant="outline"
-                asChild
-                onClick={(e) => e.stopPropagation()}
-                className="border-primary text-primary hover:bg-primary/10"
-              >
-                <a
-                  href={project.github_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Github className="w-4 h-4 mr-2" />
-                  {t("projects.viewCode")}
-                </a>
-              </Button>
-            )}
+            
+            <div className="flex items-center gap-4">
+               <span className="text-primary font-bold uppercase text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
+                  Read Case Study <ArrowRight className="w-4 h-4" />
+               </span>
+            </div>
           </div>
         </div>
       </div>
@@ -211,19 +215,12 @@ const Projects = () => {
           <a href="/projects">
             <Button
               size="lg"
-              variant="outline"
-              className="border-2 border-primary text-primary hover:bg-primary/10 text-lg px-8 py-6 group relative overflow-hidden"
+              className="bg-primary text-primary-foreground text-xl font-black px-10 py-8 border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase tracking-wide"
             >
               <span className="relative z-10 flex items-center gap-2">
                 {t("projects.viewAll")}
-                <ExternalLink className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-6 h-6 stroke-[3px]" />
               </span>
-              <motion.div
-                className="absolute inset-0 bg-primary/10"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
             </Button>
           </a>
         </motion.div>

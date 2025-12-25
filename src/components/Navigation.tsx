@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Globe, Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Menu, X, Globe, Moon, Sun, Download } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,10 +16,10 @@ const NavLink = ({
 }) => (
   <a
     href={href}
-    className="relative text-foreground/80 hover:text-primary transition-colors duration-300 font-medium group"
+    className="relative text-black font-bold hover:text-primary transition-colors duration-200 text-lg uppercase tracking-tight"
   >
     {children}
-    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out" />
+    <span className="absolute -bottom-1 left-0 w-full h-[3px] bg-black scale-x-0 group-hover:scale-x-100 transition-transform duration-200 ease-out" />
   </a>
 );
 
@@ -35,7 +34,7 @@ const IconButton = ({
 }) => (
   <button
     onClick={onClick}
-    className="relative text-foreground/80 hover:text-primary transition-colors duration-300 p-2 rounded-full hover:bg-primary/10"
+    className="relative text-black border-2 border-black p-2 bg-white hover:bg-accent transition-all duration-200 neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
     title={title}
   >
     {children}
@@ -75,35 +74,34 @@ const Navigation = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.3, ease: "easeOut" as const },
+      transition: { duration: 0.2, ease: "linear" as const },
     },
     exit: {
       opacity: 0,
       y: -20,
-      transition: { duration: 0.2, ease: "easeIn" as const },
+      transition: { duration: 0.2, ease: "linear" as const },
     },
   };
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         isScrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-primary/10 shadow-[0_0_20px_hsla(198,93%,60%,0.1)]"
-          : "bg-transparent"
+          ? "bg-background border-b-2 border-black py-2"
+          : "bg-transparent py-4"
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="text-3xl font-bold font-heading tracking-wider"
-            style={{ textShadow: "0 0 10px hsla(198, 93%, 60%, 0.7)" }}
+            className="text-3xl font-black font-heading tracking-tighter uppercase border-2 border-black bg-primary text-white px-2 py-1 transform -rotate-2 hover:rotate-0 transition-transform duration-200 neo-shadow"
           >
             Viet Dev
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8 bg-white border-2 border-black px-6 py-2 neo-shadow">
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href}>
                 {link.label}
@@ -111,7 +109,7 @@ const Navigation = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-4">
             <IconButton
               onClick={() => setLanguage(language === "en" ? "vi" : "en")}
               title={
@@ -120,7 +118,7 @@ const Navigation = () => {
                   : "Chuyển sang tiếng Anh"
               }
             >
-              <Globe size={20} />
+              <Globe size={20} className="stroke-[2.5px]" />
             </IconButton>
             {mounted && (
               <IconButton
@@ -131,23 +129,25 @@ const Navigation = () => {
                     : "Switch to dark mode"
                 }
               >
-                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                {theme === "dark" ? <Sun size={20} className="stroke-[2.5px]" /> : <Moon size={20} className="stroke-[2.5px]" />}
               </IconButton>
             )}
-            {/* <Button
-              variant="outline"
-              className="border-primary text-primary hover:bg-primary/10 hover:text-primary animate-pulse hover:animate-none"
-            >
-              {t("nav.hireMe")}
-            </Button> */}
+             <a
+               href="/CV_VietDev.pdf"
+               download
+               className="hidden md:flex items-center gap-2 bg-primary text-primary-foreground font-bold px-4 py-2 border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase text-sm ml-2"
+             >
+               <Download size={18} className="stroke-[3px]" />
+               Resume
+             </a>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-foreground z-50"
+            className="md:hidden text-black border-2 border-black p-2 bg-white neo-shadow active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            {isMobileMenuOpen ? <X size={28} className="stroke-[3px]" /> : <Menu size={28} className="stroke-[3px]" />}
           </button>
         </div>
 
@@ -155,25 +155,25 @@ const Navigation = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              className="md:hidden absolute top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center"
+              className="md:hidden absolute top-[100%] left-0 w-full h-[calc(100vh-80px)] bg-background border-t-2 border-black flex flex-col items-center justify-start pt-12"
               variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
-              <nav className="flex flex-col gap-8 text-center">
+              <nav className="flex flex-col gap-6 text-center w-full px-8">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-2xl text-foreground/80 hover:text-primary transition-colors duration-300 font-medium"
+                    className="text-3xl font-black uppercase text-black hover:text-primary transition-colors duration-200 border-2 border-black bg-white p-4 neo-shadow w-full active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}
                   </a>
                 ))}
               </nav>
-              <div className="flex items-center gap-4 mt-8">
+              <div className="flex items-center gap-6 mt-12">
                 <IconButton
                   onClick={() => setLanguage(language === "en" ? "vi" : "en")}
                   title={
@@ -182,7 +182,7 @@ const Navigation = () => {
                       : "Chuyển sang tiếng Anh"
                   }
                 >
-                  <Globe size={24} />
+                  <Globe size={32} className="stroke-[2.5px]" />
                 </IconButton>
                 {mounted && (
                   <IconButton
@@ -195,13 +195,10 @@ const Navigation = () => {
                         : "Switch to dark mode"
                     }
                   >
-                    {theme === "dark" ? <Sun size={24} /> : <Moon size={24} />}
+                    {theme === "dark" ? <Sun size={32} className="stroke-[2.5px]" /> : <Moon size={32} className="stroke-[2.5px]" />}
                   </IconButton>
                 )}
               </div>
-              {/* <Button variant="outline" className="mt-8 border-primary text-primary hover:bg-primary/10 hover:text-primary">
-              {t('nav.hireMe')}
-            </Button> */}
             </motion.div>
           )}
         </AnimatePresence>

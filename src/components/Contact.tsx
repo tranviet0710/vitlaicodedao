@@ -162,6 +162,30 @@ const Contact = () => {
           </p>
         </motion.div>
 
+
+        <div className="max-w-6xl mx-auto mb-16">
+          <div className="border-2 border-black bg-primary text-primary-foreground p-8 md:p-12 text-center neo-shadow relative overflow-hidden">
+             <div className="relative z-10">
+                 <h2 className="text-3xl font-black uppercase mb-4">
+                    Book a Strategy Call
+                 </h2>
+                 <p className="text-xl font-medium mb-8 max-w-2xl mx-auto opacity-90">
+                    Not sure where to start? Let's have a 30-minute discovery call to discuss your architecture and technical challenges.
+                 </p>
+                 <a href="https://cal.com/vietdev" target="_blank" rel="noopener noreferrer">
+                     <Button size="lg" className="bg-white text-black border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all text-xl font-black uppercase px-8 py-6">
+                         Schedule Meeting
+                     </Button>
+                 </a>
+             </div>
+             
+             {/* Decorative background pattern */}
+             <div className="absolute inset-0 opacity-10 pointer-events-none" 
+                  style={{ backgroundImage: "radial-gradient(circle, #000 2px, transparent 2.5px)", backgroundSize: "20px 20px" }}>
+             </div>
+          </div>
+        </div>
+
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
           <motion.div
             className="space-y-8"

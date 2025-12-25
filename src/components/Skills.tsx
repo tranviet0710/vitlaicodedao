@@ -1,43 +1,29 @@
 'use client'
 
-import { Code2, Database, Globe, Smartphone, Cloud, Brain } from 'lucide-react';
+import { Code2, Database, Globe, Smartphone, Cloud, Brain, Server, Layers, Shield } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion } from 'framer-motion';
 
-const SkillCard = ({ icon: Icon, title, skills, color, index }: { icon: React.ElementType, title: string, skills: string[], color: string, index: number }) => {
-  const cardVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { delay: index * 0.1, type: 'spring' as const, stiffness: 100 }
-    },
-  };
-  
+const TechRadarItem = ({ category, skills, index }: { category: string, skills: string[], index: number }) => {
   return (
     <motion.div
-      variants={cardVariants}
-      className="relative p-6 bg-background/50 border border-primary/20 rounded-xl overflow-hidden group"
-      style={{ backdropFilter: 'blur(10px)' }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="mb-8"
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-      
-      <div className="relative z-10">
-        <div className="mb-4">
-          <Icon className={`w-12 h-12 ${color}`} style={{ filter: `drop-shadow(0 0 5px hsla(var(--primary), 0.7))`}} />
-        </div>
-        <h3 className="text-xl font-bold mb-4 font-heading">{title}</h3>
-        <div className="flex flex-wrap gap-2">
-          {skills.map((skill, skillIndex) => (
-            <span
-              key={skillIndex}
-              className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+      <h3 className="text-xl font-black uppercase mb-4 border-b-2 border-black pb-2 inline-block">
+        {category}
+      </h3>
+      <div className="flex flex-wrap gap-3">
+        {skills.map((skill, i) => (
+          <div key={i} className="group relative">
+             <div className="px-4 py-2 bg-white border-2 border-black text-black font-mono font-bold text-sm neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-default">
+               {skill}
+             </div>
+          </div>
+        ))}
       </div>
     </motion.div>
   );
@@ -45,100 +31,57 @@ const SkillCard = ({ icon: Icon, title, skills, color, index }: { icon: React.El
 
 const Skills = () => {
   const { t } = useLanguage();
-  
-  const skillCategories = [
+
+  const categories = [
     {
-      icon: Code2,
-      title: t('skills.frontend'),
-      skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vue.js'],
-      color: 'text-primary',
+      name: "Strategic Architecture",
+      skills: ["Microservices", "Event-Driven Design", "Domain-Driven Design (DDD)", "Serverless", "System Design"]
     },
     {
-      icon: Database,
-      title: t('skills.backend'),
-      skills: ['Node.js', 'Express', 'Python', 'PostgreSQL', 'MongoDB'],
-      color: 'text-primary',
+        name: "Backend & Infrastructure",
+        skills: ["Node.js", "Go", "PostgreSQL", "Redis", "Docker", "Kubernetes", "AWS"]
     },
     {
-      icon: Cloud,
-      title: t('skills.cloud'),
-      skills: ['AWS', 'Docker', 'Kubernetes', 'CI/CD', 'Terraform'],
-      color: 'text-primary',
+        name: "Frontend Ecosystem",
+        skills: ["React", "Next.js", "TypeScript", "Performance Tuning", "State Management"]
     },
     {
-      icon: Smartphone,
-      title: t('skills.mobile'),
-      skills: ['React Native', 'Flutter', 'iOS', 'Android', 'PWA'],
-      color: 'text-primary',
-    },
-    {
-      icon: Globe,
-      title: t('skills.web'),
-      skills: ['HTML5', 'CSS3', 'JavaScript', 'REST API', 'GraphQL'],
-      color: 'text-primary',
-    },
-    {
-      icon: Brain,
-      title: t('skills.ai'),
-      skills: ['OpenAI', 'TensorFlow', 'LangChain', 'Hugging Face', 'Lovable AI'],
-      color: 'text-primary',
-    },
+        name: "AI & Data Engineering",
+        skills: ["RAG Pipelines", "Vector Databases", "LangChain", "ETL Processes", "Python"]
+    }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    },
-  };
-
   return (
-    <section id="skills" className="py-20 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <div 
-          className="absolute top-0 left-0 w-full h-full"
-          style={{
-            backgroundImage: 'linear-gradient(0deg, transparent 24%, hsl(var(--primary)/0.05) 25%, hsl(var(--primary)/0.05) 26%, transparent 27%, transparent 74%, hsl(var(--primary)/0.05) 75%, hsl(var(--primary)/0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, hsl(var(--primary)/0.05) 25%, hsl(var(--primary)/0.05) 26%, transparent 27%, transparent 74%, hsl(var(--primary)/0.05) 75%, hsl(var(--primary)/0.05) 76%, transparent 77%, transparent)',
-            backgroundSize: '50px 50px',
-            animation: 'move 10s linear infinite'
-          }}
-        />
-      </div>
-      <style>{`
-        @keyframes move {
-          0% { background-position: 0 0; }
-          100% { background-position: 50px 50px; }
-        }
-      `}</style>
+    <section id="skills" className="py-20 md:py-32 bg-accent/10 border-t-2 border-black relative">
+       {/* Decorative Elements */}
+       <div className="absolute right-0 top-0 p-4 opacity-20 pointer-events-none">
+          <Brain size={200} strokeWidth={0.5} />
+       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="mb-4 font-heading">
-            {t('skills.title')} <span className="text-primary">{t('skills.titleHighlight')}</span>
+          <div className="inline-block bg-primary text-primary-foreground px-4 py-1 font-bold uppercase tracking-wider mb-4 border-2 border-black neo-shadow">
+            Capabilities
+          </div>
+          <h2 className="text-4xl md:text-5xl font-black uppercase mb-6 font-heading">
+             Tech Radar & Expertise
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            {t('skills.description')}
+          <p className="text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+             My technology choices are driven by business requirements, not hype. I focus on stability, scalability, and maintainability.
           </p>
         </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {skillCategories.map((category, index) => (
-            <SkillCard key={index} {...category} index={index} />
-          ))}
-        </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+           {categories.map((cat, i) => (
+              <TechRadarItem key={i} category={cat.name} skills={cat.skills} index={i} />
+           ))}
+        </div>
       </div>
     </section>
   );

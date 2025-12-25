@@ -34,11 +34,11 @@ const translations = {
     // Hero
     "hero.greeting": "Hi, I'm",
     "hero.name": "Viet Dev",
-    "hero.title": "Full-Stack Developer & AI Enthusiast",
+    "hero.title": "Architecting Scalable Solutions",
     "hero.description":
-      "Building innovative web solutions with modern technologies and AI integration",
-    "hero.viewProjects": "View My Projects",
-    "hero.contactMe": "Contact Me",
+      "Solving complex business problems with robust architecture and modern technologies",
+    "hero.viewProjects": "View Case Studies",
+    "hero.contactMe": "Book a Strategy Call",
     // 'hero.available': 'Available for freelance work',
 
     // Skills
@@ -131,11 +131,11 @@ const translations = {
     // Hero
     "hero.greeting": "Xin chào, tôi là",
     "hero.name": "Viet Dev",
-    "hero.title": "Full-Stack Developer & AI Enthusiast",
+    "hero.title": "Kiến Trúc Sư Giải Pháp Phần Mềm",
     "hero.description":
-      "Xây dựng các giải pháp web sáng tạo với công nghệ hiện đại và tích hợp AI",
-    "hero.viewProjects": "Xem Dự Án",
-    "hero.contactMe": "Liên Hệ",
+      "Giải quyết các bài toán doanh nghiệp phức tạp với kiến trúc vững chắc và công nghệ hiện đại",
+    "hero.viewProjects": "Xem Case Studies",
+    "hero.contactMe": "Đặt Lịch Tư Vấn",
     // "hero.available": "Sẵn sàng nhận dự án freelance",
 
     // Skills

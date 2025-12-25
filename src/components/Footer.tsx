@@ -16,32 +16,21 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 border-t border-primary/20 relative overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-5">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, hsl(var(--primary) / 0.3) 1px, transparent 1px)",
-            backgroundSize: "4rem 4rem",
-          }}
-        />
-      </div>
+    <footer className="py-12 border-t-2 border-black bg-white relative">
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-center md:text-left">
             <h3
-              className="text-3xl font-bold font-heading mb-2"
-              style={{ textShadow: "0 0 10px hsla(var(--primary), 0.7)" }}
+              className="text-3xl font-black font-heading mb-2 uppercase tracking-tighter"
             >
               Viet Dev
             </h3>
-            <p className="text-foreground/60 max-w-sm">
+            <p className="text-black font-medium max-w-sm">
               {t("footer.description")}
             </p>
           </div>
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             {socialLinks.map((social, index) => {
               const Icon = social.icon;
               return (
@@ -50,22 +39,20 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative text-foreground/60 hover:text-primary transition-colors duration-300 group"
+                  className="relative text-black border-2 border-black p-3 bg-primary hover:bg-accent transition-all duration-200 neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
                 >
-                  <Icon size={24} />
-                  <div className="absolute -inset-2 bg-primary/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <Icon size={24} className="stroke-[2.5px]" />
                 </a>
               );
             })}
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-primary/20 text-center">
-          <p className="text-foreground/60 flex items-center justify-center gap-2">
+        <div className="mt-8 pt-8 border-t-2 border-black text-center">
+          <p className="text-black font-bold flex items-center justify-center gap-2">
             Made with{" "}
             <Heart
-              className="w-5 h-5 text-primary"
-              style={{ filter: `drop-shadow(0 0 5px hsla(var(--primary), 1))` }}
+              className="w-5 h-5 text-destructive fill-destructive"
             />{" "}
             by Viet Dev © 2025. {t("footer.rights")}
           </p>
