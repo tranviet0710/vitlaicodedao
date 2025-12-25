@@ -1,0 +1,24 @@
+# Neo-Brutalism UI Implementation Tracking
+
+- [x] **Setup Globals**
+    - [x] Modify `app/globals.css` to change CSS variables (colors, radius).
+    - [x] Clean up "soft" CSS classes in `app/globals.css`.
+- [x] **Tailwind Config**
+    - [x] Add `neo` shadow utilities in `tailwind.config.ts`.
+- [ ] **UI Core**
+    - [x] Rewrite `src/components/ui/button.tsx`.
+    - [x] Rewrite `src/components/ui/card.tsx`.
+    - [x] Rewrite `src/components/ui/input.tsx`.
+    - [x] Rewrite `src/components/ui/textarea.tsx`.
+    - [x] Rewrite `src/components/ui/select.tsx`.
+    - [x] Rewrite `src/components/ui/badge.tsx`.
+    - [x] Rewrite `src/components/ui/dialog.tsx`.
+    - [x] Rewrite `src/components/ui/sheet.tsx`.
+    - [x] Rewrite `src/components/ui/alert-dialog.tsx`.
+    - [x] Rewrite `src/components/ui/sonner.tsx`.
+- [ ] **Layout**
+    - [x] Update `src/components/Navigation.tsx`.
+    - [x] Update `src/components/Footer.tsx`.
+    - [x] Update `src/components/Hero.tsx`.
+- [ ] **Review**
+    - [x] Check `src/components/Services.tsx` and other landing page components for "rounded" or "soft" styles.
