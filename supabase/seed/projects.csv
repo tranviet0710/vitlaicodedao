@@ -1,45 +1,87 @@
 id;title;slug;description;thumbnail;category;tech_stack;demo_url;github_url;content;created_at;updated_at
-7e1ab9ea-2643-45ed-8f88-e4a0db6416c8;E-commerce Platform;ecommerce-platform;A full-stack e-commerce solution with payment integration and admin dashboard;https://images.unsplash.com/photo-1557821552-17105176677c?w=800;Web Development;"[""React"",""Node.js"",""PostgreSQL"",""Stripe"",""Tailwind CSS""]";https://demo.example.com;https://github.com/tranviet0710;"Complete e-commerce platform built with modern technologies. Features include user authentication, product management, shopping cart, payment processing with Stripe, and comprehensive admin dashboard.
+7e1ab9ea-2643-45ed-8f88-e4a0db6416c8;High-Scale E-commerce Architecture;ecommerce-platform;Orchestrated a microservices-based e-commerce platform handling 10k+ concurrent users during peak sales events.;https://images.unsplash.com/photo-1557821552-17105176677c?w=800;Web Development;"[""React"",""Node.js"",""PostgreSQL"",""Redis"",""Docker""]";https://demo.example.com;https://github.com/tranviet0710;"### The Challenge
+The client's legacy monolithic system crashed during Black Friday sales, resulting in 20% lost revenue. The goal was to build a system capable of handling 10k+ concurrent users with sub-200ms response times.
 
-Key features:
-- User authentication and authorization
-- Product catalog with search and filters
-- Shopping cart and checkout
-- Payment integration with Stripe
-- Order management system
-- Admin dashboard for inventory management
-- Email notifications
-- Mobile responsive design";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
-84b139bf-0eef-4121-87a8-ad8fe056b0c7;AI Chatbot Application;ai-chatbot-app;Intelligent chatbot powered by GPT-4 with context-aware conversations;https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800;AI & ML;"[""React"",""TypeScript"",""OpenAI API"",""Supabase"",""Tailwind CSS""]";https://chatbot.example.com;https://github.com/tranviet0710;"Advanced chatbot application leveraging OpenAI GPT-4 model for natural conversations. Includes conversation history, context awareness, and custom personality configuration.
+### The Constraints
+- **Timeline:** 3 months before next major sale event.
+- **Budget:** Strict resource allocation for infrastructure.
+- **Zero Downtime:** Migration had to happen without interrupting ongoing sales.
 
-Features:
-- Real-time chat interface
-- Context-aware responses
-- Conversation history with local storage
-- Multiple AI models support
-- Custom system prompts
-- Rate limiting and error handling
-- Streaming responses
-- Code syntax highlighting";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
-58a05240-ea38-44e3-963f-2004df5da740;Mobile Fitness Tracker;mobile-fitness-tracker;Cross-platform fitness tracking app with workout plans and progress analytics;https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800;Mobile Development;"[""React Native"",""TypeScript"",""Firebase"",""Redux"",""Expo""]";https://apps.apple.com/app;https://github.com/tranviet0710;"Comprehensive fitness tracking application for iOS and Android. Track workouts, monitor progress, and follow personalized training plans.
+### The Architecture
+Transitioned from a monolith to a modularized service architecture:
+- **Core Services:** User, Product, Order, and Inventory services separated for independent scaling.
+- **Caching Strategy:** Implemented Redis for product catalogs to reduce DB load by 80%.
+- **Event Bus:** Used RabbitMQ for asynchronous order processing.
 
-Capabilities:
-- Workout logging and tracking
-- Exercise library with animations
-- Progress charts and analytics
-- Custom workout plans
-- Social features and challenges
-- Integration with health apps
-- Nutrition tracking
-- Goal setting and achievements";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
-61352230-88a7-4bbd-8cc0-ef768990551e;Real-time Analytics Dashboard;realtime-analytics-dashboard;Business intelligence dashboard with real-time data visualization;https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800;Data Visualization;"[""React"",""D3.js"",""WebSocket"",""Node.js"",""MongoDB""]";https://analytics.example.com;https://github.com/tranviet0710;"Enterprise-grade analytics dashboard for monitoring key business metrics. Features real-time data updates, customizable widgets, and advanced filtering.
+### The Solution
+- **Frontend:** Next.js for SSR to improve SEO and initial load time.
+- **Backend:** Node.js services containerized with Docker.
+- **Database:** PostgreSQL with read-replicas for high availability.
+- **Payment:** Stripe integration with webhook handling for reliable transaction processing.
 
-Highlights:
-- Real-time data updates via WebSocket
-- Interactive charts and graphs
-- Custom dashboard layouts
-- Data export capabilities
-- Role-based access control
-- Mobile responsive design
-- Dark mode support
-- Advanced filtering and search";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+### The Impact
+- **Performance:** Successfully handled 15k peak concurrent users with 99.9% uptime.
+- **Revenue:** 35% increase in conversion rate due to faster checkout flow.
+- **Scalability:** Infrastructure costs reduced by 15% through optimized auto-scaling rules.";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+84b139bf-0eef-4121-87a8-ad8fe056b0c7;Enterprise AI Knowledge Base;ai-chatbot-app;Designed and deployed a RAG (Retrieval-Augmented Generation) system for internal enterprise knowledge management.;https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800;AI & ML;"[""Python"",""LangChain"",""OpenAI"",""Supabase Vector"",""React""]";https://chatbot.example.com;https://github.com/tranviet0710;"### The Challenge
+Employees were spending 20% of their time searching for internal documents across scattered repositories (Google Drive, Confluence, Slack).
+
+### The Constraints
+- **Data Privacy:** Sensitive internal data must not train public models.
+- **Accuracy:** Hallucinations were strictly unacceptable for compliance documents.
+
+### The Architecture
+Implemented a RAG pipeline:
+1.  **Ingestion:** ETL pipelines to scrape and index internal tools.
+2.  **Storage:** Supabase pgvector for high-performance vector similarity search.
+3.  **Generation:** GPT-4 with strict system prompts and context window management.
+
+### The Solution
+- **Vector Search:** Utilized cosine similarity to find relevant context chunks.
+- **Frontend:** React-based chat interface with citation features (linking back to source documents).
+- **Security:** Role-Based Access Control (RBAC) ensuring users only query documents they have access to.
+
+### The Impact
+- **Productivity:** Reduced information retrieval time from 15 minutes to 30 seconds per query.
+- **Adoption:** Onboarded 500+ employees in the first month.
+- **Cost:** Optimized token usage reducing API costs by 40% using semantic caching.";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+58a05240-ea38-44e3-963f-2004df5da740;Cross-Platform IoT Health System;mobile-fitness-tracker;Architected a real-time health monitoring ecosystem syncing wearable data to mobile and cloud.;https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800;Mobile Development;"[""React Native"",""Bluetooth LE"",""Firebase"",""Node.js""]";https://apps.apple.com/app;https://github.com/tranviet0710;"### The Challenge
+Syncing high-frequency heart rate data from a custom wearable device to a mobile app without draining battery or losing data packets.
+
+### The Constraints
+- **Hardware:** Low-energy Bluetooth (BLE) limitations.
+- **Offline First:** App must function fully without internet.
+
+### The Architecture
+- **LocalDB:** WatermelonDB (SQLite) for offline data persistence.
+- **Sync Engine:** Custom conflict resolution strategy for syncing local data with the cloud when online.
+
+### The Solution
+- **Mobile:** React Native with native modules for efficient BLE communication.
+- **Optimization:** Batched data uploads to minimize radio usage.
+- **Visuals:** Real-time D3.js graphs rendering 60fps on mobile devices.
+
+### The Impact
+- **Reliability:** 99.8% data sync success rate.
+- **Efficiency:** Reduced app battery consumption by 25%.
+- **User Growth:** Scaled to 50k active users within 6 months.";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00
+61352230-88a7-4bbd-8cc0-ef768990551e;Real-time Financial Analytics;realtime-analytics-dashboard;Built a low-latency financial dashboard processing thousands of trade events per second.;https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800;Data Visualization;"[""React"",""WebSockets"",""Go"",""TimescaleDB""]";https://analytics.example.com;https://github.com/tranviet0710;"### The Challenge
+Traders needed sub-second visualization of market movements. Existing dashboard had a 5-second lag, unacceptable for high-frequency trading.
+
+### The Constraints
+- **Latency:** Max 500ms end-to-end latency.
+- **Data Volume:** 5,000 events/second.
+
+### The Architecture
+- **Ingestion:** Go microservice using Goroutines for high-throughput event consumption.
+- **Transport:** WebSockets for push-based updates to the frontend.
+- **Storage:** TimescaleDB for efficient time-series data queries.
+
+### The Solution
+- **Frontend Optimization:** Virtualized tables and WebGL-accelerated charts to prevent DOM overload.
+- **Data Aggregation:** Server-side aggregation to send only view-port relevant data.
+
+### The Impact
+- **Speed:** Achieved 200ms latency from event to visualization.
+- **Stability:** System sustained zero crashes during market volatility spikes.
+- **Decision Making:** Client reported 15% improvement in trade execution timing.";2025-11-12 13:02:38.470487+00;2025-11-12 13:02:38.470487+00

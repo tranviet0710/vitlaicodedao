@@ -113,6 +113,15 @@ Converting a Vite + React TypeScript portfolio website to Next.js TypeScript for
 
 ---
 
+## 🎨 Design System & i18n
+- [x] 15.1 Update Design System for Dark Mode (Skill, Nav, Services, Contact, Hero, Footer)
+- [x] 15.2 Integrate i18n keys for all main sections (Skill, Footer)
+- [x] 15.3 Comprehensive Dark Mode Review (Blogs, Projects, Testimonials, Admin)
+- [ ] 15.4 Remaining i18n (Testimonials, Blog, Admin)
+- [ ] 15.5 SEO & Metadata for multilingual support
+
+---
+
 ## Notes
 - Keep Supabase integration intact
 - Preserve all existing functionality

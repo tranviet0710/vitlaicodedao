@@ -28,35 +28,32 @@ const TestimonialCard = ({ testimonial, index }: { testimonial: Testimonial, ind
   return (
     <motion.div
       variants={cardVariants}
-      className="relative p-8 bg-background/50 border border-primary/20 rounded-xl overflow-hidden group"
-      style={{ backdropFilter: 'blur(10px)' }}
+      className="relative p-8 bg-background border-2 border-border neo-shadow group"
     >
-      <div className="absolute -inset-px bg-gradient-to-r from-primary to-accent rounded-xl blur-sm opacity-0 group-hover:opacity-75 transition duration-300"></div>
       
       <div className="relative z-10">
         <div className="flex items-center gap-4 mb-6">
-          <div className="relative w-16 h-16 rounded-full p-0.5 bg-gradient-to-r from-primary to-accent">
+          <div className="relative w-16 h-16 rounded-full border-2 border-border overflow-hidden">
             <img
               src={testimonial.client_avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${testimonial.client_name}`}
               alt={testimonial.client_name}
-              className="w-full h-full rounded-full object-cover"
+              className="w-full h-full object-cover"
             />
           </div>
           <div>
             <h4 className="font-bold text-lg font-heading">{testimonial.client_name}</h4>
-            <p className="text-sm text-foreground/60">{testimonial.client_role}</p>
+            <p className="text-sm font-medium text-muted-foreground">{testimonial.client_role}</p>
           </div>
         </div>
         <div className="flex gap-1 mb-4">
           {[...Array(5)].map((_, i) => (
             <Star 
               key={i} 
-              className={`w-5 h-5 ${i < testimonial.rating ? 'text-primary' : 'text-primary/30'}`} 
-              style={{ filter: `drop-shadow(0 0 2px hsla(var(--primary), 0.7))`}}
+              className={`w-5 h-5 ${i < testimonial.rating ? 'text-primary fill-primary' : 'text-muted stroke-muted-foreground'}`} 
             />
           ))}
         </div>
-        <p className="text-foreground/80 italic leading-relaxed">"{testimonial.content}"</p>
+        <p className="text-foreground italic leading-relaxed font-medium">"{testimonial.content}"</p>
       </div>
     </motion.div>
   );
@@ -96,7 +93,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="py-20 md:py-32 relative overflow-hidden bg-background/20">
+    <section id="testimonials" className="py-20 md:py-32 relative overflow-hidden bg-background border-t-2 border-border">
       <div className="container mx-auto px-4">
         <motion.div 
           className="text-center mb-16"
@@ -105,10 +102,10 @@ const Testimonials = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="mb-4 font-heading">
+          <h2 className="mb-4 font-heading text-4xl md:text-5xl font-black uppercase tracking-tight">
             {t('testimonials.title')} <span className="text-primary">{t('testimonials.titleHighlight')}</span>
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+          <p className="text-xl text-foreground font-medium max-w-2xl mx-auto">
             {t('testimonials.description')}
           </p>
         </motion.div>
@@ -116,7 +113,7 @@ const Testimonials = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[...Array(2)].map((_, i) => (
-              <div key={i} className="bg-background/50 border border-primary/20 rounded-xl p-8 h-64 animate-pulse" />
+              <div key={i} className="bg-background border-2 border-border p-8 h-64 neo-shadow animate-pulse" />
             ))}
           </div>
         ) : (

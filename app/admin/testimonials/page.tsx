@@ -24,9 +24,12 @@ interface Testimonial {
   created_at: string | null;
 }
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 export default function TestimonialsManagerPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -98,7 +101,7 @@ export default function TestimonialsManagerPage() {
           .eq("id", editingTestimonial.id);
 
         if (error) throw error;
-        toast({ title: "Cập nhật testimonial thành công!" });
+        toast({ title: t("admin.updateTestimonialSuccess") });
       } else {
         const { error } = await supabase.from("testimonials").insert({
           client_name: validated.client_name,
@@ -109,7 +112,7 @@ export default function TestimonialsManagerPage() {
         });
 
         if (error) throw error;
-        toast({ title: "Tạo testimonial thành công!" });
+        toast({ title: t("admin.saveTestimonialSuccess") });
       }
 
       resetForm();
@@ -131,8 +134,8 @@ export default function TestimonialsManagerPage() {
       } else {
         console.error("Error saving testimonial:", error);
         toast({
-          title: "Lỗi",
-          description: "Không thể lưu testimonial",
+          title: t("admin.error"),
+          description: t("contact.errorMessage"),
           variant: "destructive",
         });
       }
@@ -151,7 +154,7 @@ export default function TestimonialsManagerPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Bạn có chắc muốn xóa testimonial này?")) return;
+    if (!confirm(t("admin.deleteTestimonialConfirm"))) return;
 
     try {
       const { error } = await supabase
@@ -160,13 +163,13 @@ export default function TestimonialsManagerPage() {
         .eq("id", id);
 
       if (error) throw error;
-      toast({ title: "Xóa testimonial thành công!" });
+      toast({ title: t("admin.deleteTestimonialSuccess") });
       fetchTestimonials();
     } catch (error) {
       console.error("Error deleting testimonial:", error);
       toast({
-        title: "Lỗi",
-        description: "Không thể xóa testimonial",
+        title: t("admin.error"),
+        description: t("contact.errorMessage"),
         variant: "destructive",
       });
     }
@@ -188,7 +191,7 @@ export default function TestimonialsManagerPage() {
   if (isLoading) {
     return (
       <AdminLayout>
-        <div>Đang tải...</div>
+        <div>{t("admin.loading")}</div>
       </AdminLayout>
     );
   }
@@ -198,10 +201,10 @@ export default function TestimonialsManagerPage() {
       <div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text mb-2">
-            Quản lý Testimonials
+            {t("admin.testimonialsManagement")}
           </h1>
           <p className="text-foreground/60">
-            Thêm và chỉnh sửa đánh giá khách hàng
+            {t("admin.testimonialsDesc")}
           </p>
         </div>
 
@@ -209,14 +212,14 @@ export default function TestimonialsManagerPage() {
         <Card className="p-6 mb-8 bg-card border-border/50">
           <h2 className="text-xl font-bold mb-4">
             {editingTestimonial
-              ? "Chỉnh sửa Testimonial"
-              : "Tạo Testimonial Mới"}
+              ? t("admin.editTestimonial")
+              : t("admin.createTestimonial")}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Tên khách hàng *
+                  {t("admin.clientName")} *
                 </label>
                 <Input
                   value={formData.client_name}
@@ -233,7 +236,7 @@ export default function TestimonialsManagerPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Chức vụ *
+                  {t("admin.clientRole")} *
                 </label>
                 <Input
                   value={formData.client_role}
@@ -253,7 +256,7 @@ export default function TestimonialsManagerPage() {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                URL Avatar
+                {t("admin.clientAvatar")}
               </label>
               <Input
                 type="url"
@@ -271,7 +274,7 @@ export default function TestimonialsManagerPage() {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Nội dung đánh giá *
+                {t("admin.testimonialContent")} *
               </label>
               <Textarea
                 value={formData.content}
@@ -290,7 +293,7 @@ export default function TestimonialsManagerPage() {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Đánh giá (sao)
+                {t("admin.rating")}
               </label>
               <div className="flex items-center gap-4">
                 <Input
@@ -329,11 +332,11 @@ export default function TestimonialsManagerPage() {
             <div className="flex gap-4">
               <Button type="submit" className="bg-gradient-primary">
                 <Plus className="mr-2 h-4 w-4" />
-                {editingTestimonial ? "Cập nhật" : "Tạo mới"}
+                {editingTestimonial ? t("admin.update") : t("admin.create")}
               </Button>
               {editingTestimonial && (
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  Hủy
+                  {t("admin.cancel")}
                 </Button>
               )}
             </div>

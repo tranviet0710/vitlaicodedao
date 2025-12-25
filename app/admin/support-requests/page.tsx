@@ -27,9 +27,12 @@ interface SupportRequest {
   created_at: string | null;
 }
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 export default function SupportRequestsManagerPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [requests, setRequests] = useState<SupportRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,20 +112,20 @@ export default function SupportRequestsManagerPage() {
       // Log audit trail
       await logAuditAccess("update_status", id);
 
-      toast({ title: "Cập nhật trạng thái thành công!" });
+      toast({ title: t("admin.updateStatusSuccess") });
       fetchRequests();
     } catch (error) {
       console.error("Error updating status:", error);
       toast({
-        title: "Lỗi",
-        description: "Không thể cập nhật trạng thái",
+        title: t("admin.error"),
+        description: t("contact.errorMessage"),
         variant: "destructive",
       });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Bạn có chắc muốn xóa yêu cầu này?")) return;
+    if (!confirm(t("admin.deleteRequestConfirm"))) return;
 
     try {
       const { error } = await supabase
@@ -135,13 +138,13 @@ export default function SupportRequestsManagerPage() {
       // Log audit trail
       await logAuditAccess("delete_request", id);
 
-      toast({ title: "Xóa yêu cầu thành công!" });
+      toast({ title: t("admin.deleteRequestSuccess") });
       fetchRequests();
     } catch (error) {
       console.error("Error deleting request:", error);
       toast({
-        title: "Lỗi",
-        description: "Không thể xóa yêu cầu",
+        title: t("admin.error"),
+        description: t("contact.errorMessage"),
         variant: "destructive",
       });
     }
@@ -165,13 +168,13 @@ export default function SupportRequestsManagerPage() {
   const getStatusLabel = (status: string) => {
     switch (status) {
       case "pending":
-        return "Chờ xử lý";
+        return t("admin.statusPending");
       case "in_progress":
-        return "Đang xử lý";
+        return t("admin.statusInProgress");
       case "completed":
-        return "Hoàn thành";
+        return t("admin.statusCompleted");
       case "cancelled":
-        return "Đã hủy";
+        return t("admin.statusCancelled");
       default:
         return status;
     }
@@ -182,7 +185,7 @@ export default function SupportRequestsManagerPage() {
   if (isLoading) {
     return (
       <AdminLayout>
-        <div>Đang tải...</div>
+        <div>{t("admin.loading")}</div>
       </AdminLayout>
     );
   }
@@ -192,17 +195,17 @@ export default function SupportRequestsManagerPage() {
       <div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text mb-2">
-            Quản lý Yêu cầu Hỗ trợ
+            {t("admin.supportRequestsManagement")}
           </h1>
           <p className="text-foreground/60">
-            Xem và xử lý yêu cầu từ người dùng
+            {t("admin.supportRequestsDesc")}
           </p>
         </div>
 
         {/* Filter */}
         <Card className="p-6 mb-8 bg-card border-border/50">
           <div className="flex items-center gap-4">
-            <label className="text-sm font-medium">Lọc theo trạng thái:</label>
+            <label className="text-sm font-medium">{t("admin.filterStatus")}</label>
             <Select
               value={filterStatus}
               onValueChange={(value) => {
@@ -214,11 +217,11 @@ export default function SupportRequestsManagerPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Tất cả</SelectItem>
-                <SelectItem value="pending">Chờ xử lý</SelectItem>
-                <SelectItem value="in_progress">Đang xử lý</SelectItem>
-                <SelectItem value="completed">Hoàn thành</SelectItem>
-                <SelectItem value="cancelled">Đã hủy</SelectItem>
+                <SelectItem value="all">{t("admin.statusAll")}</SelectItem>
+                <SelectItem value="pending">{t("admin.statusPending")}</SelectItem>
+                <SelectItem value="in_progress">{t("admin.statusInProgress")}</SelectItem>
+                <SelectItem value="completed">{t("admin.statusCompleted")}</SelectItem>
+                <SelectItem value="cancelled">{t("admin.statusCancelled")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -228,7 +231,7 @@ export default function SupportRequestsManagerPage() {
         <div className="space-y-4">
           {requests.length === 0 ? (
             <Card className="p-8 text-center bg-card border-border/50">
-              <p className="text-foreground/60">Không có yêu cầu nào</p>
+              <p className="text-foreground/60">{t("admin.noRequests")}</p>
             </Card>
           ) : (
             requests.map((request) => (
@@ -298,7 +301,7 @@ export default function SupportRequestsManagerPage() {
                       variant="outline"
                       onClick={() => updateStatus(request.id, "in_progress")}
                     >
-                      Đang xử lý
+                      {t("admin.markAsProcessing")}
                     </Button>
                   )}
                   {request.status !== "completed" && (
@@ -309,7 +312,7 @@ export default function SupportRequestsManagerPage() {
                       className="text-green-500 hover:text-green-500"
                     >
                       <Check className="w-4 h-4 mr-2" />
-                      Hoàn thành
+                      {t("admin.markAsCompleted")}
                     </Button>
                   )}
                   {request.status !== "cancelled" && (
@@ -320,7 +323,7 @@ export default function SupportRequestsManagerPage() {
                       className="text-destructive hover:text-destructive"
                     >
                       <X className="w-4 h-4 mr-2" />
-                      Hủy
+                      {t("admin.markAsCancelled")}
                     </Button>
                   )}
                   <Button
@@ -329,7 +332,7 @@ export default function SupportRequestsManagerPage() {
                     onClick={() => handleDelete(request.id)}
                     className="text-destructive hover:text-destructive ml-auto"
                   >
-                    Xóa
+                    {t("admin.deleteRequest")}
                   </Button>
                 </div>
               </Card>

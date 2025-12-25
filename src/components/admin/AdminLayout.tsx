@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+import { useLanguage } from '@/contexts/LanguageContext';
+
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
@@ -27,6 +29,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const { signOut, user } = useAuth();
+  const { t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
@@ -35,40 +38,45 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   };
 
   const menuItems = [
-    { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/admin/blogs', icon: FileText, label: 'Blogs' },
-    { path: '/admin/projects', icon: FolderOpen, label: 'Projects' },
-    { path: '/admin/testimonials', icon: MessageSquare, label: 'Testimonials' },
-    { path: '/admin/support-requests', icon: Mail, label: 'Yêu cầu hỗ trợ' },
-    { path: '/admin/audit-logs', icon: ScrollText, label: 'Nhật ký kiểm tra' },
-    { path: '/admin/notifications', icon: Bell, label: 'Thông báo' },
-    { path: '/admin/seo', icon: Search, label: 'SEO Settings' },
+    { path: '/admin', icon: LayoutDashboard, label: t('admin.dashboard') },
+    { path: '/admin/blogs', icon: FileText, label: t('admin.blogs') },
+    { path: '/admin/projects', icon: FolderOpen, label: t('admin.projects') },
+    { path: '/admin/testimonials', icon: MessageSquare, label: t('admin.testimonials') },
+    { path: '/admin/support-requests', icon: Mail, label: t('admin.supportRequests') },
+    { path: '/admin/audit-logs', icon: ScrollText, label: t('admin.auditLogs') },
+    { path: '/admin/notifications', icon: Bell, label: t('admin.notifications') },
+    { path: '/admin/seo', icon: Search, label: t('admin.seo') },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-card border-b border-border/50 sticky top-0 z-50">
+      <header className="bg-background border-b-2 border-border sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden"
+                className="lg:hidden p-2 border-2 border-border rounded-md neo-shadow active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
               >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
-              <Link href="/" className="text-2xl font-bold gradient-text">
+              <Link href="/" className="text-2xl font-black font-heading uppercase tracking-tighter">
                 Viet Dev Admin
               </Link>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-foreground/60 hidden sm:block">
+              <span className="text-sm font-medium hidden sm:block">
                 {user?.email}
               </span>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Đăng xuất
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleLogout}
+                className="border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold"
+              >
+                <LogOut className="h-4 w-4 mr-2 stroke-[3px]" />
+                {t('admin.logout')}
               </Button>
             </div>
           </div>
@@ -80,7 +88,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         <aside
           className={`
             fixed lg:static inset-y-0 left-0 z-40
-            w-64 bg-card border-r border-border/50
+            w-64 bg-background border-r-2 border-border
             transform transition-transform duration-200 ease-in-out
             ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
             mt-[73px] lg:mt-0
@@ -97,16 +105,15 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   href={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg
-                    transition-all duration-200
+                    flex items-center gap-3 px-4 py-3 border-2 transition-all duration-200
                     ${isActive 
-                      ? 'bg-primary/10 text-primary border-l-4 border-primary' 
-                      : 'text-foreground/70 hover:bg-secondary/50'
+                      ? 'bg-primary text-primary-foreground border-border neo-shadow -rotate-1 font-bold' 
+                      : 'border-transparent hover:border-border hover:bg-accent hover:neo-shadow-sm font-medium'
                     }
                   `}
                 >
-                  <Icon size={20} />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon size={20} className={isActive ? "stroke-[3px]" : ""} />
+                  <span className={isActive ? "font-bold" : "font-medium"}>{item.label}</span>
                 </Link>
               );
             })}
@@ -114,7 +121,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-8">
+        <main className="flex-1 p-6 lg:p-8 bg-background/50">
           {children}
         </main>
       </div>

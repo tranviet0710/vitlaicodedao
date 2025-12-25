@@ -39,13 +39,11 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
   return (
     <motion.div
       variants={cardVariants}
-      className="relative bg-background/50 border border-primary/20 rounded-xl overflow-hidden group"
-      style={{ backdropFilter: "blur(10px)" }}
+      className="relative bg-background border-2 border-border neo-shadow group"
     >
-      <div className="absolute -inset-px bg-gradient-to-r from-primary to-accent rounded-xl blur-sm opacity-0 group-hover:opacity-75 transition duration-300"></div>
-
+      
       <div className="relative">
-        <Link href={`/blog/${post.slug}`} className="block">
+        <Link href={`/blog/${post.slug}`} className="block border-b-2 border-border overflow-hidden">
           <img
             src={
               post.cover_image ||
@@ -57,31 +55,30 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
         </Link>
         <div className="p-6">
           <div
-            className="flex items-center gap-4 text-sm text-primary/80 mb-3"
-            style={{ filter: `drop-shadow(0 0 2px hsla(var(--primary), 0.5))` }}
+            className="flex items-center gap-4 text-sm font-medium text-muted-foreground mb-3"
           >
             <div className="flex items-center gap-1">
-              <Calendar size={16} />
+              <Calendar size={16} className="stroke-primary" />
               {new Date(post.created_at).toLocaleDateString()}
             </div>
             <div className="flex items-center gap-1">
-              <Clock size={16} />
+              <Clock size={16} className="stroke-primary" />
               {getReadTime(post.excerpt)} {t("blog.readTime")}
             </div>
           </div>
           <h3 className="text-xl font-bold mb-3 font-heading group-hover:text-primary transition-colors">
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </h3>
-          <p className="text-foreground/70 mb-4 line-clamp-3 h-20">
+          <p className="text-foreground/80 mb-4 line-clamp-3 h-20 font-medium">
             {post.excerpt}
           </p>
           <Link href={`/blog/${post.slug}`}>
             <Button
               variant="link"
-              className="p-0 h-auto text-primary group-hover:text-primary/80"
+              className="p-0 h-auto text-primary font-bold text-base group-hover:text-primary/80 uppercase tracking-tight"
             >
               {t("blog.readMore")}
-              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1 stroke-[3px]" />
             </Button>
           </Link>
         </div>
@@ -125,7 +122,7 @@ const Blog = () => {
   };
 
   return (
-    <section id="blog" className="py-20 md:py-32 bg-background/20">
+    <section id="blog" className="py-20 md:py-32 bg-background border-t-2 border-border">
       <div className="container mx-auto px-4">
         <motion.div
           className="text-center mb-16"
@@ -134,11 +131,11 @@ const Blog = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="mb-4 font-heading">
+          <h2 className="mb-4 font-heading text-4xl md:text-5xl font-black uppercase tracking-tight">
             {t("blog.title")}{" "}
             <span className="text-primary">{t("blog.titleHighlight")}</span>
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+          <p className="text-xl text-foreground font-medium max-w-2xl mx-auto">
             {t("blog.description")}
           </p>
         </motion.div>
@@ -148,7 +145,7 @@ const Blog = () => {
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className="bg-background/50 border border-primary/20 rounded-xl p-6 h-[450px] animate-pulse"
+                className="bg-background border-2 border-border p-6 h-[450px] neo-shadow animate-pulse"
               />
             ))}
           </div>
@@ -177,18 +174,12 @@ const Blog = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-primary text-primary hover:bg-primary/10 text-lg px-8 py-6 group relative overflow-hidden"
+              className="text-xl font-black px-10 py-8 border-2 border-border bg-background text-foreground neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase tracking-wide"
             >
               <span className="relative z-10 flex items-center gap-2">
                 {t("blog.viewAll")}
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-6 h-6 stroke-[3px] transition-transform group-hover:translate-x-1" />
               </span>
-              <motion.div
-                className="absolute inset-0 bg-primary/10"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
             </Button>
           </Link>
         </motion.div>

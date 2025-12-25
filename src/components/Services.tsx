@@ -1,70 +1,63 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Check, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
 
 const Services = () => {
+  const { t } = useLanguage();
+
   const services = [
     {
-      name: 'Starter Package',
-      price: '15,000,000',
-      period: 'VNĐ',
-      description: 'Phù hợp cho startup và dự án nhỏ',
+      name: t('services.frontend.name'),
+      price: t('services.frontend.price'),
+      period: t('services.frontend.period'),
+      description: t('services.frontend.description'),
       features: [
-        'Landing page hoặc portfolio website',
-        'Responsive design (mobile, tablet, desktop)',
-        'Basic SEO optimization',
-        'Contact form integration',
-        '3 lần revision',
-        '1 tháng support sau launch',
+        t('services.frontend.f1'),
+        t('services.frontend.f2'),
+        t('services.frontend.f3'),
       ],
       highlight: false,
     },
     {
-      name: 'Professional',
-      price: '35,000,000',
-      period: 'VNĐ',
-      description: 'Giải pháp toàn diện cho doanh nghiệp',
+      name: t('services.backend.name'),
+      price: t('services.backend.price'),
+      period: t('services.backend.period'),
+      description: t('services.backend.description'),
       features: [
-        'Full-stack web application',
-        'User authentication & authorization',
-        'Database design & implementation',
-        'Admin dashboard',
-        'API integration',
-        'Advanced SEO & performance',
-        '5 lần revision',
-        '3 tháng support & maintenance',
+        t('services.backend.f1'),
+        t('services.backend.f2'),
+        t('services.backend.f3'),
       ],
       highlight: true,
     },
     {
-      name: 'Enterprise',
-      price: 'Custom',
-      period: 'Quote',
-      description: 'Giải pháp tùy chỉnh cho doanh nghiệp lớn',
+      name: t('services.fullstack.name'),
+      price: t('services.fullstack.price'),
+      period: t('services.fullstack.period'),
+      description: t('services.fullstack.description'),
       features: [
-        'Complex web/mobile applications',
-        'Microservices architecture',
-        'Cloud infrastructure setup (AWS/GCP)',
-        'CI/CD pipeline',
-        'Real-time features',
-        'Advanced analytics & monitoring',
-        'Unlimited revisions',
-        '6 tháng support & scaling',
-        'Team training & documentation',
+        t('services.fullstack.f1'),
+        t('services.fullstack.f2'),
+        t('services.fullstack.f3'),
       ],
       highlight: false,
     },
   ];
 
   return (
-    <section id="services" className="py-20 md:py-32 bg-secondary/30">
+    <section id="services" className="py-20 md:py-32 bg-background border-t-2 border-border">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-slide-up">
-          <h2 className="mb-4">
-            Services & <span className="gradient-text">Pricing</span>
+          <h2 className="mb-4 text-5xl md:text-6xl font-black uppercase tracking-tighter">
+            {t("services.title")}{" "}
+            <span className="text-primary underline decoration-foreground decoration-4 underline-offset-4">
+              {t("services.titleHighlight")}
+            </span>
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Các gói dịch vụ phát triển web linh hoạt phù hợp với mọi nhu cầu
+          <p className="text-xl font-medium max-w-2xl mx-auto border-2 border-border p-4 bg-background neo-shadow inline-block">
+            {t("services.frontend.description")}
           </p>
         </div>
 
@@ -72,58 +65,96 @@ const Services = () => {
           {services.map((service, index) => (
             <Card
               key={index}
-              className={`p-8 bg-card border-border/50 relative overflow-hidden transition-all duration-300 ${
+              className={cn(
+                "p-8 border-2 border-border relative overflow-hidden transition-all duration-300 rounded-none",
                 service.highlight
-                  ? 'border-2 border-primary shadow-glow scale-105'
-                  : 'hover:scale-105'
-              }`}
+                  ? 'bg-primary text-primary-foreground scale-105 shadow-neo-lg z-10'
+                  : 'bg-card text-card-foreground hover:scale-105 neo-shadow'
+              )}
             >
               {service.highlight && (
-                <div className="absolute top-0 right-0 bg-gradient-primary text-background px-4 py-1 text-sm font-bold">
-                  POPULAR
+                <div className="absolute top-0 right-0 bg-background text-foreground px-4 py-1 text-sm font-bold border-b-2 border-l-2 border-border z-20">
+                  {t("services.popular")}
                 </div>
               )}
 
               <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-2">{service.name}</h3>
-                <p className="text-foreground/60 text-sm">{service.description}</p>
+                <h3 className={cn(
+                  "text-3xl font-black mb-2 uppercase",
+                  service.highlight ? 'text-primary-foreground' : 'text-foreground'
+                )}>
+                  {service.name}
+                </h3>
+                <p className={cn(
+                  "text-sm font-medium",
+                  service.highlight ? 'text-primary-foreground/90' : 'text-muted-foreground'
+                )}>
+                  {service.description}
+                </p>
               </div>
 
-              <div className="mb-6">
+              <div className="mb-6 border-b-2 border-current pb-6 opacity-80">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold gradient-text">{service.price}</span>
-                  <span className="text-foreground/60">{service.period}</span>
+                  <span className={cn(
+                    "text-4xl font-black",
+                    service.highlight ? 'text-primary-foreground' : 'text-primary'
+                  )}>
+                    {service.price}
+                  </span>
+                  <span className={cn(
+                    "font-bold uppercase text-sm",
+                    service.highlight ? 'text-primary-foreground/80' : 'text-muted-foreground'
+                  )}>
+                    /{service.period}
+                  </span>
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-4 mb-8">
                 {service.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-foreground/80 text-sm">{feature}</span>
+                    <div className={cn(
+                      "mt-1 p-0.5 border-2 flex-shrink-0",
+                      service.highlight 
+                        ? 'border-primary-foreground bg-primary-foreground text-primary' 
+                        : 'border-border bg-primary text-primary-foreground'
+                    )}>
+                      <Check className="w-3 h-3" strokeWidth={4} />
+                    </div>
+                    <span className={cn(
+                      "text-sm font-bold leading-tight",
+                      service.highlight ? 'text-primary-foreground' : 'text-foreground'
+                    )}>
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
 
               <Button
-                className={`w-full ${
-                  service.highlight ? 'bg-gradient-primary' : 'bg-secondary hover:bg-secondary/80'
-                }`}
-                size="lg"
+                className={cn(
+                  "w-full border-2 border-border text-lg font-black uppercase tracking-wide neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all rounded-none h-14",
+                  service.highlight 
+                    ? 'bg-background text-foreground hover:bg-background/90' 
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                )}
               >
-                Get Started
-                <ArrowRight className="ml-2 w-5 h-5" />
+                {t("services.getStarted")}
+                <ArrowRight className="ml-2 w-5 h-5 stroke-[3px]" />
               </Button>
             </Card>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-foreground/70 mb-4">
-            Cần giải pháp tùy chỉnh hoặc có câu hỏi về pricing?
+        <div className="text-center mt-16">
+          <p className="text-xl font-bold mb-6">
+             {t("contact.description")}
           </p>
-          <Button variant="outline" size="lg" className="border-2 border-primary hover:bg-primary/10">
-            Contact for Custom Quote
+          <Button 
+            size="lg" 
+            className="border-2 border-border text-xl font-black px-8 py-8 bg-background text-foreground hover:bg-accent neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase rounded-none"
+          >
+             {t("contact.formTitle")}
           </Button>
         </div>
       </div>
