@@ -34,7 +34,7 @@ const IconButton = ({
 }) => (
   <button
     onClick={onClick}
-    className="relative text-black border-2 border-black p-2 bg-white hover:bg-accent transition-all duration-200 neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
+    className="relative text-black border-2 border-border p-2 bg-white hover:bg-accent transition-all duration-200 neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
     title={title}
   >
     {children}
@@ -87,7 +87,7 @@ const Navigation = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         isScrolled
-          ? "bg-background border-b-2 border-black py-2"
+          ? "bg-background border-b-2 border-border py-2"
           : "bg-transparent py-4"
       }`}
     >
@@ -95,13 +95,13 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="text-3xl font-black font-heading tracking-tighter uppercase border-2 border-black bg-primary text-white px-2 py-1 transform -rotate-2 hover:rotate-0 transition-transform duration-200 neo-shadow"
+            className="text-3xl font-black font-heading tracking-tighter uppercase border-2 border-border bg-primary text-white px-2 py-1 transform -rotate-2 hover:rotate-0 transition-transform duration-200 neo-shadow"
           >
             Viet Dev
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8 bg-white border-2 border-black px-6 py-2 neo-shadow">
+          <nav className="hidden md:flex items-center gap-8 bg-white border-2 border-border px-6 py-2 neo-shadow">
             {navLinks.map((link) => (
               <NavLink key={link.href} href={link.href}>
                 {link.label}
@@ -132,19 +132,19 @@ const Navigation = () => {
                 {theme === "dark" ? <Sun size={20} className="stroke-[2.5px]" /> : <Moon size={20} className="stroke-[2.5px]" />}
               </IconButton>
             )}
-             <a
+            {/* <a
                href="/CV_VietDev.pdf"
                download
-               className="hidden md:flex items-center gap-2 bg-primary text-primary-foreground font-bold px-4 py-2 border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase text-sm ml-2"
+               className="hidden md:flex items-center gap-2 bg-primary text-primary-foreground font-bold px-4 py-2 border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase text-sm ml-2"
              >
                <Download size={18} className="stroke-[3px]" />
                Resume
-             </a>
+             </a> */}
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-black border-2 border-black p-2 bg-white neo-shadow active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+            className="md:hidden text-black border-2 border-border p-2 bg-white neo-shadow active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} className="stroke-[3px]" /> : <Menu size={28} className="stroke-[3px]" />}
@@ -155,7 +155,7 @@ const Navigation = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              className="md:hidden absolute top-[100%] left-0 w-full h-[calc(100vh-80px)] bg-background border-t-2 border-black flex flex-col items-center justify-start pt-12"
+              className="md:hidden absolute top-[100%] left-0 w-full h-[calc(100vh-80px)] bg-background border-t-2 border-border flex flex-col items-center justify-start pt-12"
               variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
@@ -166,7 +166,7 @@ const Navigation = () => {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-3xl font-black uppercase text-black hover:text-primary transition-colors duration-200 border-2 border-black bg-white p-4 neo-shadow w-full active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                    className="text-3xl font-black uppercase text-black hover:text-primary transition-colors duration-200 border-2 border-border bg-white p-4 neo-shadow w-full active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}

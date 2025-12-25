@@ -16,7 +16,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-12 border-t-2 border-black bg-white relative">
+    <footer className="py-12 border-t-2 border-border bg-background relative">
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="text-center md:text-left">
@@ -25,7 +25,7 @@ const Footer = () => {
             >
               Viet Dev
             </h3>
-            <p className="text-black font-medium max-w-sm">
+            <p className="text-foreground font-medium max-w-sm">
               {t("footer.description")}
             </p>
           </div>
@@ -39,7 +39,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative text-black border-2 border-black p-3 bg-primary hover:bg-accent transition-all duration-200 neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
+                  className="relative text-foreground border-2 border-border p-3 bg-primary hover:bg-accent transition-all duration-200 neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px]"
                 >
                   <Icon size={24} className="stroke-[2.5px]" />
                 </a>
@@ -48,13 +48,13 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t-2 border-black text-center">
-          <p className="text-black font-bold flex items-center justify-center gap-2">
-            Made with{" "}
+        <div className="mt-8 pt-8 border-t-2 border-border text-center">
+          <p className="text-foreground font-bold flex items-center justify-center gap-2">
+            {t("footer.madeWith")}{" "}
             <Heart
               className="w-5 h-5 text-destructive fill-destructive"
-            />{" "}
-            by Viet Dev © 2025. {t("footer.rights")}
+            />
+            {t("footer.copyright")} {t("footer.rights")}
           </p>
         </div>
       </div>

@@ -62,10 +62,10 @@ const ProjectCard = ({
     <motion.a
       href={`/project/${project.slug}`}
       variants={cardVariants}
-      className="relative block bg-white border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200 group h-full flex flex-col"
+      className="relative block bg-card border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200 group h-full flex flex-col"
     >
       <div className="relative">
-        <div className="aspect-video relative overflow-hidden border-b-2 border-black">
+        <div className="aspect-video relative overflow-hidden border-b-2 border-border">
           <img
             src={
               project.thumbnail ||
@@ -75,7 +75,7 @@ const ProjectCard = ({
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute top-4 left-4">
-             <span className="inline-block px-3 py-1 bg-white border-2 border-black text-black text-xs font-bold uppercase tracking-wider neo-shadow-sm">
+             <span className="inline-block px-3 py-1 bg-background border-2 border-border text-foreground text-xs font-bold uppercase tracking-wider neo-shadow-sm">
                 {project.category}
              </span>
           </div>
@@ -86,13 +86,13 @@ const ProjectCard = ({
             {project.title}
           </h3>
           
-          <p className="text-black/80 mb-6 line-clamp-2 font-medium">
+          <p className="text-foreground/80 mb-6 line-clamp-2 font-medium">
             {project.description}
           </p>
 
           {impacts.length > 0 && (
-            <div className="mb-6 bg-accent/20 p-4 border-2 border-black border-dashed">
-              <p className="text-xs font-bold uppercase mb-2 text-black/60">Key Impact</p>
+            <div className="mb-6 bg-accent/20 p-4 border-2 border-border border-dashed">
+              <p className="text-xs font-bold uppercase mb-2 text-foreground/60">{t("project.keyImpact")}</p>
               <ul className="space-y-1">
                 {impacts.map((impact, i) => (
                   <li key={i} className="text-sm font-bold flex items-start gap-2">
@@ -110,7 +110,7 @@ const ProjectCard = ({
                 {project.tech_stack.slice(0, 4).map((tech, techIndex) => (
                   <span
                     key={techIndex}
-                    className="px-2 py-1 bg-gray-100 border border-black text-black text-xs font-bold font-mono"
+                    className="px-2 py-1 bg-muted border border-border text-foreground text-xs font-bold font-mono"
                   >
                     {tech}
                   </span>
@@ -120,7 +120,7 @@ const ProjectCard = ({
             
             <div className="flex items-center gap-4">
                <span className="text-primary font-bold uppercase text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Read Case Study <ArrowRight className="w-4 h-4" />
+                  {t("project.readCaseStudy")} <ArrowRight className="w-4 h-4" />
                </span>
             </div>
           </div>
@@ -173,11 +173,11 @@ const Projects = () => {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="mb-4 font-heading">
+          <h2 className="mb-4 font-heading text-4xl md:text-5xl font-black uppercase tracking-tight">
             {t("projects.title")}{" "}
             <span className="text-primary">{t("projects.titleHighlight")}</span>
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
+          <p className="text-xl text-foreground font-medium max-w-2xl mx-auto">
             {t("projects.description")}
           </p>
         </motion.div>
@@ -187,7 +187,7 @@ const Projects = () => {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="bg-background/50 border border-primary/20 rounded-xl p-6 h-96 animate-pulse"
+                className="bg-background border-2 border-border p-6 h-96 neo-shadow animate-pulse"
               />
             ))}
           </div>
@@ -215,7 +215,7 @@ const Projects = () => {
           <a href="/projects">
             <Button
               size="lg"
-              className="bg-primary text-primary-foreground text-xl font-black px-10 py-8 border-2 border-black neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase tracking-wide"
+              className="bg-primary text-primary-foreground text-xl font-black px-10 py-8 border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all uppercase tracking-wide"
             >
               <span className="relative z-10 flex items-center gap-2">
                 {t("projects.viewAll")}

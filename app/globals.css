@@ -139,15 +139,19 @@
   /* Neo-Brutalism Utilities */
   
   .neo-shadow {
-    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+    box-shadow: 4px 4px 0px 0px var(--border);
+  }
+  
+  .neo-shadow-sm {
+    box-shadow: 2px 2px 0px 0px var(--border);
   }
   
   .neo-shadow-lg {
-    box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+    box-shadow: 8px 8px 0px 0px var(--border);
   }
 
   .neo-border {
-    @apply border-2 border-black;
+    @apply border-2 border-border;
   }
 
   /* Redefined Legacy Classes to be "Hard" */
@@ -166,18 +170,18 @@
   .card-hover {
     @apply transition-transform duration-200 ease-linear;
     @apply hover:translate-x-[-2px] hover:translate-y-[-2px];
-    @apply hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)];
-    @apply active:translate-x-[0px] active:translate-y-[0px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
+    @apply hover:shadow-[6px_6px_0px_0px_var(--border)];
+    @apply active:translate-x-[0px] active:translate-y-[0px] active:shadow-[2px_2px_0px_0px_var(--border)];
   }
 
   .card-glow {
     /* Removed glow, just use standard card style */
-    @apply bg-card text-card-foreground border-2 border-black;
+    @apply bg-card text-card-foreground border-2 border-border;
   }
 
   .glass-effect {
     /* Removed blur, made solid */
-    @apply bg-background border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)];
+    @apply bg-background border-2 border-border shadow-[4px_4px_0px_0px_var(--border)];
   }
 
   /* 💫 Text Effects - Hardened */

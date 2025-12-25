@@ -18,6 +18,8 @@ import {
   SUPABASE_PUBLISHABLE_KEY,
 } from "@/integrations/supabase/client";
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 interface Project {
   id: string;
   title: string;
@@ -34,6 +36,7 @@ interface Project {
 export default function ProjectsManagerPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -286,10 +289,10 @@ export default function ProjectsManagerPage() {
 
   if (loading || !user) return null;
 
-  if (isLoading) {
+    if (isLoading) {
     return (
       <AdminLayout>
-        <div>Đang tải...</div>
+        <div>{t("admin.loading")}</div>
       </AdminLayout>
     );
   }
@@ -299,23 +302,24 @@ export default function ProjectsManagerPage() {
       <div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text mb-2">
-            Quản lý Projects
+            {t("admin.manageProjects")}
           </h1>
-          <p className="text-foreground/60">Thêm và chỉnh sửa dự án</p>
+          <p className="text-foreground/60">{t("admin.projectDesc")}</p>
         </div>
 
         {/* Form */}
-        <Card className="p-6 mb-8 bg-card border-border/50">
+        <Card className="p-6 mb-8 bg-background border-2 border-border neo-shadow">
           <h2 className="text-xl font-bold mb-4">
-            {editingProject ? "Chỉnh sửa Project" : "Tạo Project Mới"}
+            {editingProject ? t("admin.editProject") : t("admin.createProject")}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Tên project *
+                  {t("admin.title")} *
                 </label>
                 <Input
+                  className="border-2 border-border"
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
@@ -329,8 +333,9 @@ export default function ProjectsManagerPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Slug *</label>
+                <label className="block text-sm font-medium mb-2">{t("admin.slug")} *</label>
                 <Input
+                  className="border-2 border-border"
                   value={formData.slug}
                   onChange={(e) =>
                     setFormData({ ...formData, slug: e.target.value })
@@ -348,9 +353,10 @@ export default function ProjectsManagerPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Danh mục *
+                  {t("admin.category")} *
                 </label>
                 <Input
+                  className="border-2 border-border"
                   value={formData.category}
                   onChange={(e) =>
                     setFormData({ ...formData, category: e.target.value })
@@ -366,9 +372,10 @@ export default function ProjectsManagerPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Tech Stack
+                  {t("admin.techStack")}
                 </label>
                 <Input
+                  className="border-2 border-border"
                   value={formData.tech_stack}
                   onChange={(e) =>
                     setFormData({ ...formData, tech_stack: e.target.value })
@@ -384,8 +391,9 @@ export default function ProjectsManagerPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Mô tả *</label>
+              <label className="block text-sm font-medium mb-2">{t("admin.description")} *</label>
               <Textarea
+                className="border-2 border-border"
                 value={formData.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
@@ -403,9 +411,10 @@ export default function ProjectsManagerPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  URL ảnh
+                  {t("admin.thumbnail")}
                 </label>
                 <Input
+                  className="border-2 border-border"
                   type="url"
                   value={formData.thumbnail}
                   onChange={(e) =>
@@ -420,9 +429,10 @@ export default function ProjectsManagerPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Demo URL
+                  {t("admin.demoUrl")}
                 </label>
                 <Input
+                  className="border-2 border-border"
                   type="url"
                   value={formData.demo_url}
                   onChange={(e) =>
@@ -437,9 +447,10 @@ export default function ProjectsManagerPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  GitHub URL
+                  {t("admin.githubUrl")}
                 </label>
                 <Input
+                  className="border-2 border-border"
                   type="url"
                   value={formData.github_url}
                   onChange={(e) =>
@@ -455,27 +466,28 @@ export default function ProjectsManagerPage() {
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" className="bg-gradient-primary">
+              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                 <Plus className="mr-2 h-4 w-4" />
-                {editingProject ? "Cập nhật" : "Tạo mới"}
+                {editingProject ? t("admin.update") : t("admin.create")}
               </Button>
               {editingProject && (
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Hủy
+                <Button type="button" variant="outline" onClick={resetForm} className="bg-background border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                  {t("admin.cancel")}
                 </Button>
               )}
             </div>
           </form>
         </Card>
 
+
         {/* List */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project) => (
-            <Card key={project.id} className="p-6 bg-card border-border/50">
+            <Card key={project.id} className="p-6 bg-background border-2 border-border neo-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-sm text-primary mb-2">
+                  <p className="text-sm text-primary font-medium mb-2">
                     {project.category}
                   </p>
                 </div>
@@ -484,6 +496,7 @@ export default function ProjectsManagerPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleEdit(project)}
+                    className="border-2 border-border hover:bg-muted"
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
@@ -491,19 +504,19 @@ export default function ProjectsManagerPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleDelete(project.id)}
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive border-2 border-border hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
-              <p className="text-foreground/70 mb-4">{project.description}</p>
+              <p className="text-muted-foreground mb-4">{project.description}</p>
               {project.tech_stack && (
                 <div className="flex flex-wrap gap-2">
                   {project.tech_stack.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-2 py-1 bg-primary/10 text-primary rounded text-xs"
+                      className="px-2 py-1 bg-primary/20 text-primary border-2 border-border rounded text-xs font-medium"
                     >
                       {tech}
                     </span>

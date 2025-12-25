@@ -28,9 +28,12 @@ import {
   Cell,
 } from "recharts";
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 export default function AdminDashboard() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const { t } = useLanguage();
   const [stats, setStats] = useState({
     blogs: 0,
     projects: 0,
@@ -108,7 +111,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <p>Loading...</p>
+        <p>{t("admin.loading")}</p>
       </div>
     );
   }
@@ -119,7 +122,7 @@ export default function AdminDashboard() {
 
   const statCards = [
     {
-      title: "Blogs",
+      title: t("admin.blogs"),
       count: stats.blogs,
       icon: FileText,
       color: "text-primary",
@@ -127,7 +130,7 @@ export default function AdminDashboard() {
       change: "+12%",
     },
     {
-      title: "Projects",
+      title: t("admin.projects"),
       count: stats.projects,
       icon: FolderOpen,
       color: "text-accent",
@@ -135,7 +138,7 @@ export default function AdminDashboard() {
       change: "+8%",
     },
     {
-      title: "Testimonials",
+      title: t("admin.testimonials"),
       count: stats.testimonials,
       icon: MessageSquare,
       color: "text-primary",
@@ -143,7 +146,7 @@ export default function AdminDashboard() {
       change: "+15%",
     },
     {
-      title: "Yêu cầu hỗ trợ",
+      title: t("admin.supportRequests"),
       count: stats.supportRequests,
       icon: Mail,
       color: "text-accent",
@@ -163,9 +166,9 @@ export default function AdminDashboard() {
   ];
 
   const pieChartData = [
-    { name: "Blogs", value: stats.blogs },
-    { name: "Projects", value: stats.projects },
-    { name: "Testimonials", value: stats.testimonials },
+    { name: t("admin.blogs"), value: stats.blogs },
+    { name: t("admin.projects"), value: stats.projects },
+    { name: t("admin.testimonials"), value: stats.testimonials },
   ];
 
   const COLORS = [
@@ -178,8 +181,8 @@ export default function AdminDashboard() {
     <AdminLayout>
       <div className="space-y-8">
         <div className="animate-fade-in">
-          <h1 className="text-3xl font-bold gradient-text mb-2">Dashboard</h1>
-          <p className="text-muted-foreground">Tổng quan quản lý nội dung</p>
+          <h1 className="text-3xl font-bold gradient-text mb-2">{t("admin.dashboard")}</h1>
+          <p className="text-muted-foreground">{t("admin.overview")}</p>
         </div>
 
         {/* Stats Grid */}
@@ -189,151 +192,161 @@ export default function AdminDashboard() {
             return (
               <Card
                 key={stat.title}
-                className="p-6 bg-card border-border/50 hover:shadow-glow transition-all duration-300"
+                className="p-6 bg-background border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div
-                    className={`w-12 h-12 rounded-full ${stat.bgColor} flex items-center justify-center`}
+                    className={`w-12 h-12 border-2 border-border flex items-center justify-center neo-shadow-sm ${
+                        stat.color === 'text-primary' ? 'bg-primary text-primary-foreground' : 'bg-background'
+                    }`}
                   >
-                    <Icon className={`w-6 h-6 ${stat.color}`} />
+                    <Icon className={`w-6 h-6 ${stat.color === 'text-primary' ? 'stroke-current' : 'text-foreground'}`} />
                   </div>
-                  <span className="text-xs font-medium text-primary flex items-center gap-1">
-                    <TrendingUp className="w-3 h-3" />
+                  <span className="text-xs font-bold bg-primary text-primary-foreground border border-border px-2 py-1 flex items-center gap-1 neo-shadow-sm">
+                    <TrendingUp className="w-3 h-3 stroke-[3px]" />
                     {stat.change}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">
+                  <p className="text-sm font-bold text-muted-foreground mb-1 uppercase tracking-wider">
                     {stat.title}
                   </p>
-                  <p className="text-3xl font-bold">{stat.count}</p>
+                  <p className="text-3xl font-black font-heading">{stat.count}</p>
                 </div>
               </Card>
             );
           })}
         </div>
 
-        {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Line Chart */}
-          <Card className="p-6 bg-card border-border/50">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              Xu hướng nội dung
-            </h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={lineChartData}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="hsl(var(--border))"
-                />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-                <YAxis stroke="hsl(var(--muted-foreground))" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="blogs"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="projects"
-                  stroke="hsl(var(--accent))"
-                  strokeWidth={2}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Line Chart */}
+            <Card className="p-6 bg-background border-2 border-border neo-shadow">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading uppercase">
+                <TrendingUp className="w-5 h-5 text-primary stroke-[3px]" />
+                {t("admin.contentTrends")}
+              </h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={lineChartData}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="hsl(var(--border))"
+                  />
+                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" tick={{fontSize: 12, fontWeight: 600}} />
+                  <YAxis stroke="hsl(var(--muted-foreground))" tick={{fontSize: 12, fontWeight: 600}} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--background))",
+                      border: "2px solid hsl(var(--border))",
+                      boxShadow: "4px 4px 0px 0px hsl(var(--foreground))",
+                      borderRadius: "0px",
+                      fontWeight: "bold"
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="blogs"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={3}
+                    dot={{ stroke: 'hsl(var(--border))', strokeWidth: 2, r: 4, fill: 'hsl(var(--primary))' }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="projects"
+                    stroke="hsl(var(--accent))"
+                    strokeWidth={3}
+                    dot={{ stroke: 'hsl(var(--border))', strokeWidth: 2, r: 4, fill: 'hsl(var(--accent))' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </Card>
 
-          {/* Pie Chart */}
-          <Card className="p-6 bg-card border-border/50">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Eye className="w-5 h-5 text-primary" />
-              Phân bổ nội dung
-            </h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={pieChartData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(0)}%`
-                  }
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {pieChartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
-        </div>
-
-        {/* Recent Activity */}
-        <Card className="p-6 bg-card border-border/50">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Users className="w-5 h-5 text-primary" />
-            Hoạt động gần đây
-          </h3>
-          <div className="space-y-4">
-            {recentActivity.length === 0 ? (
-              <p className="text-muted-foreground text-sm">
-                Chưa có hoạt động nào
-              </p>
-            ) : (
-              recentActivity.map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
-                >
-                  {activity.type === "blog" ? (
-                    <FileText className="w-5 h-5 text-primary flex-shrink-0" />
-                  ) : (
-                    <FolderOpen className="w-5 h-5 text-accent flex-shrink-0" />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium truncate">{activity.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {new Date(activity.date).toLocaleDateString("vi-VN")}
-                    </p>
-                  </div>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${
-                      activity.type === "blog"
-                        ? "bg-primary/10 text-primary"
-                        : "bg-accent/10 text-accent"
-                    }`}
+            {/* Pie Chart */}
+            <Card className="p-6 bg-background border-2 border-border neo-shadow">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading uppercase">
+                <Eye className="w-5 h-5 text-primary stroke-[3px]" />
+                {t("admin.contentDistribution")}
+              </h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={pieChartData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) =>
+                      `${name}: ${(percent * 100).toFixed(0)}%`
+                    }
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    stroke="hsl(var(--border))"
+                    strokeWidth={2}
                   >
-                    {activity.type === "blog" ? "Blog" : "Project"}
-                  </span>
-                </div>
-              ))
-            )}
+                    {pieChartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                        backgroundColor: "hsl(var(--background))",
+                        border: "2px solid hsl(var(--border))",
+                        boxShadow: "4px 4px 0px 0px hsl(var(--foreground))",
+                        borderRadius: "0px",
+                        fontWeight: "bold"
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </Card>
           </div>
-        </Card>
+
+          {/* Recent Activity */}
+          <Card className="p-6 bg-background border-2 border-border neo-shadow">
+            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 font-heading uppercase">
+              <Users className="w-5 h-5 text-primary stroke-[3px]" />
+              {t("admin.recentActivity")}
+            </h3>
+            <div className="space-y-4">
+              {recentActivity.length === 0 ? (
+                <p className="text-muted-foreground text-sm font-medium">
+                  {t("admin.noActivity")}
+                </p>
+              ) : (
+                recentActivity.map((activity, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-4 p-3 border-2 border-transparent hover:border-border hover:bg-accent/50 hover:neo-shadow-sm transition-all duration-200"
+                  >
+                    {activity.type === "blog" ? (
+                      <FileText className="w-5 h-5 text-primary flex-shrink-0 stroke-[2.5px]" />
+                    ) : (
+                      <FolderOpen className="w-5 h-5 text-foreground flex-shrink-0 stroke-[2.5px]" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold truncate">{activity.title}</p>
+                      <p className="text-xs font-medium text-muted-foreground">
+                        {new Date(activity.date).toLocaleDateString("vi-VN")}
+                      </p>
+                    </div>
+                    <span
+                      className={`text-xs px-2 py-1 font-bold border-2 border-border neo-shadow-sm ${
+                        activity.type === "blog"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background text-foreground"
+                      }`}
+                    >
+                      {activity.type === "blog" ? "Blog" : "Project"}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
       </div>
     </AdminLayout>
   );

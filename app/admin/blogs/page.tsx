@@ -18,6 +18,8 @@ import {
   SUPABASE_PUBLISHABLE_KEY,
 } from "@/integrations/supabase/client";
 
+import { useLanguage } from "@/contexts/LanguageContext";
+
 interface Blog {
   id: string;
   title: string;
@@ -32,6 +34,7 @@ interface Blog {
 export default function BlogsManagerPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -194,10 +197,10 @@ export default function BlogsManagerPage() {
 
   if (loading || !user) return null;
 
-  if (isLoading) {
+    if (isLoading) {
     return (
       <AdminLayout>
-        <div>Đang tải...</div>
+        <div>{t("admin.loading")}</div>
       </AdminLayout>
     );
   }
@@ -207,23 +210,24 @@ export default function BlogsManagerPage() {
       <div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold gradient-text mb-2">
-            Quản lý Blogs
+            {t("admin.manageBlogs")}
           </h1>
-          <p className="text-foreground/60">Tạo và chỉnh sửa bài viết</p>
+          <p className="text-foreground/60">{t("admin.blogDesc")}</p>
         </div>
 
         {/* Form */}
-        <Card className="p-6 mb-8 bg-card border-border/50">
+        <Card className="p-6 mb-8 bg-background border-2 border-border neo-shadow">
           <h2 className="text-xl font-bold mb-4">
-            {editingBlog ? "Chỉnh sửa Blog" : "Tạo Blog Mới"}
+            {editingBlog ? t("admin.editBlog") : t("admin.createBlog")}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Tiêu đề *
+                  {t("admin.title")} *
                 </label>
                 <Input
+                  className="border-2 border-border"
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
@@ -237,8 +241,9 @@ export default function BlogsManagerPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Slug *</label>
+                <label className="block text-sm font-medium mb-2">{t("admin.slug")} *</label>
                 <Input
+                  className="border-2 border-border"
                   value={formData.slug}
                   onChange={(e) =>
                     setFormData({ ...formData, slug: e.target.value })
@@ -254,8 +259,9 @@ export default function BlogsManagerPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Tóm tắt</label>
+              <label className="block text-sm font-medium mb-2">{t("admin.excerpt")}</label>
               <Textarea
+                className="border-2 border-border"
                 value={formData.excerpt}
                 onChange={(e) =>
                   setFormData({ ...formData, excerpt: e.target.value })
@@ -271,9 +277,10 @@ export default function BlogsManagerPage() {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Nội dung *
+                {t("admin.content")} *
               </label>
               <Textarea
+                className="border-2 border-border"
                 value={formData.content}
                 onChange={(e) =>
                   setFormData({ ...formData, content: e.target.value })
@@ -290,9 +297,10 @@ export default function BlogsManagerPage() {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                URL ảnh bìa
+                {t("admin.coverImage")}
               </label>
               <Input
+                className="border-2 border-border"
                 type="url"
                 value={formData.cover_image}
                 onChange={(e) =>
@@ -317,18 +325,18 @@ export default function BlogsManagerPage() {
                 className="w-4 h-4"
               />
               <label htmlFor="published" className="text-sm font-medium">
-                Xuất bản
+                {t("admin.published")}
               </label>
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" className="bg-gradient-primary">
+              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                 <Plus className="mr-2 h-4 w-4" />
-                {editingBlog ? "Cập nhật" : "Tạo mới"}
+                {editingBlog ? t("admin.update") : t("admin.create")}
               </Button>
               {editingBlog && (
-                <Button type="button" variant="outline" onClick={resetForm}>
-                  Hủy
+                <Button type="button" variant="outline" onClick={resetForm} className="bg-background border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                  {t("admin.cancel")}
                 </Button>
               )}
             </div>
@@ -338,23 +346,23 @@ export default function BlogsManagerPage() {
         {/* List */}
         <div className="space-y-4">
           {blogs.map((blog) => (
-            <Card key={blog.id} className="p-6 bg-card border-border/50">
+            <Card key={blog.id} className="p-6 bg-background border-2 border-border neo-shadow">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <h3 className="text-xl font-bold mb-2">{blog.title}</h3>
-                  <p className="text-sm text-foreground/60 mb-2">{blog.slug}</p>
-                  <p className="text-foreground/70">{blog.excerpt}</p>
+                  <p className="text-sm text-muted-foreground mb-2">{blog.slug}</p>
+                  <p className="text-foreground/80">{blog.excerpt}</p>
                   <div className="flex items-center gap-4 mt-4">
                     <span
-                      className={`text-sm px-2 py-1 rounded ${
+                      className={`text-sm px-2 py-1 rounded border-2 border-border ${
                         blog.published
-                          ? "bg-primary/10 text-primary"
+                          ? "bg-primary/20 text-primary font-medium"
                           : "bg-muted text-muted-foreground"
                       }`}
                     >
-                      {blog.published ? "Đã xuất bản" : "Nháp"}
+                      {blog.published ? t("admin.published") : t("admin.draft")}
                     </span>
-                    <span className="text-sm text-foreground/60">
+                    <span className="text-sm text-muted-foreground">
                       {new Date(blog.created_at || "").toLocaleDateString(
                         "vi-VN"
                       )}
@@ -366,6 +374,7 @@ export default function BlogsManagerPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleEdit(blog)}
+                    className="border-2 border-border hover:bg-muted"
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
@@ -373,7 +382,7 @@ export default function BlogsManagerPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleDelete(blog.id)}
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive border-2 border-border hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
