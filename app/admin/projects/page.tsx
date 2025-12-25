@@ -18,6 +18,7 @@ import {
   SUPABASE_PUBLISHABLE_KEY,
 } from "@/integrations/supabase/client";
 
+import { ImageUpload } from "@/components/ui/image-upload";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Project {
@@ -413,13 +414,10 @@ export default function ProjectsManagerPage() {
                 <label className="block text-sm font-medium mb-2">
                   {t("admin.thumbnail")}
                 </label>
-                <Input
-                  className="border-2 border-border"
-                  type="url"
+                <ImageUpload
                   value={formData.thumbnail}
-                  onChange={(e) =>
-                    setFormData({ ...formData, thumbnail: e.target.value })
-                  }
+                  onChange={(url) => setFormData({ ...formData, thumbnail: url })}
+                  folder="projects"
                 />
                 {validationErrors.thumbnail && (
                   <p className="text-sm text-destructive mt-1">
@@ -466,7 +464,7 @@ export default function ProjectsManagerPage() {
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all dark:bg-primary dark:text-primary-foreground">
                 <Plus className="mr-2 h-4 w-4" />
                 {editingProject ? t("admin.update") : t("admin.create")}
               </Button>

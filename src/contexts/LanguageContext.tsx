@@ -274,7 +274,7 @@ const translations = {
     "footer.quickLinks": "Links",
     "footer.contact": "Contact",
     "footer.rights": "All rights reserved.",
-    "footer.copyright": "Copyright © 2024 Viet Dev.",
+    "footer.copyright": "Copyright © 2025 Viet Dev.",
     "footer.madeWith": "Made with",
   },
   vi: {
@@ -535,7 +535,7 @@ const translations = {
     "footer.quickLinks": "Liên kết",
     "footer.contact": "Liên hệ",
     "footer.rights": "Bảo lưu mọi quyền.",
-    "footer.copyright": "Bản quyền © 2024 Viet Dev.",
+    "footer.copyright": "Bản quyền © 2025 Viet Dev.",
     "footer.madeWith": "Được làm bằng",
   },
 };

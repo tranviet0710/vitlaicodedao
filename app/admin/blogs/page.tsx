@@ -18,6 +18,7 @@ import {
   SUPABASE_PUBLISHABLE_KEY,
 } from "@/integrations/supabase/client";
 
+import { ImageUpload } from "@/components/ui/image-upload";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Blog {
@@ -299,13 +300,10 @@ export default function BlogsManagerPage() {
               <label className="block text-sm font-medium mb-2">
                 {t("admin.coverImage")}
               </label>
-              <Input
-                className="border-2 border-border"
-                type="url"
+              <ImageUpload
                 value={formData.cover_image}
-                onChange={(e) =>
-                  setFormData({ ...formData, cover_image: e.target.value })
-                }
+                onChange={(url) => setFormData({ ...formData, cover_image: url })}
+                folder="blogs"
               />
               {validationErrors.cover_image && (
                 <p className="text-sm text-destructive mt-1">
@@ -330,7 +328,7 @@ export default function BlogsManagerPage() {
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all dark:bg-primary dark:text-primary-foreground">
                 <Plus className="mr-2 h-4 w-4" />
                 {editingBlog ? t("admin.update") : t("admin.create")}
               </Button>

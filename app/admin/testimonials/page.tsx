@@ -24,6 +24,7 @@ interface Testimonial {
   created_at: string | null;
 }
 
+import { ImageUpload } from "@/components/ui/image-upload";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function TestimonialsManagerPage() {
@@ -258,12 +259,10 @@ export default function TestimonialsManagerPage() {
               <label className="block text-sm font-medium mb-2">
                 {t("admin.clientAvatar")}
               </label>
-              <Input
-                type="url"
+              <ImageUpload
                 value={formData.client_avatar}
-                onChange={(e) =>
-                  setFormData({ ...formData, client_avatar: e.target.value })
-                }
+                onChange={(url) => setFormData({ ...formData, client_avatar: url })}
+                folder="testimonials"
               />
               {validationErrors.client_avatar && (
                 <p className="text-sm text-destructive mt-1">
@@ -330,7 +329,7 @@ export default function TestimonialsManagerPage() {
             </div>
 
             <div className="flex gap-4">
-              <Button type="submit" className="bg-gradient-primary">
+              <Button type="submit" className="bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all dark:bg-primary dark:text-primary-foreground">
                 <Plus className="mr-2 h-4 w-4" />
                 {editingTestimonial ? t("admin.update") : t("admin.create")}
               </Button>
