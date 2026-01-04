@@ -7,7 +7,6 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import DOMPurify from "dompurify";
 import { createClient } from "@/integrations/supabase/server";
-import { JSDOM } from "jsdom";
 import Image from "next/image";
 import { marked } from "marked";
 
@@ -123,6 +122,7 @@ export default async function ProjectDetailPage({
   };
 
   // Convert markdown to HTML then sanitize
+  const { JSDOM } = await import("jsdom");
   const window = new JSDOM("").window;
   const purify = DOMPurify(window);
   
@@ -205,7 +205,7 @@ export default async function ProjectDetailPage({
                    <h3 className="text-xl font-black uppercase mb-4 border-b-2 border-border pb-2 text-foreground">
                       Tech Stack
                    </h3>
-                   {project.tech_stack && project.tech_stack.length > 0 && (
+                   {project.tech_stack && Array.isArray(project.tech_stack) && project.tech_stack.length > 0 && (
                      <div className="flex flex-wrap gap-2 mb-8">
                        {project.tech_stack.map((tech, index) => (
                          <span
