@@ -270,7 +270,7 @@ const translations = {
     "admin.deleteRequest": "Delete Request",
 
     // Footer
-    "footer.description": "Full-Stack Developer & AI Specialist",
+    "footer.description": "Full-Stack Developer & AI Enthusiast",
     "footer.quickLinks": "Links",
     "footer.contact": "Contact",
     "footer.rights": "All rights reserved.",
@@ -531,7 +531,7 @@ const translations = {
     "admin.deleteRequest": "Xóa yêu cầu",
 
     // Footer
-    "footer.description": "Full-Stack Developer & Chuyên gia AI",
+    "footer.description": "Full-Stack Developer & AI Enthusiast",
     "footer.quickLinks": "Liên kết",
     "footer.contact": "Liên hệ",
     "footer.rights": "Bảo lưu mọi quyền.",
