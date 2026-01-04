@@ -5,10 +5,12 @@ import { ArrowLeft, ExternalLink, Github, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import DOMPurify from "dompurify";
 import { createClient } from "@/integrations/supabase/server";
 import Image from "next/image";
-import { marked } from "marked";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 interface Project {
   id: string;
@@ -121,15 +123,6 @@ export default async function ProjectDetailPage({
     ],
   };
 
-  // Convert markdown to HTML then sanitize
-  const { JSDOM } = await import("jsdom");
-  const window = new JSDOM("").window;
-  const purify = DOMPurify(window);
-  
-  const markdownContent = project.content || "";
-  const htmlContent = marked.parse(markdownContent) as string;
-  const sanitizedContent = purify.sanitize(htmlContent);
-
   return (
     <div className="min-h-screen bg-background">
       <script
@@ -188,15 +181,14 @@ export default async function ProjectDetailPage({
                     <h3 className="text-2xl font-black uppercase mb-6 flex items-center gap-2 text-foreground">
                        <span className="text-primary">#</span> Case Study Analysis
                     </h3>
-                    {sanitizedContent && (
-                      <div className="prose prose-lg dark:prose-invert prose-headings:font-black prose-headings:uppercase prose-p:font-medium max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-li:text-foreground/90">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: sanitizedContent,
-                          }}
-                        />
-                      </div>
-                    )}
+                    <div className="prose prose-lg dark:prose-invert prose-headings:font-black prose-headings:uppercase prose-p:font-medium max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-li:text-foreground/90">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                      >
+                        {project.content || ""}
+                      </ReactMarkdown>
+                    </div>
                  </div>
              </div>
 
