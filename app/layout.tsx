@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     siteName: "Vịt Lại Code Dạo",
     images: [
       {
-        url: "https://vitlaicodedao.tech/og-image.png",
+        url: "https://vitlaicodedao.tech/preview.png",
         width: 1200,
         height: 630,
         alt: "Vịt Lại Code Dạo - VietDev Fullstack Developer",
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
     title: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
     description:
       "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application.",
-    images: ["https://vitlaicodedao.tech/og-image.png"],
+    images: ["https://vitlaicodedao.tech/preview.png"],
     creator: "@vitlaicodedao",
   },
   robots: {
