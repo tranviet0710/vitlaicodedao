@@ -124,6 +124,8 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <head>
+        <meta property="og:url" content="https://vitlaicodedao.tech" />
+        <meta property="fb:app_id" content="1500482207749462" />
         <meta property="og:image" content="https://vitlaicodedao.tech/preview.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
