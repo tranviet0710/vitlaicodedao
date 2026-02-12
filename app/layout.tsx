@@ -124,6 +124,10 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <head>
+        <meta property="og:image" content="https://vitlaicodedao.tech/preview.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Vịt Lại Code Dạo - VietDev Fullstack Developer" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-D33K2DPTHT"
           strategy="afterInteractive"
