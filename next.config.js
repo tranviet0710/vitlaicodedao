@@ -17,6 +17,38 @@ const nextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        // Prevent indexing of admin and auth pages
+        source: '/admin/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+      {
+        source: '/auth',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+    ];
+  },
   typescript: {
     ignoreBuildErrors: false,
   },

@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
 import { Metadata } from 'next'
 
-// Prevent search engines from indexing admin pages
+// Prevent search engines from indexing auth pages
 export const metadata: Metadata = {
+  title: 'Đăng nhập | Vịt Lại Code Dạo',
   robots: {
     index: false,
     follow: false,
@@ -13,9 +14,6 @@ export const metadata: Metadata = {
   },
 }
 
-// Disable static generation for admin routes (requires authentication)
-export const dynamic = 'force-dynamic'
-
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function AuthLayout({ children }: { children: ReactNode }) {
   return <>{children}</>
 }
