@@ -4,6 +4,7 @@ import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
+import HeroScene from "@/components/HeroScene";
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -47,6 +48,7 @@ const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background border-b-2 border-border"
     >
+      <HeroScene />
       {/* Grid Pattern Background */}
 
        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
