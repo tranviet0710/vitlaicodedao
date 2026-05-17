@@ -51,12 +51,12 @@ const Contact = () => {
     {
       icon: FaTelegram,
       name: "Telegram",
-      link: "https://t.me/pikapika2101",
+      link: "https://t.me/vietdev0710",
     },
     {
       icon: FaFacebookMessenger,
       name: "Facebook",
-      link: "https://facebook.com/tranviet0710",
+      link: "https://facebook.com/programDever",
     },
     {
       icon: FaGithub,
