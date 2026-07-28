@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, SUPABASE_PUBLISHABLE_KEY } from "@/integrations/supabase/client";
 import { MessageCircle, Send, X } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 
@@ -31,7 +31,10 @@ const Chatbot = () => {
     setIsLoading(true);
 
     const { data: sessionData } = await supabase.auth.getSession();
-    const accessToken = sessionData?.session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    // `import.meta.env` is Vite syntax and is always undefined under Next, so
+    // signed-out visitors were sending "Bearer undefined" and getting a 401.
+    const accessToken =
+      sessionData?.session?.access_token || SUPABASE_PUBLISHABLE_KEY;
 
     try {
       const response = await fetch("https://zdsmholjkxttwtuirakc.supabase.co/functions/v1/chat-agent", {
