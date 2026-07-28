@@ -181,7 +181,7 @@ const Contact = () => {
              
              {/* Decorative background pattern */}
              <div className="absolute inset-0 opacity-10 pointer-events-none" 
-                  style={{ backgroundImage: "radial-gradient(circle, var(--foreground) 2px, transparent 2.5px)", backgroundSize: "20px 20px" }}>
+                  style={{ backgroundImage: "radial-gradient(circle, hsl(var(--foreground)) 2px, transparent 2.5px)", backgroundSize: "20px 20px" }}>
              </div>
           </div>
         </div>
@@ -212,7 +212,7 @@ const Contact = () => {
                         <Icon
                           className="w-6 h-6 text-primary"
                           style={{
-                            filter: `drop-shadow(0 0 5px hsla(var(--primary), 0.7))`,
+                            filter: `drop-shadow(0 0 5px hsl(var(--primary) / 0.7))`,
                           }}
                         />
                       </div>
@@ -247,7 +247,7 @@ const Contact = () => {
                       <Icon
                         className="w-6 h-6 text-primary/80 group-hover:text-primary transition-colors"
                         style={{
-                          filter: `drop-shadow(0 0 5px hsla(var(--primary), 0.7))`,
+                          filter: `drop-shadow(0 0 5px hsl(var(--primary) / 0.7))`,
                         }}
                       />
                     </a>
