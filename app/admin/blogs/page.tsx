@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2 } from "lucide-react";
@@ -280,14 +281,11 @@ export default function BlogsManagerPage() {
               <label className="block text-sm font-medium mb-2">
                 {t("admin.content")} *
               </label>
-              <Textarea
-                className="border-2 border-border"
+              <MarkdownEditor
                 value={formData.content}
-                onChange={(e) =>
-                  setFormData({ ...formData, content: e.target.value })
+                onChange={(val) =>
+                  setFormData({ ...formData, content: val })
                 }
-                rows={10}
-                required
               />
               {validationErrors.content && (
                 <p className="text-sm text-destructive mt-1">

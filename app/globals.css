@@ -202,3 +202,82 @@
     text-shadow: 3px 3px 0px hsl(var(--primary));
   }
 }
+
+/*
+  ✍️ BLOG RICH CONTENT
+  Class names here are the allowlist enforced by src/lib/markdown-schema.ts.
+  Adding a new one means adding it there too, or the sanitizer strips it.
+*/
+@layer components {
+  /* Highlighter pens */
+  .hl-yellow,
+  .hl-green,
+  .hl-blue,
+  .hl-pink,
+  .hl-violet {
+    @apply px-1 py-0.5 font-medium;
+    color: hsl(0 0% 0%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .hl-yellow { background-color: hsl(50 100% 60%); }
+  .hl-green  { background-color: hsl(140 80% 60%); }
+  .hl-blue   { background-color: hsl(200 100% 65%); }
+  .hl-pink   { background-color: hsl(320 100% 72%); }
+  .hl-violet { background-color: hsl(250 100% 75%); }
+
+  /* Inline text colours */
+  .tx-violet { color: hsl(250 100% 65%); @apply font-semibold; }
+  .tx-cyan   { color: hsl(185 100% 38%); @apply font-semibold; }
+  .tx-pink   { color: hsl(320 100% 55%); @apply font-semibold; }
+  .tx-green  { color: hsl(145 75% 38%); @apply font-semibold; }
+  .tx-red    { color: hsl(0 90% 52%); @apply font-semibold; }
+  .tx-muted  { @apply text-muted-foreground; }
+
+  .dark .tx-cyan  { color: hsl(180 100% 60%); }
+  .dark .tx-green { color: hsl(145 80% 58%); }
+  .dark .tx-red   { color: hsl(0 100% 68%); }
+  .dark .tx-pink  { color: hsl(320 100% 72%); }
+
+  /* Callout boxes */
+  .callout {
+    @apply my-8 border-2 border-border bg-card p-5 pl-6;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+    border-left-width: 8px;
+  }
+  .callout > :first-child { @apply mt-0; }
+  .callout > :last-child { @apply mb-0; }
+  .callout-info   { border-left-color: hsl(200 100% 50%); }
+  .callout-tip    { border-left-color: hsl(145 75% 45%); }
+  .callout-warn   { border-left-color: hsl(40 100% 50%); }
+  .callout-danger { border-left-color: hsl(0 90% 55%); }
+
+  /* Paragraph lead-in */
+  .lead {
+    @apply text-xl leading-relaxed text-foreground/80 md:text-2xl;
+  }
+
+  /* Images inside articles */
+  .neo-img {
+    @apply my-8 border-2 border-border bg-card;
+    box-shadow: 4px 4px 0px 0px hsl(var(--border));
+  }
+  .img-full   { @apply w-full; }
+  .img-lg     { max-width: 100%; }
+  .img-md     { max-width: 66%; }
+  .img-sm     { max-width: 40%; }
+  .img-center { @apply mx-auto block; }
+  .img-left   { @apply mr-6 mb-4 block; float: left; }
+  .img-right  { @apply ml-6 mb-4 block; float: right; }
+
+  /* Floats and small images collapse on phones */
+  @media (max-width: 768px) {
+    .img-left,
+    .img-right,
+    .img-md,
+    .img-sm {
+      @apply mx-0 w-full max-w-full;
+      float: none;
+    }
+  }
+}
