@@ -5,8 +5,8 @@ import { ArrowLeft, ExternalLink, Github, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { createClient } from "@/integrations/supabase/server";
-import Image from "next/image";
+import { createPublicClient } from "@/integrations/supabase/public";
+import { CoverImage } from "@/components/CoverImage";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -25,8 +25,19 @@ interface Project {
   slug: string;
 }
 
+/** Project pages are public and identical for everyone; cache and revalidate. */
+export const revalidate = 300;
+
+/** Prerender known projects; new ones are cached on first request. */
+export async function generateStaticParams() {
+  const supabase = createPublicClient();
+  const { data } = await supabase.from("projects").select("slug");
+
+  return (data || []).map(({ slug }) => ({ slug }));
+}
+
 async function getProject(slug: string): Promise<Project | null> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("projects")
     .select("*")
@@ -106,19 +117,19 @@ export default async function ProjectDetailPage({
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://vitlaicodedao.tech",
+        item: "https://www.vitlaicodedao.tech",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Projects",
-        item: "https://vitlaicodedao.tech/projects",
+        item: "https://www.vitlaicodedao.tech/projects",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: project.title,
-        item: `https://vitlaicodedao.tech/project/${slug}`,
+        item: `https://www.vitlaicodedao.tech/project/${slug}`,
       },
     ],
   };
@@ -152,11 +163,10 @@ export default async function ProjectDetailPage({
           <div className="mb-12 border-2 border-border bg-card p-2 neo-shadow">
              {project.thumbnail && (
                <div className="relative aspect-video w-full overflow-hidden border-2 border-border">
-                 <Image
+                 <CoverImage
                    src={project.thumbnail}
                    alt={project.title}
-                   fill
-                   className="object-cover"
+                   sizes="(max-width: 1024px) 100vw, 1024px"
                    priority
                  />
                </div>

@@ -130,12 +130,15 @@ const ProjectCard = ({
   );
 };
 
-const Projects = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+/** Seeded from the server so the projects (and their links) are in the HTML. */
+const Projects = ({ initialProjects = [] }: { initialProjects?: Project[] }) => {
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [loading, setLoading] = useState(initialProjects.length === 0);
   const { t } = useLanguage();
 
   useEffect(() => {
+    if (initialProjects.length > 0) return;
+
     const fetchProjects = async () => {
       setLoading(true);
       const { data, error } = await supabase
@@ -153,7 +156,7 @@ const Projects = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [initialProjects.length]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

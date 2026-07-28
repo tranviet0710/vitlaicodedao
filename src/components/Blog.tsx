@@ -87,12 +87,15 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
   );
 };
 
-const Blog = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+/** Seeded from the server so the posts (and their links) are in the HTML. */
+const Blog = ({ initialBlogs = [] }: { initialBlogs?: Blog[] }) => {
+  const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
+  const [loading, setLoading] = useState(initialBlogs.length === 0);
   const { t } = useLanguage();
 
   useEffect(() => {
+    if (initialBlogs.length > 0) return;
+
     const fetchBlogs = async () => {
       setLoading(true);
       const { data, error } = await supabase
@@ -111,7 +114,7 @@ const Blog = () => {
     };
 
     fetchBlogs();
-  }, []);
+  }, [initialBlogs.length]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

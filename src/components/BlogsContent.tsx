@@ -114,14 +114,22 @@ const BlogCard = ({ post, index }: { post: Blog; index: number }) => {
   );
 };
 
-const BlogsContent = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+/**
+ * `initialBlogs` is fetched on the server so the post list (and the internal
+ * links to each post) is present in the HTML. Fetching it in an effect meant
+ * crawlers received an empty list and no links to any article.
+ */
+const BlogsContent = ({ initialBlogs = [] }: { initialBlogs?: Blog[] }) => {
+  const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>(initialBlogs);
+  const [loading, setLoading] = useState(initialBlogs.length === 0);
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useLanguage();
 
   useEffect(() => {
+    // Already seeded from the server; no need to re-fetch on mount.
+    if (initialBlogs.length > 0) return;
+
     const fetchBlogs = async () => {
       setLoading(true);
       const { data, error } = await supabase
@@ -140,7 +148,7 @@ const BlogsContent = () => {
     };
 
     fetchBlogs();
-  }, []);
+  }, [initialBlogs.length]);
 
   useEffect(() => {
     if (searchQuery.trim() === "") {

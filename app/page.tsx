@@ -7,10 +7,17 @@ import Testimonials from "@/components/Testimonials"
 import Blog from "@/components/Blog"
 import Contact from "@/components/Contact"
 import Footer from "@/components/Footer"
-import { createClient } from '@/integrations/supabase/server'
+import { createPublicClient } from '@/integrations/supabase/public'
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/site'
+
+/**
+ * The home page is identical for every visitor, so it is prerendered and
+ * refreshed in the background instead of hitting Supabase on every request.
+ */
+export const revalidate = 300
 
 async function getSEOData() {
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data } = await supabase
     .from("seo_settings")
     .select("*")
@@ -18,6 +25,31 @@ async function getSEOData() {
     .single()
 
   return data
+}
+
+/**
+ * Fetched on the server so the featured projects and posts — and the internal
+ * links to them — are in the prerendered HTML instead of appearing only after
+ * client-side effects run.
+ */
+async function getHomeContent() {
+  const supabase = createPublicClient()
+
+  const [{ data: projects }, { data: blogs }] = await Promise.all([
+    supabase
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(4),
+    supabase
+      .from("blogs")
+      .select("id, title, slug, excerpt, cover_image, created_at")
+      .eq("published", true)
+      .order("created_at", { ascending: false })
+      .limit(3),
+  ])
+
+  return { projects: projects || [], blogs: blogs || [] }
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,6 +62,11 @@ export async function generateMetadata(): Promise<Metadata> {
     }
   }
 
+  // A page-level `openGraph` block replaces the layout's entirely, so an empty
+  // `og_image` in the database left the home page — the most-shared URL on the
+  // site — with no social card image at all.
+  const ogImage = seoData.og_image || DEFAULT_OG_IMAGE
+
   return {
     title: seoData.title,
     description: seoData.description,
@@ -37,7 +74,9 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seoData.og_title || seoData.title,
       description: seoData.og_description || seoData.description,
-      images: seoData.og_image ? [{ url: seoData.og_image }] : [],
+      url: SITE_URL,
+      siteName: SITE_NAME,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
       type: (seoData.og_type as any) || 'website',
     },
     twitter: {
@@ -45,26 +84,29 @@ export async function generateMetadata(): Promise<Metadata> {
       site: seoData.twitter_site,
       title: seoData.og_title || seoData.title,
       description: seoData.og_description || seoData.description,
+      images: [ogImage],
     },
     alternates: {
-      canonical: seoData.canonical_url || 'https://vitlaicodedao.tech',
+      canonical: seoData.canonical_url || SITE_URL,
     },
   }
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { projects, blogs } = await getHomeContent()
+
   // Enhanced structured data for homepage with brand name
   const websiteStructuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Vịt Lại Code Dạo",
     alternateName: ["vitlaicodedao", "VietDev", "Vit Lai Code Dao"],
-    url: "https://vitlaicodedao.tech",
+    url: "https://www.vitlaicodedao.tech",
     description: "VietDev - Fullstack Developer với hơn 5 năm kinh nghiệm. Dạy lập trình web, chia sẻ kiến thức IT.",
     inLanguage: "vi-VN",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://vitlaicodedao.tech/blogs?q={search_term_string}",
+      target: "https://www.vitlaicodedao.tech/blogs?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -74,8 +116,8 @@ export default function HomePage() {
     "@type": "Person",
     name: "VietDev",
     alternateName: ["Vịt Lại Code Dạo", "vitlaicodedao"],
-    url: "https://vitlaicodedao.tech",
-    image: "https://vitlaicodedao.tech/avt.png",
+    url: "https://www.vitlaicodedao.tech",
+    image: "https://www.vitlaicodedao.tech/avt.png",
     jobTitle: "Fullstack Developer",
     description: "Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application. Dạy lập trình web.",
     sameAs: [
@@ -90,7 +132,7 @@ export default function HomePage() {
     worksFor: {
       "@type": "Organization",
       name: "Vịt Lại Code Dạo",
-      url: "https://vitlaicodedao.tech"
+      url: "https://www.vitlaicodedao.tech"
     }
   };
 
@@ -101,9 +143,9 @@ export default function HomePage() {
     alternateName: "vitlaicodedao",
     description:
       "Dịch vụ phát triển web và mobile app chuyên nghiệp. React, Node.js, TypeScript, AI integration.",
-    url: "https://vitlaicodedao.tech",
-    image: "https://vitlaicodedao.tech/og-image.png",
-    logo: "https://vitlaicodedao.tech/favicon.svg",
+    url: "https://www.vitlaicodedao.tech",
+    image: "https://www.vitlaicodedao.tech/og-image.png",
+    logo: "https://www.vitlaicodedao.tech/favicon.svg",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
@@ -139,9 +181,9 @@ export default function HomePage() {
       <Navigation />
       <Hero />
       <Skills />
-      <Projects />
+      <Projects initialProjects={projects} />
       <Testimonials />
-      <Blog />
+      <Blog initialBlogs={blogs} />
       <Contact />
       <Footer />
     </div>
