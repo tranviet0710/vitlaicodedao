@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     title: "Blog | Vịt Lại Code Dạo",
     description:
       "Đọc các bài viết về lập trình web, React, Next.js, TypeScript từ VietDev",
-    url: "https://vitlaicodedao.tech/blogs",
+    url: "https://www.vitlaicodedao.tech/blogs",
     type: "website",
     images: [
       {
-        url: "https://vitlaicodedao.tech/og-image.png",
+        url: "https://www.vitlaicodedao.tech/og-image.png",
         width: 1200,
         height: 630,
         alt: "Vịt Lại Code Dạo - Blog",
@@ -33,10 +33,10 @@ export const metadata: Metadata = {
     title: "Blog | Vịt Lại Code Dạo",
     description:
       "Đọc các bài viết về lập trình web, React, Next.js, TypeScript từ VietDev",
-    images: ["https://vitlaicodedao.tech/og-image.png"],
+    images: ["https://www.vitlaicodedao.tech/og-image.png"],
   },
   alternates: {
-    canonical: "https://vitlaicodedao.tech/blogs",
+    canonical: "https://www.vitlaicodedao.tech/blogs",
   },
 };
 

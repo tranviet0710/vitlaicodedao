@@ -175,7 +175,7 @@ serve(async (req) => {
                         <table role="presentation" style="width: 100%; border-collapse: collapse; margin: 32px 0;">
                           <tr>
                             <td align="center">
-                              <a href="https://vitlaicodedao.tech/admin/support-requests" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.4);">
+                              <a href="https://www.vitlaicodedao.tech/admin/support-requests" style="display: inline-block; padding: 16px 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; box-shadow: 0 4px 6px rgba(102, 126, 234, 0.4);">
                                 🚀 Xem và xử lý yêu cầu
                               </a>
                             </td>
@@ -183,7 +183,7 @@ serve(async (req) => {
                         </table>
                         
                         <p style="margin: 24px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-                          Vui lòng đăng nhập vào <a href="https://vitlaicodedao.tech" style="color: #667eea; text-decoration: none; font-weight: 600;">vitlaicodedao.tech</a> để xem chi tiết và thực hiện hành động cần thiết.
+                          Vui lòng đăng nhập vào <a href="https://www.vitlaicodedao.tech" style="color: #667eea; text-decoration: none; font-weight: 600;">vitlaicodedao.tech</a> để xem chi tiết và thực hiện hành động cần thiết.
                         </p>
                       </td>
                     </tr>

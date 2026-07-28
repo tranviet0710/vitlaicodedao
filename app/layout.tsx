@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from "@/lib/site";
 
 // Modern sans-serif for body text
 const spaceGrotesk = Space_Grotesk({
@@ -30,7 +31,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vitlaicodedao.tech"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
     template: "%s | Vịt Lại Code Dạo",
@@ -54,14 +55,16 @@ export const metadata: Metadata = {
     "thuê lập trình viên",
     "làm website",
   ],
-  authors: [{ name: "VietDev", url: "https://vitlaicodedao.tech" }],
+  authors: [{ name: "VietDev", url: SITE_URL }],
   creator: "VietDev",
-  publisher: "Vịt Lại Code Dạo",
+  publisher: SITE_NAME,
   icons: {
+    // Only reference files that exist in /public — the previous 16x16/32x32
+    // entries pointed at missing files and 404'd on every page load.
     icon: [
       { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
     ],
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
@@ -71,14 +74,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "vi_VN",
-    url: "https://vitlaicodedao.tech",
+    url: SITE_URL,
     title: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
     description:
       "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application. Dạy lập trình web.",
-    siteName: "Vịt Lại Code Dạo",
+    siteName: SITE_NAME,
     images: [
       {
-        url: "https://vitlaicodedao.tech/preview.png",
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
         alt: "Vịt Lại Code Dạo - VietDev Fullstack Developer",
@@ -90,8 +93,11 @@ export const metadata: Metadata = {
     title: "Vịt Lại Code Dạo | VietDev - Fullstack Developer",
     description:
       "Hey, Mình là VietDev, Fullstack Developer với hơn 5 năm kinh nghiệm. Chuyên cung cấp các dịch vụ về website, application.",
-    images: ["https://vitlaicodedao.tech/preview.png"],
+    images: [DEFAULT_OG_IMAGE],
     creator: "@vitlaicodedao",
+  },
+  other: {
+    "fb:app_id": "1500482207749462",
   },
   robots: {
     index: true,
@@ -109,9 +115,9 @@ export const metadata: Metadata = {
     // google: "your-verification-code",
   },
   alternates: {
-    canonical: "https://vitlaicodedao.tech",
+    canonical: SITE_URL,
     languages: {
-      'vi-VN': 'https://vitlaicodedao.tech',
+      'vi-VN': SITE_URL,
     },
   },
 };
@@ -124,12 +130,22 @@ export default function RootLayout({
   return (
     <html lang="vi" suppressHydrationWarning>
       <head>
-        <meta property="og:url" content="https://vitlaicodedao.tech" />
-        <meta property="fb:app_id" content="1500482207749462" />
-        <meta property="og:image" content="https://vitlaicodedao.tech/preview.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Vịt Lại Code Dạo - VietDev Fullstack Developer" />
+        {/* og:url, og:image and fb:app_id come from the metadata export above.
+            Repeating them here produced duplicate tags that scrapers pick over
+            the per-page values on blog and project pages. */}
+        <link rel="preconnect" href="https://zdsmholjkxttwtuirakc.supabase.co" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Vịt Lại Code Dạo — Blog"
+          href="/feed.xml"
+        />
+        {/* Framer Motion renders its `initial` state into the HTML, so entrance
+            animations ship as opacity:0 and only become visible once the client
+            bundle runs. If it never does, the page would look empty. */}
+        <noscript>
+          <style>{`[style*="opacity:0"]{opacity:1 !important}`}</style>
+        </noscript>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-D33K2DPTHT"
           strategy="afterInteractive"

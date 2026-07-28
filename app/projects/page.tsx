@@ -13,11 +13,11 @@ export const metadata: Metadata = {
     description:
       "Explore my portfolio of web development projects featuring React, Node.js, TypeScript, and modern technologies. View live demos and source code.",
     type: "website",
-    url: "https://vitlaicodedao.tech/projects",
+    url: "https://www.vitlaicodedao.tech/projects",
     siteName: "Viet Dev",
   },
   alternates: {
-    canonical: "https://vitlaicodedao.tech/projects",
+    canonical: "https://www.vitlaicodedao.tech/projects",
   },
 };
 

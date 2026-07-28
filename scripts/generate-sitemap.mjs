@@ -13,7 +13,7 @@ const supabaseUrl =
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || "your-anon-key";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const SITE_URL = "https://vitlaicodedao.tech";
+const SITE_URL = "https://www.vitlaicodedao.tech";
 
 // Generate XML sitemap header
 const generateSitemapHeader = () => {
