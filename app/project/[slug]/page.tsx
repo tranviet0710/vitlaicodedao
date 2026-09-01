@@ -1,13 +1,15 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Github, ArrowRight } from "lucide-react";
+import { ArrowLeft, ExternalLink, Github, ArrowRight, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { createPublicClient } from "@/integrations/supabase/public";
 import { CoverImage } from "@/components/CoverImage";
 import { MarkdownContent } from "@/components/markdown/MarkdownContent";
+import { ReadingProgress } from "@/components/blog/ReadingProgress";
+import { TableOfContents } from "@/components/blog/TableOfContents";
 
 interface Project {
   id: string;
@@ -131,6 +133,9 @@ export default async function ProjectDetailPage({
     ],
   };
 
+  const techStack = Array.isArray(project.tech_stack) ? project.tech_stack : [];
+  const hasLinks = Boolean(project.demo_url || project.github_url);
+
   return (
     <div className="min-h-screen bg-background">
       <script
@@ -145,128 +150,184 @@ export default async function ProjectDetailPage({
           __html: JSON.stringify(breadcrumbStructuredData),
         }}
       />
+      <ReadingProgress />
       <Navigation />
-      <main className="container mx-auto px-4 py-32">
-        <Link href="/#projects">
-          <Button variant="ghost" className="mb-8 hover:bg-transparent p-0 group">
-             <span className="flex items-center gap-2 border-2 border-border bg-card px-4 py-2 neo-shadow group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-none transition-all text-foreground">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Case Studies
-             </span>
-          </Button>
-        </Link>
 
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-12 border-2 border-border bg-card p-2 neo-shadow">
-             {project.thumbnail && (
-               <div className="relative aspect-video w-full overflow-hidden border-2 border-border">
-                 <CoverImage
-                   src={project.thumbnail}
-                   alt={project.title}
-                   sizes="(max-width: 1024px) 100vw, 1024px"
-                   priority
-                 />
-               </div>
-             )}
-          </div>
+      <main className="container mx-auto px-4 py-28 md:py-32">
+        <div className="mx-auto max-w-6xl">
+          <Link
+            href="/#projects"
+            className="neo-shadow mb-8 inline-flex items-center gap-2 border-2 border-border bg-card px-4 py-2 text-sm font-bold text-foreground transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Case Studies
+          </Link>
 
-          <div className="mb-12 text-center">
-            <span className="inline-block px-4 py-1 bg-primary text-primary-foreground font-bold uppercase tracking-wider mb-6 border-2 border-border neo-shadow-sm">
-              {project.category}
-            </span>
-            <h1 className="text-4xl md:text-6xl font-black mb-6 uppercase font-heading leading-tight text-foreground">
-              {project.title}
-            </h1>
-            <p className="text-xl md:text-2xl font-medium text-muted-foreground max-w-3xl mx-auto">
-              {project.description}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-             <div className="md:col-span-2 space-y-8">
-                 {project.content && (
-                   <div className="border-2 border-border p-8 bg-card neo-shadow">
-                      <h3 className="text-2xl font-black uppercase mb-6 flex items-center gap-2 text-foreground">
-                         <span className="text-primary">#</span> Case Study Analysis
-                      </h3>
-                      <MarkdownContent content={project.content} />
-                   </div>
-                 )}
-             </div>
-
-             <div className="space-y-8">
-                <div className="border-2 border-border p-6 bg-accent/20 neo-shadow-sm sticky top-24">
-                   <h3 className="text-xl font-black uppercase mb-4 border-b-2 border-border pb-2 text-foreground">
-                      Tech Stack
-                   </h3>
-                   {project.tech_stack && Array.isArray(project.tech_stack) && project.tech_stack.length > 0 && (
-                     <div className="flex flex-wrap gap-2 mb-8">
-                       {project.tech_stack.map((tech, index) => (
-                         <span
-                           key={index}
-                           className="px-3 py-1 bg-card border-2 border-border text-foreground text-sm font-bold font-mono"
-                         >
-                           {tech}
-                         </span>
-                       ))}
-                     </div>
-                   )}
-
-                   <div className="flex flex-col gap-4">
-                     {project.demo_url && (
-                       <a
-                         href={project.demo_url}
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className="w-full"
-                       >
-                         <Button className="w-full bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold uppercase py-6 text-lg">
-                           <ExternalLink className="mr-2 h-5 w-5" />
-                           View Live Demo
-                         </Button>
-                       </a>
-                     )}
-                     {project.github_url && (
-                       <a
-                         href={project.github_url}
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className="w-full"
-                       >
-                         <Button variant="outline" className="w-full bg-card text-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold uppercase py-6 text-lg">
-                           <Github className="mr-2 h-5 w-5" />
-                           View Source
-                         </Button>
-                       </a>
-                     )}
-                   </div>
+          {/* Cover and title overlap into one poster block. */}
+          <header className="mb-14">
+            {project.thumbnail && (
+              <div className="neo-shadow border-2 border-border bg-card p-2">
+                <div className="relative aspect-video w-full overflow-hidden border-2 border-border">
+                  <CoverImage
+                    src={project.thumbnail}
+                    alt={project.title}
+                    sizes="(max-width: 1024px) 100vw, 1152px"
+                    priority
+                  />
                 </div>
-             </div>
-          </div>
-          
-           {/* CTA Section */}
-           <div className="mt-20 border-2 border-border bg-primary text-primary-foreground p-12 text-center neo-shadow relative overflow-hidden">
-               <div className="relative z-10">
-                   <h2 className="text-3xl md:text-4xl font-black uppercase mb-6">
-                      Need a similar solution?
-                   </h2>
-                   <p className="text-xl font-medium mb-8 max-w-2xl mx-auto opacity-90">
-                      Let's discuss how we can engineer a robust architecture for your business needs.
-                   </p>
-                   <a href="/#contact">
-                       <Button size="lg" className="bg-card text-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all text-xl font-black uppercase px-8 py-6">
-                           Book a Strategy Call
-                           <ArrowRight className="ml-2 w-6 h-6" />
-                       </Button>
-                   </a>
-               </div>
-               
-               {/* Decorative background pattern */}
-               <div className="absolute inset-0 opacity-10 pointer-events-none" 
-                    style={{ backgroundImage: "radial-gradient(circle, currentColor 2px, transparent 2.5px)", backgroundSize: "20px 20px" }}>
-               </div>
-           </div>
+              </div>
+            )}
 
+            <div
+              className={`neo-shadow relative z-10 mx-auto max-w-4xl border-2 border-border bg-card px-6 py-8 text-center md:px-10 md:py-10 ${
+                project.thumbnail ? "-mt-10 md:-mt-16" : ""
+              }`}
+            >
+              <span className="neo-shadow-sm mb-5 inline-block border-2 border-border bg-primary px-4 py-1 font-bold uppercase tracking-wider text-primary-foreground">
+                {project.category}
+              </span>
+              <h1 className="mb-5 font-heading text-3xl font-black uppercase leading-tight text-foreground md:text-5xl">
+                {project.title}
+              </h1>
+              <p className="mx-auto max-w-2xl text-base font-medium leading-relaxed text-muted-foreground md:text-lg">
+                {project.description}
+              </p>
+
+              {hasLinks && (
+                <div className="mt-8 flex flex-wrap justify-center gap-4">
+                  {project.demo_url && (
+                    <a
+                      href={project.demo_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="neo-shadow inline-flex items-center gap-2 border-2 border-border bg-primary px-5 py-3 font-bold uppercase text-primary-foreground transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Live Demo
+                    </a>
+                  )}
+                  {project.github_url && (
+                    <a
+                      href={project.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="neo-shadow inline-flex items-center gap-2 border-2 border-border bg-card px-5 py-3 font-bold uppercase text-foreground transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+                    >
+                      <Github className="h-4 w-4" />
+                      Source
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </header>
+
+          {/* `minmax(0, 1fr)` keeps wide content (code blocks, tables, pasted
+              rules) inside the column instead of stretching the track. */}
+          <div className="mb-20 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <div className="min-w-0">
+              {project.content ? (
+                <article className="neo-shadow border-2 border-border bg-card">
+                  <h2 className="flex items-center gap-2 border-b-2 border-border bg-primary px-6 py-4 font-heading text-lg font-black uppercase tracking-wide text-primary-foreground md:text-xl">
+                    <span aria-hidden="true">#</span> Case Study Analysis
+                  </h2>
+                  <div className="overflow-x-hidden px-6 py-8 md:px-8">
+                    <TableOfContents content={project.content} />
+                    <MarkdownContent content={project.content} />
+                  </div>
+                </article>
+              ) : (
+                <div className="neo-shadow border-2 border-border bg-card p-8 text-muted-foreground">
+                  The full case study for this project is still being written.
+                </div>
+              )}
+            </div>
+
+            <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+              {techStack.length > 0 && (
+                <section className="neo-shadow-sm border-2 border-border bg-accent/20 p-6">
+                  <h2 className="mb-4 flex items-center gap-2 border-b-2 border-border pb-2 font-heading text-lg font-black uppercase text-foreground">
+                    <Layers className="h-5 w-5" />
+                    Tech Stack
+                  </h2>
+                  <ul className="flex flex-wrap gap-2">
+                    {techStack.map((tech) => (
+                      <li
+                        key={tech}
+                        className="border-2 border-border bg-card px-3 py-1 font-mono text-sm font-bold text-foreground"
+                      >
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              {hasLinks && (
+                <section className="neo-shadow-sm border-2 border-border bg-card p-6">
+                  <h2 className="mb-4 border-b-2 border-border pb-2 font-heading text-lg font-black uppercase text-foreground">
+                    Links
+                  </h2>
+                  <div className="flex flex-col gap-3">
+                    {project.demo_url && (
+                      <a
+                        href={project.demo_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="neo-shadow flex items-center justify-center gap-2 border-2 border-border bg-primary px-4 py-3 font-bold uppercase text-primary-foreground transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+                      >
+                        <ExternalLink className="h-5 w-5" />
+                        View Live Demo
+                      </a>
+                    )}
+                    {project.github_url && (
+                      <a
+                        href={project.github_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="neo-shadow flex items-center justify-center gap-2 border-2 border-border bg-card px-4 py-3 font-bold uppercase text-foreground transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+                      >
+                        <Github className="h-5 w-5" />
+                        View Source
+                      </a>
+                    )}
+                  </div>
+                </section>
+              )}
+            </aside>
+          </div>
+
+          {/* CTA Section */}
+          <div className="neo-shadow relative overflow-hidden border-2 border-border bg-primary p-8 text-center text-primary-foreground md:p-12">
+            <div className="relative z-10">
+              <h2 className="mb-6 font-heading text-2xl font-black uppercase md:text-4xl">
+                Need a similar solution?
+              </h2>
+              <p className="mx-auto mb-8 max-w-2xl text-lg font-medium opacity-90 md:text-xl">
+                Let&apos;s discuss how we can engineer a robust architecture for
+                your business needs.
+              </p>
+              <a href="/#contact">
+                <Button
+                  size="lg"
+                  className="neo-shadow border-2 border-border bg-card px-8 py-6 text-lg font-black uppercase text-foreground transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none md:text-xl"
+                >
+                  Book a Strategy Call
+                  <ArrowRight className="ml-2 h-6 w-6" />
+                </Button>
+              </a>
+            </div>
+
+            {/* Decorative background pattern */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-10"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, currentColor 2px, transparent 2.5px)",
+                backgroundSize: "20px 20px",
+              }}
+            />
+          </div>
         </div>
       </main>
       <Footer />

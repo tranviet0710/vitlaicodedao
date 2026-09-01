@@ -16,6 +16,37 @@ import { CopyCodeButton } from "./CopyCodeButton";
  * cannot drift from what readers get.
  */
 
+/**
+ * Characters people draw their own separators with when pasting from Telegram,
+ * a README or a chat log. Markdown gives them no meaning, so a run of them is
+ * one unbreakable "word" that runs straight past the edge of the column.
+ */
+const RULE_LINE = /^[ \t]*[\u2500-\u257F\u2580-\u259F\u2010-\u2015\u23AF]{3,}[ \t]*$/;
+const FENCE_LINE = /^[ \t]*(?:```|~~~)/;
+
+/**
+ * Rewrite those hand-drawn rules as real thematic breaks, leaving fenced code
+ * (where the characters may be meaningful box art) untouched.
+ *
+ * `***` is used rather than `---` because `---` directly under a line of text
+ * is a setext underline, which would silently promote the paragraph above it
+ * to a heading instead of drawing a rule.
+ */
+function normalizeDrawnRules(markdown: string): string {
+  let inFence = false;
+
+  return markdown
+    .split("\n")
+    .map((line) => {
+      if (FENCE_LINE.test(line)) {
+        inFence = !inFence;
+        return line;
+      }
+      return !inFence && RULE_LINE.test(line) ? "***" : line;
+    })
+    .join("\n");
+}
+
 /** Flatten a React subtree to plain text, for heading anchors and copy buttons. */
 function toText(node: ReactNode): string {
   return Children.toArray(node)
@@ -200,7 +231,7 @@ const components: Components = {
   },
 };
 
-const PROSE_CLASSES = `prose prose-lg dark:prose-invert max-w-none
+const PROSE_CLASSES = `prose prose-lg dark:prose-invert max-w-none break-words
   prose-headings:text-foreground prose-headings:font-bold prose-headings:font-heading
   prose-h1:text-3xl prose-h1:md:text-4xl prose-h1:mb-6 prose-h1:mt-10 prose-h1:leading-tight
   prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mb-6 prose-h2:mt-12 prose-h2:text-primary prose-h2:border-b-2 prose-h2:border-border prose-h2:pb-3
@@ -214,7 +245,7 @@ const PROSE_CLASSES = `prose prose-lg dark:prose-invert max-w-none
   prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-accent/20 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:text-foreground/90
   prose-code:bg-muted prose-code:text-foreground prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
   prose-pre:p-0 prose-pre:bg-transparent prose-pre:border-0
-  prose-hr:border-border prose-hr:border-t-2`;
+  prose-hr:border-border prose-hr:border-t-2 prose-hr:my-10`;
 
 export function MarkdownContent({
   content,
@@ -230,7 +261,7 @@ export function MarkdownContent({
         rehypePlugins={[rehypeRaw, [rehypeSanitize, richContentSchema]]}
         components={components}
       >
-        {content}
+        {normalizeDrawnRules(content)}
       </ReactMarkdown>
     </div>
   );
