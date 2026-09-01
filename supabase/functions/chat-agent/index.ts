@@ -2,6 +2,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.80.0";
 import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.15.0";
+import { getEmbedding } from "../_shared/embeddings.ts";
 
 // Basic CORS headers
 const corsHeaders = {
@@ -42,14 +43,12 @@ serve(async (req) => {
     const genAI = new GoogleGenerativeAI(geminiApiKey);
 
     // 1. Generate embedding for the user's message
-    const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
-    const embeddingResponse = await embeddingModel.embedContent(message);
-    const queryEmbedding = embeddingResponse.embedding.values;
+    const queryEmbedding = await getEmbedding(message, geminiApiKey, "RETRIEVAL_QUERY");
 
     // 2. Search for relevant documents in Supabase
     const { data: documents, error: rpcError } = await supabase.rpc("match_documents", {
       query_embedding: queryEmbedding,
-      match_threshold: 0.78, // Adjust threshold as needed
+      match_threshold: 0.6,  // Tuned for gemini-embedding-001 similarity scores
       match_count: 5,        // Number of documents to retrieve
     });
 

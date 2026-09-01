@@ -1,7 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.80.0";
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.15.0";
+import { getEmbedding } from "../_shared/embeddings.ts";
 // import { extractText } from "https://esm.sh/@pdf/pdftext@1.0.0"; // Assuming this is the correct import path
 
 // Basic CORS headers
@@ -62,20 +62,12 @@ serve(async (req) => {
         status: 500,
       });
     }
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
-
-    // Function to generate embedding
-    async function getEmbedding(text: string) {
-      const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001"});
-      const response = await embeddingModel.embedContent(text);
-      return response.embedding.values;
-    }
 
     const chunks = chunkText(contentToIngest);
     const documentsToInsert = [];
 
     for (const chunk of chunks) {
-      const embedding = await getEmbedding(chunk);
+      const embedding = await getEmbedding(chunk, geminiApiKey, "RETRIEVAL_DOCUMENT");
       documentsToInsert.push({
         content: chunk,
         metadata: sourceMetadata,

@@ -64,19 +64,19 @@
     --primary-foreground: 0 0% 100%;
     
     --secondary: 180 100% 50%;
-    --secondary-foreground: 0 0% 0%;
+    --secondary-foreground: 0 0% 100%;
     
     --muted: 0 0% 20%;
     --muted-foreground: 0 0% 80%;
     
     --accent: 320 100% 70%;
-    --accent-foreground: 0 0% 0%;
+    --accent-foreground: 0 0% 100%;
     
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 0 0% 100%;
-    --input: 0 0% 100%;
+    --border: 0 0% 30%;
+    --input: 0 0% 30%;
     --ring: 250 100% 65%;
   }
 }
@@ -165,7 +165,7 @@
   }
 
   .gradient-border {
-    @apply border-4 border-black;
+    @apply border-4 border-border;
     /* Removed gradient border */
   }
 

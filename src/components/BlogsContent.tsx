@@ -285,7 +285,7 @@ const BlogsContent = ({ initialBlogs = [] }: { initialBlogs?: Blog[] }) => {
             <Link href="/#contact">
               <Button
                 size="lg"
-                className="text-lg px-8 py-6 bg-background text-foreground hover:bg-accent hover:text-accent-foreground border-2 border-black neo-shadow-white hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                className="text-lg px-8 py-6 bg-background text-foreground hover:bg-accent hover:text-accent-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 {t("blog.getInTouch")}
               </Button>

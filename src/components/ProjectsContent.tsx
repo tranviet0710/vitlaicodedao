@@ -64,7 +64,7 @@ const ProjectCard = ({
         </div>
 
         {/* Category badge */}
-        <div className="absolute top-4 right-4 bg-primary text-primary-foreground border-2 border-black px-3 py-1 text-sm font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        <div className="absolute top-4 right-4 bg-primary text-primary-foreground border-2 border-border px-3 py-1 text-sm font-bold shadow-[2px_2px_0px_0px_hsl(var(--border))]">
           <div className="flex items-center gap-2">
             <Rocket className="w-4 h-4" />
             {project.category}
@@ -116,7 +116,7 @@ const ProjectCard = ({
             >
               <Button
                 size="sm"
-                className="w-full bg-primary text-primary-foreground border-2 border-black neo-shadow hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all"
+                className="w-full bg-primary text-primary-foreground border-2 border-border neo-shadow hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 {t("projects.viewDemo")}
@@ -265,7 +265,7 @@ const ProjectsContent = () => {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-5 py-2 text-sm font-bold border-2 transition-all duration-200 ${
                     selectedCategory === category
-                      ? "bg-primary text-primary-foreground border-black neo-shadow translate-x-[-2px] translate-y-[-2px]"
+                      ? "bg-primary text-primary-foreground border-border neo-shadow translate-x-[-2px] translate-y-[-2px]"
                       : "bg-background text-foreground border-border hover:border-primary hover:text-primary"
                   }`}
                 >
@@ -380,7 +380,7 @@ const ProjectsContent = () => {
             <Link href="/#contact">
               <Button
                 size="lg"
-                className="text-lg px-8 py-6 bg-background text-foreground hover:bg-accent hover:text-accent-foreground border-2 border-black neo-shadow-white hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
+                className="text-lg px-8 py-6 bg-background text-foreground hover:bg-accent hover:text-accent-foreground border-2 border-border neo-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
               >
                 {t("projectsPage.startProject")}
               </Button>
