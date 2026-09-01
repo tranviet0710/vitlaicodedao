@@ -17,7 +17,7 @@ import {
   ScrollText,
   Bell
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -28,9 +28,22 @@ interface AdminLayoutProps {
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { signOut, user } = useAuth();
+  const { signOut, user, loading, isAdmin } = useAuth();
   const { t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Mirrors the middleware gate, so a non-admin never gets as far as filling in
+  // a form that RLS is going to reject.
+  useEffect(() => {
+    if (loading) return;
+    if (!user) {
+      router.replace('/auth');
+    } else if (!isAdmin) {
+      router.replace('/');
+    }
+  }, [loading, user, isAdmin, router]);
+
+  if (loading || !user || !isAdmin) return null;
 
   const handleLogout = async () => {
     await signOut();

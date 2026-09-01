@@ -61,6 +61,19 @@ export async function middleware(request: NextRequest) {
     if (!user) {
       return NextResponse.redirect(new URL('/auth', request.url))
     }
+
+    // Being signed in is not enough — every write behind /admin is gated on the
+    // 'admin' role by RLS, so a non-admin would only reach an opaque 42501.
+    const { data: adminRole } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle()
+
+    if (!adminRole) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
   }
 
   // Redirect authenticated users away from auth page

@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { blogSchema } from "@/lib/validations";
+import { describeSupabaseError } from "@/lib/supabase-error";
 import { z } from "zod";
 import {
   SUPABASE_URL,
@@ -147,7 +148,7 @@ export default function BlogsManagerPage() {
         console.error("Error saving blog:", error);
         toast({
           title: "Lỗi",
-          description: "Không thể lưu blog",
+          description: describeSupabaseError(error, "Không thể lưu blog"),
           variant: "destructive",
         });
       }
@@ -179,7 +180,7 @@ export default function BlogsManagerPage() {
       console.error("Error deleting blog:", error);
       toast({
         title: "Lỗi",
-        description: "Không thể xóa blog",
+        description: describeSupabaseError(error, "Không thể xóa blog"),
         variant: "destructive",
       });
     }
