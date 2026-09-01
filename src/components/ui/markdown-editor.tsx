@@ -45,6 +45,8 @@ interface MarkdownEditorProps {
   onChange: (value: string) => void;
   className?: string;
   placeholder?: string;
+  /** Folder inside the `assets` bucket that pasted/uploaded images land in. */
+  uploadFolder?: string;
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -122,6 +124,7 @@ export function MarkdownEditor({
   onChange,
   className,
   placeholder = "Write your blog content in Markdown...",
+  uploadFolder = "blog-content",
 }: MarkdownEditorProps) {
   const [showPreview, setShowPreview] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
@@ -269,7 +272,7 @@ export function MarkdownEditor({
         setIsUploading(true);
         const fileExt = file.name.split(".").pop() || "png";
         const fileName = `${crypto.randomUUID()}.${fileExt}`;
-        const filePath = `blog-content/${fileName}`;
+        const filePath = `${uploadFolder}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from("assets")
@@ -291,7 +294,7 @@ export function MarkdownEditor({
         setIsUploading(false);
       }
     },
-    [toast]
+    [toast, uploadFolder]
   );
 
   const insertImage = useCallback(

@@ -7,10 +7,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { createPublicClient } from "@/integrations/supabase/public";
 import { CoverImage } from "@/components/CoverImage";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
+import { MarkdownContent } from "@/components/markdown/MarkdownContent";
 
 interface Project {
   id: string;
@@ -187,19 +184,14 @@ export default async function ProjectDetailPage({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
              <div className="md:col-span-2 space-y-8">
-                 <div className="border-2 border-border p-8 bg-card neo-shadow">
-                    <h3 className="text-2xl font-black uppercase mb-6 flex items-center gap-2 text-foreground">
-                       <span className="text-primary">#</span> Case Study Analysis
-                    </h3>
-                    <div className="prose prose-lg dark:prose-invert prose-headings:font-black prose-headings:uppercase prose-p:font-medium max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-li:text-foreground/90">
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                      >
-                        {project.content || ""}
-                      </ReactMarkdown>
-                    </div>
-                 </div>
+                 {project.content && (
+                   <div className="border-2 border-border p-8 bg-card neo-shadow">
+                      <h3 className="text-2xl font-black uppercase mb-6 flex items-center gap-2 text-foreground">
+                         <span className="text-primary">#</span> Case Study Analysis
+                      </h3>
+                      <MarkdownContent content={project.content} />
+                   </div>
+                 )}
              </div>
 
              <div className="space-y-8">

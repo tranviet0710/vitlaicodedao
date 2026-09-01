@@ -65,6 +65,11 @@ export const projectSchema = z.object({
     .trim()
     .min(1, { message: 'Description is required' })
     .max(1000, { message: 'Description must be less than 1000 characters' }),
+  content: z.string()
+    .trim()
+    .max(100000, { message: 'Content must be less than 100,000 characters' })
+    .optional()
+    .or(z.literal('')),
   category: z.string()
     .trim()
     .min(1, { message: 'Category is required' })

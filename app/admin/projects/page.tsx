@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { MarkdownEditor } from "@/components/ui/markdown-editor";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2 } from "lucide-react";
@@ -26,6 +27,7 @@ interface Project {
   title: string;
   slug: string;
   description: string;
+  content: string | null;
   category: string;
   tech_stack: string[] | null;
   thumbnail: string | null;
@@ -46,6 +48,7 @@ export default function ProjectsManagerPage() {
     title: "",
     slug: "",
     description: "",
+    content: "",
     category: "",
     tech_stack: "",
     thumbnail: "",
@@ -95,7 +98,9 @@ export default function ProjectsManagerPage() {
         projectData.category
       }. Tech Stack: ${
         projectData.tech_stack?.join(", ") || ""
-      }. Description: ${projectData.description}`;
+      }. Description: ${projectData.description}${
+        projectData.content ? `. Case Study: ${projectData.content}` : ""
+      }`;
       const response = await fetch(
         `${SUPABASE_URL}/functions/v1/ingest-document`,
         {
@@ -157,6 +162,7 @@ export default function ProjectsManagerPage() {
             title: validated.title,
             slug: validated.slug,
             description: validated.description,
+            content: validated.content || null,
             category: validated.category,
             tech_stack: techStack.length > 0 ? techStack : null,
             thumbnail: validated.thumbnail || null,
@@ -177,6 +183,7 @@ export default function ProjectsManagerPage() {
             title: validated.title,
             slug: validated.slug,
             description: validated.description,
+            content: validated.content || null,
             category: validated.category,
             tech_stack: techStack.length > 0 ? techStack : null,
             thumbnail: validated.thumbnail || null,
@@ -247,6 +254,7 @@ export default function ProjectsManagerPage() {
       title: project.title,
       slug: project.slug,
       description: project.description,
+      content: project.content || "",
       category: project.category,
       tech_stack: project.tech_stack?.join(", ") || "",
       thumbnail: project.thumbnail || "",
@@ -280,6 +288,7 @@ export default function ProjectsManagerPage() {
       title: "",
       slug: "",
       description: "",
+      content: "",
       category: "",
       tech_stack: "",
       thumbnail: "",
@@ -392,19 +401,44 @@ export default function ProjectsManagerPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">{t("admin.description")} *</label>
+              <label className="block text-sm font-medium mb-2">
+                {t("admin.shortDescription")} *
+              </label>
+              <p className="text-sm text-muted-foreground mb-2">
+                {t("admin.shortDescriptionHint")}
+              </p>
               <Textarea
                 className="border-2 border-border"
                 value={formData.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
-                rows={4}
+                rows={3}
                 required
               />
               {validationErrors.description && (
                 <p className="text-sm text-destructive mt-1">
                   {validationErrors.description}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                {t("admin.caseStudy")}
+              </label>
+              <p className="text-sm text-muted-foreground mb-2">
+                {t("admin.caseStudyHint")}
+              </p>
+              <MarkdownEditor
+                value={formData.content}
+                onChange={(val) => setFormData({ ...formData, content: val })}
+                uploadFolder="project-content"
+                placeholder="Write the project case study in Markdown..."
+              />
+              {validationErrors.content && (
+                <p className="text-sm text-destructive mt-1">
+                  {validationErrors.content}
                 </p>
               )}
             </div>

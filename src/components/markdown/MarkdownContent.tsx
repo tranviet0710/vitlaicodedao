@@ -11,9 +11,9 @@ import { isOptimizableImage } from "@/lib/image";
 import { CopyCodeButton } from "./CopyCodeButton";
 
 /**
- * The single renderer for blog content, shared by the public article page and
- * the admin editor preview so that "what you see while writing" cannot drift
- * from what readers get.
+ * The single renderer for rich content, shared by the public blog and project
+ * pages and the admin editor preview so that "what you see while writing"
+ * cannot drift from what readers get.
  */
 
 /** Flatten a React subtree to plain text, for heading anchors and copy buttons. */
